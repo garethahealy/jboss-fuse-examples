@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0" name="${project.artifactId}-${project.version}">
+	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel-version}/xml/features</repository>
+	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf-version}/xml/features</repository>
+	<repository>mvn:org.apache.activemq/activemq-karaf/${activemq-version}/xml/features</repository>
+	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf-version}/xml/features</repository>
+	<repository>mvn:org.apache.karaf.assemblies.features/enterprise/${karaf-version}/xml/features</repository>
+
+    <feature name="camel-activemq-transacted" version="${project.version}" resolver="(obr)">>
+		<bundle>mvn:${project.groupId}/camel-activemq-transacted/${project.version}</bundle>
+	</feature>
+</features>
