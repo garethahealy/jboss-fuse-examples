@@ -5,3 +5,7 @@ Collection of simple examples of the different components, setups and general th
 Target Audience
 ===================
 Anyone using JBoss Fuse / Apache Camel / Apache ActiveMQ / Apache ServiceMix / fabric8 / hawt.io
+
+Usful reading
+==================
+http://camel.apache.org/eip.html
