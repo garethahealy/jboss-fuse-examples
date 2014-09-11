@@ -1,0 +1,15 @@
+# Eclipse Files #
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+.settings/
+.loadpath
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.class
