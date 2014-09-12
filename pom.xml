@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.garethahealy</groupId>
+  <artifactId>jboss-fuse-examples</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>${project.artifactId}</name>
+  
+  <organization>
+    <name>Gareth Healy</name>
+    <url>https://github.com/garethahealy</url>
+  </organization>
+  
+  <modules>
+    <module>examples-features</module>
+    <module>examples-parent</module>
+    <module>camel-activemq-transacted</module>
+  </modules>
+  
+  <properties>
+    <!-- JBoss Fuse versions -->
+    <redhat-version>redhat-610379</redhat-version>
+    <osgi-version>4.3.0</osgi-version>
+    <!-- Camel -->
+    <camel-number-version>2.12.0</camel-number-version>
+    <camel-version>${camel-number-version}.${redhat-version}</camel-version>
+    <!-- Karaf -->
+    <karaf-number-version>2.3.0</karaf-number-version>
+    <karaf-version>${karaf-number-version}.${redhat-version}</karaf-version>
+    <!-- ActiveMQ -->
+    <activemq-number-version>5.9.0</activemq-number-version>
+    <activemq-version>${activemq-number-version}.${redhat-version}</activemq-version>
+    <!-- CXF -->
+    <cxf-number-version>2.7.0</cxf-number-version>
+    <cxf-version>${cxf-number-version}.${redhat-version}</cxf-version>
+
+    <!-- Other components -->
+    <junit-version>4.11</junit-version>
+    <slf4j-version>1.7.7</slf4j-version>
+
+    <!-- Project settings -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java-runtime>1.7</java-runtime>
+
+    <!-- SCM / Repos -->
+    <nexus-ip>localhost:8081</nexus-ip>
+    
+    <!-- Plugin versions -->
+    <maven-bundle-plugin-version>2.3.4</maven-bundle-plugin-version>
+    <maven-source-plugin-version>2.1.1</maven-source-plugin-version>
+    <maven-antrun-plugin-version>1.2</maven-antrun-plugin-version>
+    <maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>
+    <maven-surefire-plugin-version>2.16</maven-surefire-plugin-version>
+    <depends-maven-plugin-version>1.2</depends-maven-plugin-version>
+    <properties-maven-plugin-version>1.0-alpha-2</properties-maven-plugin-version>
+    <ant-contrib-version>1.0b3</ant-contrib-version>
+    <ant-optional-version>1.5.3-1</ant-optional-version>
+    <versions-maven-plugin-version>2.0</versions-maven-plugin-version>
+    <maven-resources-plugin-version>2.6</maven-resources-plugin-version>
+    <build-helper-maven-plugin-version>1.7</build-helper-maven-plugin-version>
+
+    <!-- Plugin dependancy versions -->
+    <jaxb-version>2.1.13</jaxb-version>
+    <jaxb-api-version>2.1</jaxb-api-version>
+    
+    <!-- Build propertis -->
+    <build.osgi.import.build.version>version="[$(version;==;${build.osgi.version.clean}),$(version;=+;${build.osgi.version.clean}))"</build.osgi.import.build.version>
+    <build.osgi.import.strict.version>version="[$(version;===;${build.osgi.version.clean}),$(version;==+;${build.osgi.version.clean}))"</build.osgi.import.strict.version>
+    <build.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</build.osgi.import.default.version>
+    <build.osgi.import.defaults/>
+    <build.osgi.import.before.defaults />
+    <build.osgi.import.additional />
+    <build.osgi.import.pkg>
+      !${build.osgi.export.pkg},
+      com.garethahealy..*;${build.osgi.import.build.version},
+      ${build.osgi.import.before.defaults},
+      ${build.osgi.import.defaults},
+      ${build.osgi.import.additional},
+      *
+    </build.osgi.import.pkg>
+    <build.osgi.export.pkg/>
+    <build.osgi.activator/>
+    <build.osgi.failok>false</build.osgi.failok>
+    <build.osgi.private.pkg>!*</build.osgi.private.pkg>
+    <build.osgi.export>${build.osgi.export.pkg};${build.osgi.version}</build.osgi.export>
+    <build.osgi.version>version=${project.version}</build.osgi.version>
+    <build.osgi.split.pkg>-split-package:=first</build.osgi.split.pkg>
+    <build.osgi.import>${build.osgi.import.pkg}</build.osgi.import>
+    <build.osgi.dynamic />
+    <build.osgi.symbolic.name>${project.groupId}.${project.artifactId}</build.osgi.symbolic.name>
+    <build.osgi.exclude.dependencies>false</build.osgi.exclude.dependencies>
+  </properties>
+
+  <!-- Build plugins -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven-source-plugin-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build-helper-maven-plugin-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>${maven-surefire-plugin-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.servicemix.tooling</groupId>
+          <artifactId>depends-maven-plugin</artifactId>
+          <version>${depends-maven-plugin-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>${maven-bundle-plugin-version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+</build>
+
+  <!-- Components -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Core OSGi-->
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.core</artifactId>
+        <version>${osgi-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.compendium</artifactId>
+        <version>${osgi-version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- Core Camel -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-core</artifactId>
+        <version>${camel-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+       <groupId>org.apache.camel</groupId>
+       <artifactId>camel-blueprint</artifactId>
+       <version>${camel-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      
+      <!-- Camel JMS -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jms</artifactId>
+        <version>${camel-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-camel</artifactId>
+        <version>${activemq-version}</version>
+        <scope>provided</scope>
+      </dependency>
+      
+      <!-- Camel other -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-quartz2</artifactId>
+        <version>${camel-version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- Testing: Camel JUnit -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-test</artifactId>
+        <version>${camel-version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-test-blueprint</artifactId>
+        <version>${camel-version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+	    <artifactId>junit</artifactId>
+	    <version>${junit-version}</version>
+	    <scope>test</scope>
+      </dependency>
+      <dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-log4j12</artifactId>
+	    <version>${slf4j-version}</version>
+	    <scope>test</scope>
+	  </dependency>
+    </dependencies>
+  </dependencyManagement>
+    
+    
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>releases</id>
+      <name>libs-release</name>
+      <url>http://${nexus-ip}/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>snapshots</id>
+      <name>libs-snapshot</name>
+      <url>file:/home/gahealy/.m2/repository</url>
+    </snapshotRepository>
+  </distributionManagement>
+</project>
