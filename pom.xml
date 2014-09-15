@@ -67,33 +67,6 @@
     <!-- Plugin dependancy versions -->
     <jaxb-version>2.1.13</jaxb-version>
     <jaxb-api-version>2.1</jaxb-api-version>
-    
-    <!-- Build propertis -->
-    <build.osgi.import.build.version>version="[$(version;==;${build.osgi.version.clean}),$(version;=+;${build.osgi.version.clean}))"</build.osgi.import.build.version>
-    <build.osgi.import.strict.version>version="[$(version;===;${build.osgi.version.clean}),$(version;==+;${build.osgi.version.clean}))"</build.osgi.import.strict.version>
-    <build.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</build.osgi.import.default.version>
-    <build.osgi.import.defaults/>
-    <build.osgi.import.before.defaults />
-    <build.osgi.import.additional />
-    <build.osgi.import.pkg>
-      !${build.osgi.export.pkg},
-      com.garethahealy..*;${build.osgi.import.build.version},
-      ${build.osgi.import.before.defaults},
-      ${build.osgi.import.defaults},
-      ${build.osgi.import.additional},
-      *
-    </build.osgi.import.pkg>
-    <build.osgi.export.pkg/>
-    <build.osgi.activator/>
-    <build.osgi.failok>false</build.osgi.failok>
-    <build.osgi.private.pkg>!*</build.osgi.private.pkg>
-    <build.osgi.export>${build.osgi.export.pkg};${build.osgi.version}</build.osgi.export>
-    <build.osgi.version>version=${project.version}</build.osgi.version>
-    <build.osgi.split.pkg>-split-package:=first</build.osgi.split.pkg>
-    <build.osgi.import>${build.osgi.import.pkg}</build.osgi.import>
-    <build.osgi.dynamic />
-    <build.osgi.symbolic.name>${project.groupId}.${project.artifactId}</build.osgi.symbolic.name>
-    <build.osgi.exclude.dependencies>false</build.osgi.exclude.dependencies>
   </properties>
 
   <!-- Build plugins -->
