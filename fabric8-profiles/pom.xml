@@ -49,6 +49,15 @@
 					<abstractProfile>${fabric8.abstractProfile}</abstractProfile>
 					<locked>${fabric8.locked}</locked>
 				</configuration>
+				<executions>
+					<execution>
+						<id>zip</id>
+						<phase>package</phase>
+						<goals>
+							<goal>zip</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
