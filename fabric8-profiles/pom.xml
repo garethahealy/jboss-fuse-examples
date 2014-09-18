@@ -26,6 +26,10 @@
 		<fabric8.featureRepos />
 		<fabric8.includeArtifact>false</fabric8.includeArtifact>
 		<fabric8.ignoreProject>true</fabric8.ignoreProject>
+		<fabric8.abstractProfile>false</fabric8.abstractProfile>
+		<fabric8.locked>false</fabric8.locked>
+
+		<!-- Feature urls -->
 		<camel-features-url>mvn:org.apache.camel.karaf/apache-camel/${version:camel}/xml/features</camel-features-url>
 		<examples-features-url>mvn:${project.groupId}/examples-features/${project.version}/xml/features</examples-features-url>
 	</properties>
