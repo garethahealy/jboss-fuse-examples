@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.garethahealy</groupId>
+		<artifactId>jboss-fuse-examples</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+	<artifactId>fabric8-profiles</artifactId>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<modules>
+		<module>amq-uk-profile</module>
+		<module>esb-uk-profile</module>
+	</modules>
+
+	<properties>
+		<!-- fabric8 deploy profile configuration -->
+		<fabric8.profile />
+		<fabric8.parentProfiles />
+		<fabric8.features />
+		<fabric8.featureRepos />
+		<fabric8.includeArtifact>false</fabric8.includeArtifact>
+		<fabric8.ignoreProject>true</fabric8.ignoreProject>
+		<camel-features-url>mvn:org.apache.camel.karaf/apache-camel/${version:camel}/xml/features</camel-features-url>
+		<examples-features-url>mvn:${project.groupId}/examples-features/${project.version}/xml/features</examples-features-url>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-maven-plugin</artifactId>
+				<configuration>
+					<profile>${fabric8.profile}</profile>
+					<parentProfiles>${fabric8.parentProfiles}</parentProfiles>
+					<features>${fabric8.features}</features>
+					<featureRepos>${fabric8.featureRepos}</featureRepos>
+					<includeArtifact>${fabric8.includeArtifact}</includeArtifact>
+					<ignoreProject>${fabric8.ignoreProject}</ignoreProject>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
