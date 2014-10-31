@@ -22,7 +22,7 @@
 			<cm:property name="schema.validation.enabled" value="false" />
 			<cm:property name="cxf.helloworld.port" value="9001" />
 			<cm:property name="cxf.helloworld.transport" value="https" />
-			<cm:property name="jaas.login.contextName" value="webservices" /> <!-- karaf -->
+			<cm:property name="jaas.login.contextName" value="webservices" />
 			<cm:property name="jaas.login.reportFault" value="true" />
 			<cm:property name="http.certs.location" value="/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/certs" />
 			<cm:property name="http.keyManagers.password" value="password" />
@@ -30,6 +30,7 @@
 			<cm:property name="http.clientAuthentication.required" value="false" />
 		</cm:default-properties>
 	</cm:property-placeholder>
+	
 	<!-- 
 	<enc:property-placeholder>
 	    <enc:encryptor class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
@@ -42,8 +43,10 @@
 	    </enc:encryptor>
 	</enc:property-placeholder>
  	-->
+ 	
 	<cxfcore:bus/>
  
+ 	<!-- CXF Jetty config to setup HTTPs -->
 	<httpj:engine-factory bus="cxf">
 		<httpj:engine port="${cxf.helloworld.port}">
 			<httpj:tlsServerParameters>
@@ -65,12 +68,14 @@
 			</httpj:tlsServerParameters>
 		</httpj:engine>
 	</httpj:engine-factory>
-	  
+	
+	<!-- CXF Interceptor which hooks onto the JAAS reaml where our usernames/passwords live -->
     <bean id="authenticationInterceptor" class="org.apache.cxf.interceptor.security.JAASLoginInterceptor">
 		<property name="contextName" value="${jaas.login.contextName}"/> 
 		<property name="reportFault" value="${jaas.login.reportFault}"/>
 	</bean>
 	
+	<!-- CXF Interceptor which parses the WS-Security header, so we can auth username/password against JAAS -->
 	<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		<argument>
 			<map>
@@ -80,6 +85,10 @@
 		</argument>
 	</bean>
     
+    <!-- CXF Endpoint, important sections (http://cxf.apache.org/docs/ws-security.html):
+    	#cxf:inInterceptors
+    	#cxf:properties
+     -->
     <cxf:cxfEndpoint id="helloWorldCxf" 
     	address="${cxf.helloworld.transport}://0.0.0.0:${cxf.helloworld.port}/cxf/helloWorldService" 
     	serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
@@ -100,9 +109,10 @@
 	
 	<camelContext id="wssecurity-https-cxf-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
  
+ 		<!-- Simple route which returns a Response so that the CXF flow can work -->
 		<route id="helloWorldCxfRoute">
 			<from uri="cxf:bean:helloWorldCxf" />
-			<log message="Received ${body}" />
+			<log message="Received..." />
 			<bean ref="helloWorldResponseBuilder" method="getResponse"/>
 		</route>
 		

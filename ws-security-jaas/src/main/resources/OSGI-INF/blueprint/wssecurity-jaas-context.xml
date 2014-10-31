@@ -16,7 +16,8 @@
             pid = com.garethahealy.webservices
             detailed.login.exception = true
         </jaas:module>
-    </jaas:config>-->
+    </jaas:config>
+-->
 
 	<jaas:config name="webservices" rank="-1">
 	    <jaas:module className="org.apache.karaf.jaas.modules.properties.PropertiesLoginModule" flags="required">
