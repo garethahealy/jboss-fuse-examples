@@ -4,4 +4,4 @@ Simple project which uses CXF maven plugin to generate an OSGi bundle, from a WS
 
 Key files
 ========================
-WSDL 'src/main/resources/wsdl/helloworld.wsdl'
+WSDL located @ 'src/main/resources/wsdl/helloworld.wsdl'
