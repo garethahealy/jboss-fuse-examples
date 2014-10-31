@@ -1,0 +1,17 @@
+# Eclipse Files #
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+.settings/
+.loadpath
+.attach_pid*
+target/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.class

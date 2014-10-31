@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.garethahealy</groupId>
+		<artifactId>examples-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../examples-parent</relativePath>
+	</parent>
+	<artifactId>ws-security-https-cxf</artifactId>
+	<packaging>bundle</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<build.osgi.import.before.defaults>
+			org.apache.karaf.jaas.config;version=${karaf-number-version},
+			org.apache.karaf.jaas.modules.osgi;version=${karaf-number-version},
+			org.apache.karaf.jaas.modules.properties;version=${karaf-number-version}
+		</build.osgi.import.before.defaults>
+		<build.osgi.export.pkg>com.garethahealy.wssecurity.https.cxf.*</build.osgi.export.pkg>
+		<build.osgi.export.service />
+		<build.osgi.activator />
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.garethahealy</groupId>
+			<artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- Camel CXF -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cxf</artifactId>
+		</dependency>
+		<!-- Core CXF -->
+		<!-- NOTE: The order of when ASM is loaded is important. Do NOT change! -->
+		<dependency>
+			<!-- IncompatibleClassChangeError: class org.apache.aries.proxy.impl.interfaces.InterfaceProxyGenerator 
+				has interface org.objectweb.asm.ClassVisitor as super class -->
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId> <!-- feature: cxf-jaxws -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId> <!-- feature: cxf-http -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>  <!-- feature: cxf-http-jetty -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-bindings-soap</artifactId> <!-- feature: cxf-bindings-soap -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-security</artifactId> <!-- feature: cxf-ws-security -->
+		</dependency>
+		
+		<!-- JAAS -->
+		<dependency>
+			<groupId>org.apache.karaf.jaas</groupId>
+			<artifactId>org.apache.karaf.jaas.jasypt</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

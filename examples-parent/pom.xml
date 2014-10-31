@@ -23,7 +23,7 @@
 	    <build.osgi.import.additional />
 	    <build.osgi.import.pkg>
 	      !${build.osgi.export.pkg},
-	      com.garethahealy..*;${build.osgi.import.build.version},
+	      com.garethahealy.*;${build.osgi.import.build.version},
 	      ${build.osgi.import.before.defaults},
 	      ${build.osgi.import.defaults},
 	      ${build.osgi.import.additional},
@@ -62,6 +62,8 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-blueprint</artifactId>
 		</dependency>
+		
+		<!-- Camel AMQ -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jms</artifactId>
@@ -69,6 +71,14 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-camel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-pool</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-client</artifactId>
 		</dependency>
 
 		<!-- Testing: Camel JUnit -->
@@ -90,6 +100,11 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

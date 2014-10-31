@@ -18,12 +18,18 @@
 		<module>fabric8-profiles</module>
 		<module>examples-features</module>
 		<module>examples-parent</module>
+		<module>activemq-service</module>
 		<module>camel-activemq-transacted</module>
+		<module>threading-playground</module>
+		<module>ws-security-jaas</module>
+		<module>ws-security-https-cxf-wsdl-helloworld</module>
+		<module>ws-security-https-cxf</module>
 	</modules>
 
 	<properties>
 		<!-- JBoss Fuse versions -->
 		<redhat-version>redhat-610379</redhat-version>
+		<redhat-short-version>redhat-379</redhat-short-version>
 		<osgi-version>4.3.0</osgi-version>
 		<!-- Camel -->
 		<camel-number-version>2.12.0</camel-number-version>
@@ -37,10 +43,17 @@
 		<!-- CXF -->
 		<cxf-number-version>2.7.0</cxf-number-version>
 		<cxf-version>${cxf-number-version}.${redhat-version}</cxf-version>
+		<!-- Fabric8 -->
+		<fabric8-number-version>1.0.0</fabric8-number-version>
+		<fabric8-version>${fabric8-number-version}.${redhat-short-version}</fabric8-version>
 
 		<!-- Other components -->
 		<junit-version>4.11</junit-version>
 		<slf4j-version>1.7.7</slf4j-version>
+		<mockito-all-version>1.9.5</mockito-all-version>
+		<disruptor-version>3.3.0</disruptor-version>
+		<asm-all-version>4.0</asm-all-version>
+		<jasypt-version>1.9.1</jasypt-version>
 
 		<!-- Project settings -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -157,7 +170,7 @@
 				<scope>provided</scope>
 			</dependency>
 
-			<!-- Camel JMS -->
+			<!-- Camel AMQ -->
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-jms</artifactId>
@@ -168,6 +181,80 @@
 				<groupId>org.apache.activemq</groupId>
 				<artifactId>activemq-camel</artifactId>
 				<version>${activemq-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-pool</artifactId>
+				<version>${activemq-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-client</artifactId>
+				<version>${activemq-version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- Camel CXF -->
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-cxf</artifactId>
+				<version>${camel-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- Core CXF -->
+			<!-- NOTE: The order of when ASM is loaded is important. Do NOT change! -->
+			<dependency>
+				<!-- IncompatibleClassChangeError: class org.apache.aries.proxy.impl.interfaces.InterfaceProxyGenerator 
+					has interface org.objectweb.asm.ClassVisitor as super class -->
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-all</artifactId>
+				<version>${asm-all-version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-core</artifactId>
+				<version>${cxf-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId> <!-- feature: cxf-jaxws -->
+				<version>${cxf-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId> <!-- feature: cxf-http -->
+				<version>${cxf-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http-jetty</artifactId>  <!-- feature: cxf-http-jetty -->
+				<version>${cxf-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-bindings-soap</artifactId> <!-- feature: cxf-bindings-soap -->
+				<version>${cxf-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-ws-security</artifactId> <!-- feature: cxf-ws-security -->
+				<version>${cxf-version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- JAAS -->
+			<dependency>
+				<groupId>org.apache.karaf.jaas</groupId>
+				<artifactId>org.apache.karaf.jaas.jasypt</artifactId>
+				<version>${karaf-version}</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -203,6 +290,20 @@
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>${slf4j-version}</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito-all-version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- Other -->
+			<dependency>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>${disruptor-version}</version>
+				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

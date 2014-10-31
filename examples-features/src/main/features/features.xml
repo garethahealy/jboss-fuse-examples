@@ -5,8 +5,45 @@
 	<repository>mvn:org.apache.activemq/activemq-karaf/${activemq-version}/xml/features</repository>
 	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf-version}/xml/features</repository>
 	<repository>mvn:org.apache.karaf.assemblies.features/enterprise/${karaf-version}/xml/features</repository>
+	<repository>mvn:io.fabric8/fabric8-karaf/${fabric8-version}/xml/features</repository>
 
-    <feature name="camel-activemq-transacted" version="${project.version}" resolver="(obr)">>
+	<feature name="${project.groupId}-activemq-dependencies" version="${project.version}" resolver="(obr)">
+    	<feature version="${activemq-version}">activemq-camel</feature>
+    	<feature version="${fabric8-version}">mq-fabric</feature>
+    	<bundle>wrap:mvn:org.apache.activemq/activemq-pool/${activemq-version}</bundle>
+	</feature>
+	
+	<feature name="${project.groupId}-cxf-dependencies" version="${project.version}" resolver="(obr)">
+    	<feature version="${camel-version}">camel-cxf</feature>
+    	<feature version="${cxf-version}">cxf-jaxws</feature>
+    	<feature version="${cxf-version}">cxf-http</feature>
+		<feature version="${cxf-version}">cxf-http-jetty</feature>
+		<feature version="${cxf-version}">cxf-bindings-soap</feature>
+		<feature version="${cxf-version}">cxf-ws-security</feature>
+	</feature>
+	
+	<feature name="${project.groupId}-jaas-dependencies" version="${project.version}" resolver="(obr)">
+    	<feature version="${karaf-version}">jasypt-encryption</feature>
+	</feature>
+
+	<!-- $Bundle-SymbolicName=activemq-pool&Bundle-Version=${activemq-version}; -->
+    <feature name="${project.groupId}-camel-activemq-transacted" version="${project.version}" resolver="(obr)">
+    	<feature version="${project.version}">${project.groupId}-activemq-dependencies</feature>
+    	<bundle dependency="true">mvn:${project.groupId}/activemq-service/${project.version}</bundle>
 		<bundle>mvn:${project.groupId}/camel-activemq-transacted/${project.version}</bundle>
+	</feature>
+	
+	<feature name="${project.groupId}-threading-playground" version="${project.version}" resolver="(obr)">
+		<details>The disruptor bundle can only run on a SUN JVM. You need to add the package 'sun.misc' in the etc/jre.properties file, for the container</details>
+		<bundle dependency="true">mvn:com.lmax/disruptor/${disruptor-version}</bundle>
+		<bundle>mvn:${project.groupId}/threading-playground/${project.version}</bundle>
+	</feature>
+	
+	<feature name="${project.groupId}-ws-security-https-cxf" version="${project.version}" resolver="(obr)">
+		<feature version="${project.version}">${project.groupId}-cxf-dependencies</feature>
+		<feature version="${project.version}">${project.groupId}-jaas-dependencies</feature>
+		<bundle>mvn:${project.groupId}/ws-security-jaas/${project.version}</bundle>
+		<bundle>mvn:${project.groupId}/ws-security-https-cxf-wsdl-helloworld/${project.version}</bundle>
+		<bundle>mvn:${project.groupId}/ws-security-https-cxf/${project.version}</bundle>
 	</feature>
 </features>

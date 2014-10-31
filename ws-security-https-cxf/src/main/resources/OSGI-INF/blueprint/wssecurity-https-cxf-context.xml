@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xmlns:cxfcore="http://cxf.apache.org/blueprint/core"
+	xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf" 
+  	xmlns:sec="http://cxf.apache.org/configuration/security"
+  	xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+	xmlns:enc="http://karaf.apache.org/xmlns/jasypt/v1.0.0"
+	xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
+       http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd">
+
+	<cm:property-placeholder persistent-id="com.garethahealy.wssecurity.https.cxf" update-strategy="reload">
+		<cm:default-properties>
+			<cm:property name="logging.isCxfDebug" value="true" />
+			<cm:property name="schema.validation.enabled" value="false" />
+			<cm:property name="cxf.helloworld.port" value="9001" />
+			<cm:property name="cxf.helloworld.transport" value="https" />
+			<cm:property name="jaas.login.contextName" value="webservices" /> <!-- karaf -->
+			<cm:property name="jaas.login.reportFault" value="true" />
+			<cm:property name="http.certs.location" value="/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/certs" />
+			<cm:property name="http.keyManagers.password" value="password" />
+			<cm:property name="http.trustManagers.password" value="password" />
+			<cm:property name="http.clientAuthentication.required" value="false" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+	<!-- 
+	<enc:property-placeholder>
+	    <enc:encryptor class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+	      <property name="config">
+	        <bean class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+	          <property name="algorithm" value="PBEWithMD5AndDES"/>
+	          <property name="passwordEnvName" value="ENCRYPTION_PASSWORD"/>
+	        </bean>
+	      </property>
+	    </enc:encryptor>
+	</enc:property-placeholder>
+ 	-->
+	<cxfcore:bus/>
+ 
+	<httpj:engine-factory bus="cxf">
+		<httpj:engine port="${cxf.helloworld.port}">
+			<httpj:tlsServerParameters>
+				<sec:keyManagers keyPassword="${http.keyManagers.password}">
+					<sec:keyStore type="JKS" password="${http.keyManagers.password}" file="${http.certs.location}/cherry.jks" />
+				</sec:keyManagers>
+				<sec:trustManagers>
+					<sec:keyStore type="JKS" password="${http.trustManagers.password}" file="${http.certs.location}/truststore.jks" />
+				</sec:trustManagers>
+				<sec:cipherSuitesFilter>
+					<!-- these filters ensure that a ciphersuite with export-suitable or null encryption is used,
+					but exclude anonymous Diffie-Hellman key change as this is vulnerable to man-in-the-middle attacks -->
+					<sec:include>.*_WITH_3DES_.*</sec:include>
+					<sec:include>.*_WITH_DES_.*</sec:include>
+					<sec:exclude>.*_WITH_NULL_.*</sec:exclude>
+					<sec:exclude>.*_DH_anon_.*</sec:exclude>
+				</sec:cipherSuitesFilter>
+				<sec:clientAuthentication want="true" required="${http.clientAuthentication.required}" />
+			</httpj:tlsServerParameters>
+		</httpj:engine>
+	</httpj:engine-factory>
+	  
+    <bean id="authenticationInterceptor" class="org.apache.cxf.interceptor.security.JAASLoginInterceptor">
+		<property name="contextName" value="${jaas.login.contextName}"/> 
+		<property name="reportFault" value="${jaas.login.reportFault}"/>
+	</bean>
+	
+	<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<argument>
+			<map>
+				<entry key="action" value="UsernameToken Timestamp" />
+				<entry key="passwordType" value="PasswordDigest" />
+			</map>
+		</argument>
+	</bean>
+    
+    <cxf:cxfEndpoint id="helloWorldCxf" 
+    	address="${cxf.helloworld.transport}://0.0.0.0:${cxf.helloworld.port}/cxf/helloWorldService" 
+    	serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
+    	endpointName="HelloWorldEndpoint"
+	    serviceName="HelloWorldEndpointService">
+    	<cxf:inInterceptors>
+    		<ref component-id="wss4jInInterceptor" />
+			<ref component-id="authenticationInterceptor" />
+		</cxf:inInterceptors>
+		<cxf:properties>
+			<entry key="schema-validation-enabled" value="${schema.validation.enabled}" />
+			<entry key="loggingFeatureEnabled" value="${logging.isCxfDebug}" />
+			<entry key="ws-security.validate.token" value="false"/>
+		</cxf:properties>
+	</cxf:cxfEndpoint>
+	
+	<bean id="helloWorldResponseBuilder" class="com.garethahealy.wssecurity.https.cxf.impl.HelloWorldResponseBuilder"/>
+	
+	<camelContext id="wssecurity-https-cxf-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+ 
+		<route id="helloWorldCxfRoute">
+			<from uri="cxf:bean:helloWorldCxf" />
+			<log message="Received ${body}" />
+			<bean ref="helloWorldResponseBuilder" method="getResponse"/>
+		</route>
+		
+	</camelContext>
+</blueprint>

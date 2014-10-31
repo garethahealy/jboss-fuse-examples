@@ -1,59 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:camel="http://camel.apache.org/schema/blueprint"
-       xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xsi:schemaLocation="
        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
-  
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
 	<cm:property-placeholder persistent-id="com.garethahealy.camel.activemq.transacted" update-strategy="reload">
 		<cm:default-properties>
-            <cm:property name="activemq.url" value="discovery:(fabric:default)?jms.prefetchPolicy.all=100"/>
-            <cm:property name="activemq.username" value="admin"/>
-            <cm:property name="activemq.password" value="admin"/>
-            <cm:property name="activemq.maxConnections" value="16"/>
-            <cm:property name="activemq.maximumActiveSessionPerConnection" value="500"/> 
-            <cm:property name="activemq.concurrentConsumers" value="10"/>      
-        </cm:default-properties>
+			<cm:property name="activemq.concurrentConsumers" value="10" />
+		</cm:default-properties>
 	</cm:property-placeholder>
 
-	<!-- Connection factory for AMQ -->
-	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="${activemq.url}"/>
-        <property name="userName" value="${activemq.username}" />
-		<property name="password" value="${activemq.password}" />
-    </bean>
+	<reference id="amqPooledConnectionFactory" interface="javax.jms.ConnectionFactory" />
 
-	<!-- Pooled Connection factory for AMQ (NOTE: This uses the above connection factory)  -->
-    <bean id="amqPooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
-        <property name="maxConnections" value="${activemq.maxConnections}"/>
-        <property name="maximumActiveSessionPerConnection" value="${activemq.maximumActiveSessionPerConnection}"/>
-        <property name="connectionFactory" ref="amqConnectionFactory"/>
-    </bean>
-    
-    <bean id="jmsTransactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
-    	<property name="connectionFactory" ref="amqPooledConnectionFactory"/>
-	</bean>
-	
-	<bean id="jmsConfigInt" class="org.apache.camel.component.jms.JmsConfiguration">
+	<bean id="jmsTransactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
 		<property name="connectionFactory" ref="amqPooledConnectionFactory" />
 	</bean>
 	
-	<bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemq">
-		<property name="configuration" ref="jmsConfigInt" />
+	<bean id="activeMQConfiguration" class="org.apache.activemq.camel.component.ActiveMQConfiguration">
+		<property name="connectionFactory" ref="amqPooledConnectionFactory" />
 		<property name="concurrentConsumers" value="${activemq.concurrentConsumers}" />
-		<property name="transactionManager" ref="jmsTransactionManager"/> 
-		<property name="transacted" value="true"/>
-		<property name="cacheLevelName" value="CACHE_CONSUMER"/>
+		<property name="transactionManager" ref="jmsTransactionManager" />
+		<property name="transacted" value="true" />
+		<property name="cacheLevelName" value="CACHE_CONSUMER" />
 	</bean>
 
-  <camelContext id="camel-activemq-transacted-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
-
-	<route id="">
-		<from uri="timer:somet"/>
-		<to uri="activemq:somet"/>
-	</route>
-  </camelContext>
-
+	<bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemq">
+		<property name="configuration" ref="activeMQConfiguration" />
+	</bean>
+	
+	<camelContext id="camel-activemq-transacted-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+ 
+		<route id="test">
+			<from uri="direct:somet" />
+			<to uri="activemq:somet" />
+		</route>
+		
+		<!-- mq-create for broker, and then assign to container  -->
+		
+	</camelContext>
 </blueprint>

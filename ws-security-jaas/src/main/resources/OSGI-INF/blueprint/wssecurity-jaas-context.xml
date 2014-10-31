@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+	xmlns:jaas="http://karaf.apache.org/xmlns/jaas/v1.1.0"
+	xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0 http://aries.apache.org/schemas/blueprint-ext/blueprint-ext.xsd">
+
+	<ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]"/>
+	
+<!--
+	<jaas:config name="webservices" rank="-1">
+        <jaas:module className="org.apache.karaf.jaas.modules.osgi.OsgiConfigLoginModule" flags="required">
+            pid = com.garethahealy.webservices
+            detailed.login.exception = true
+        </jaas:module>
+    </jaas:config>-->
+
+	<jaas:config name="webservices" rank="-1">
+	    <jaas:module className="org.apache.karaf.jaas.modules.properties.PropertiesLoginModule" flags="required">
+			users = $[karaf.base]/etc/com.garethahealy.webservices.cfg
+			encryption.enabled = true
+			encryption.name = jasypt
+			encryption.prefix = ENC(
+			encryption.suffix = )
+			
+			detailed.login.exception = true
+			debug = true
+	    </jaas:module>
+	</jaas:config>
+    
+    <!-- encryption.algorithm = MD5
+	       encryption.encoding = base64 -->
+    
+	<camelContext id="wssecurity-jaas-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint"/>
+	
+</blueprint>
