@@ -27,7 +27,7 @@
 			<cm:property name="http.certs.location" value="/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/certs" />
 			<cm:property name="http.keyManagers.password" value="password" />
 			<cm:property name="http.trustManagers.password" value="password" />
-			<cm:property name="http.clientAuthentication.required" value="false" />
+			<cm:property name="http.clientAuthentication.required" value="true" />
 		</cm:default-properties>
 	</cm:property-placeholder>
 	
@@ -44,7 +44,21 @@
 	</enc:property-placeholder>
  	-->
  	
-	<cxfcore:bus/>
+ 	<!-- CXF Bus (applies to all endpoints), important sections (http://cxf.apache.org/docs/ws-security.html):
+    	#inInterceptors
+    	#properties
+     -->
+	<cxfcore:bus>
+        <cxfcore:inInterceptors>
+    		<ref component-id="wss4jInInterceptor" />
+			<ref component-id="authenticationInterceptor" />
+		</cxfcore:inInterceptors>
+		<cxfcore:properties>
+			<entry key="schema-validation-enabled" value="${schema.validation.enabled}" />
+			<entry key="loggingFeatureEnabled" value="${logging.isCxfDebug}" />
+			<entry key="ws-security.validate.token" value="false"/>
+		</cxfcore:properties>
+    </cxfcore:bus> 
  
  	<!-- CXF Jetty config to setup HTTPs -->
 	<httpj:engine-factory bus="cxf">
@@ -84,26 +98,13 @@
 			</map>
 		</argument>
 	</bean>
-    
-    <!-- CXF Endpoint, important sections (http://cxf.apache.org/docs/ws-security.html):
-    	#cxf:inInterceptors
-    	#cxf:properties
-     -->
+	 
+    <!-- CXF Endpoint which is used like a proxy within the route -->
     <cxf:cxfEndpoint id="helloWorldCxf" 
     	address="${cxf.helloworld.transport}://0.0.0.0:${cxf.helloworld.port}/cxf/helloWorldService" 
     	serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
     	endpointName="HelloWorldEndpoint"
-	    serviceName="HelloWorldEndpointService">
-    	<cxf:inInterceptors>
-    		<ref component-id="wss4jInInterceptor" />
-			<ref component-id="authenticationInterceptor" />
-		</cxf:inInterceptors>
-		<cxf:properties>
-			<entry key="schema-validation-enabled" value="${schema.validation.enabled}" />
-			<entry key="loggingFeatureEnabled" value="${logging.isCxfDebug}" />
-			<entry key="ws-security.validate.token" value="false"/>
-		</cxf:properties>
-	</cxf:cxfEndpoint>
+	    serviceName="HelloWorldEndpointService"/>
 	
 	<bean id="helloWorldResponseBuilder" class="com.garethahealy.wssecurity.https.cxf.impl.HelloWorldResponseBuilder"/>
 	

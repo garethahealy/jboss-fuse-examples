@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -101,7 +100,7 @@ public class EndpointConfig {
             filter.getInclude().add(".*_WITH_NULL_.*");
             filter.getExclude().add(".*_DH_anon_.*");
             tlsParams.setCipherSuitesFilter(filter);
-
+            
             httpConduit.setTlsClientParameters(tlsParams);
         } catch (KeyStoreException kse) {
         	LOG.error("Security configuration failed with the following: " + kse.getCause());
