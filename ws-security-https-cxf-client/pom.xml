@@ -23,40 +23,14 @@
 			<artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
-		<!-- Core CXF -->
-		<!-- NOTE: The order of when ASM is loaded is important. Do NOT change! -->
-		<dependency>
-			<!-- IncompatibleClassChangeError: class org.apache.aries.proxy.impl.interfaces.InterfaceProxyGenerator 
-				has interface org.objectweb.asm.ClassVisitor as super class -->
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-all</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-core</artifactId>
+			<artifactId>cxf-bundle</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxws</artifactId> <!-- feature: cxf-jaxws -->
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http</artifactId> <!-- feature: cxf-http -->
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http-jetty</artifactId>  <!-- feature: cxf-http-jetty -->
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-bindings-soap</artifactId> <!-- feature: cxf-bindings-soap -->
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-ws-security</artifactId> <!-- feature: cxf-ws-security -->
-		</dependency>		
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>	
 	</dependencies>
 
 	<build>

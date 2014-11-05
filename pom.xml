@@ -56,7 +56,7 @@
 		<asm-all-version>4.0</asm-all-version>
 		<jasypt-version>1.9.1</jasypt-version>
 		<wss4j-version>1.6</wss4j-version>
-		
+		<slf4j-api-verison>1.7.7</slf4j-api-verison>		
 
 		<!-- Project settings -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -251,6 +251,20 @@
 				<artifactId>cxf-rt-ws-security</artifactId> <!-- feature: cxf-ws-security -->
 				<version>${cxf-version}</version>
 				<scope>provided</scope>
+			</dependency>
+			
+			<!-- CXF Client -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle</artifactId>
+				<version>${cxf-version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j-api-verison}</version>
+				<scope>compile</scope>
 			</dependency>
 
 			<!-- JAAS -->
