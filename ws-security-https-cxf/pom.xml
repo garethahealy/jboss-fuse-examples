@@ -15,7 +15,8 @@
 
 	<properties>
 		<build.osgi.import.before.defaults>
-			org.jasypt.encryption.pbe;version=${jasypt-version}
+			org.jasypt.encryption.pbe;version=${jasypt-version},
+			org.apache.ws.security.components.crypto;version=${wss4j-version}
 		</build.osgi.import.before.defaults>
 		<build.osgi.export.pkg>com.garethahealy.wssecurity.https.cxf.*</build.osgi.export.pkg>
 		<build.osgi.export.service />
@@ -28,7 +29,7 @@
 			<artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<!-- Camel CXF -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>

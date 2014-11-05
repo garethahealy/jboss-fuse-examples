@@ -35,6 +35,7 @@ public class UTPasswordCallback implements CallbackHandler {
 
     public UTPasswordCallback() {
         passwords.put("user.gareth", "healy");
+        passwords.put("clientx509v1", "storepassword");
     }
 
     /**

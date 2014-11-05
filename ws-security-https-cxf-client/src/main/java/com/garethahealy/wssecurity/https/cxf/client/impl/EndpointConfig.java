@@ -37,6 +37,8 @@ import com.garethahealy.helloworld.HelloWorldEndpoint;
 public class EndpointConfig {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EndpointService.class);
+	private static final String PATH_TO_KEYSTORE = "/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore";
+	private static final String CERT_ALIAS = "clientx509v1";
 	
 	public HelloWorldEndpoint getEndpoint(boolean isCxfDebug) {
 		List<Interceptor<? extends Message>> inInterceptors = new ArrayList<Interceptor<? extends Message>>();
@@ -71,14 +73,15 @@ public class EndpointConfig {
         org.apache.cxf.endpoint.Client client = ClientProxy.getClient(c);
         HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
  
+        
         try {
             TLSClientParameters tlsParams = new TLSClientParameters();
             tlsParams.setDisableCNCheck(true);
  
             KeyStore keyStore = KeyStore.getInstance("JKS");
-            String trustpass = "password";
+            String trustpass = "storepassword";
  
-            File truststore = new File("/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/certs/truststore.jks");
+            File truststore = new File(PATH_TO_KEYSTORE + "/client-truststore.jks");
             keyStore.load(new FileInputStream(truststore), trustpass.toCharArray());
            
             TrustManagerFactory trustFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -86,8 +89,8 @@ public class EndpointConfig {
             TrustManager[] tm = trustFactory.getTrustManagers();
             tlsParams.setTrustManagers(tm);
  
-            File truststoreWibble = new File("/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/certs/wibble.jks");
-            keyStore.load(new FileInputStream(truststoreWibble), trustpass.toCharArray());
+            File keyStoreClient = new File(PATH_TO_KEYSTORE + "/client-keystore.jks");
+            keyStore.load(new FileInputStream(keyStoreClient), trustpass.toCharArray());
            
             KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyFactory.init(keyStore, trustpass.toCharArray());
@@ -119,11 +122,12 @@ public class EndpointConfig {
 	
 	private WSS4JOutInterceptor getWSS4JOutInterceptor() {
         Map<String, Object> outProps = new HashMap<String, Object>();
-        outProps.put("action", "UsernameToken Timestamp");
-        outProps.put("passwordType", "PasswordDigest"); //PasswordText
-        outProps.put("user", "user.gareth");
+        outProps.put("action", "UsernameToken Timestamp Signature");
+        outProps.put("signaturePropFile", "ws-signature/Client_Sign.properties");
+        outProps.put("user", CERT_ALIAS);
+        outProps.put("passwordType", "PasswordText");
         outProps.put("passwordCallbackClass", "com.garethahealy.wssecurity.https.cxf.client.impl.UTPasswordCallback");
-
+   
         WSS4JOutInterceptor wss4j = new WSS4JOutInterceptor(outProps);
         return wss4j;
 	}

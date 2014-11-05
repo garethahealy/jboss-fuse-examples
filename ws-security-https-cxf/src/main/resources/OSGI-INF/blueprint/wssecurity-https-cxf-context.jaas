@@ -22,20 +22,36 @@
 			<cm:property name="schema.validation.enabled" value="false" />
 			<cm:property name="cxf.helloworld.port" value="9001" />
 			<cm:property name="cxf.helloworld.transport" value="https" />
-			<cm:property name="http.certs.location" value="/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/keystore" />
-			<cm:property name="http.keyManagers.password" value="storepassword" />
-			<cm:property name="http.trustManagers.password" value="storepassword" />
+			<cm:property name="jaas.login.contextName" value="webservices" /> <!-- karaf -->
+			<cm:property name="jaas.login.reportFault" value="true" />
+			<cm:property name="http.certs.location" value="/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/certs" />
+			<cm:property name="http.keyManagers.password" value="password" />
+			<cm:property name="http.trustManagers.password" value="password" />
 			<cm:property name="http.clientAuthentication.required" value="true" />
 		</cm:default-properties>
 	</cm:property-placeholder>
-		
+	
+	<!-- 
+	<enc:property-placeholder>
+	    <enc:encryptor class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+	      <property name="config">
+	        <bean class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+	          <property name="algorithm" value="PBEWithMD5AndDES"/>
+	          <property name="passwordEnvName" value="ENCRYPTION_PASSWORD"/>
+	        </bean>
+	      </property>
+	    </enc:encryptor>
+	</enc:property-placeholder>
+ 	-->
+ 	
  	<!-- CXF Bus (applies to all endpoints), important sections (http://cxf.apache.org/docs/ws-security.html):
     	#inInterceptors
     	#properties
      -->
 	<cxfcore:bus>
         <cxfcore:inInterceptors>
-        	<ref component-id="wss4jInInterceptor" />
+    		<ref component-id="wss4jInInterceptor" />
+			<ref component-id="authenticationInterceptor" />
 		</cxfcore:inInterceptors>
 		<cxfcore:properties>
 			<entry key="schema-validation-enabled" value="${schema.validation.enabled}" />
@@ -49,12 +65,14 @@
 		<httpj:engine port="${cxf.helloworld.port}">
 			<httpj:tlsServerParameters>
 				<sec:keyManagers keyPassword="${http.keyManagers.password}">
-					<sec:keyStore type="JKS" password="${http.keyManagers.password}" file="${http.certs.location}/server-keystore.jks" />
+					<sec:keyStore type="JKS" password="${http.keyManagers.password}" file="${http.certs.location}/cherry.jks" />
 				</sec:keyManagers>
 				<sec:trustManagers>
-					<sec:keyStore type="JKS" password="${http.trustManagers.password}" file="${http.certs.location}/server-truststore.jks" />
+					<sec:keyStore type="JKS" password="${http.trustManagers.password}" file="${http.certs.location}/truststore.jks" />
 				</sec:trustManagers>
 				<sec:cipherSuitesFilter>
+					<!-- these filters ensure that a ciphersuite with export-suitable or null encryption is used,
+					but exclude anonymous Diffie-Hellman key change as this is vulnerable to man-in-the-middle attacks -->
 					<sec:include>.*_WITH_3DES_.*</sec:include>
 					<sec:include>.*_WITH_DES_.*</sec:include>
 					<sec:exclude>.*_WITH_NULL_.*</sec:exclude>
@@ -64,27 +82,19 @@
 			</httpj:tlsServerParameters>
 		</httpj:engine>
 	</httpj:engine-factory>
-    
-    <!-- Properties used by wss4jInInterceptor for Signature action -->
-    <bean id="wsCryptoProperties" class="com.garethahealy.wssecurity.https.cxf.impl.WSCryptoProperties">
-		<argument>
-			<map>
-				<entry key="org.apache.ws.security.crypto.provider" value="org.apache.ws.security.components.crypto.Merlin" />
-				<entry key="org.apache.ws.security.crypto.merlin.keystore.type" value="jks" />
-				<entry key="org.apache.ws.security.crypto.merlin.keystore.password" value="${http.trustManagers.password}" />
-				<entry key="org.apache.ws.security.crypto.merlin.keystore.alias" value="clientx509v1" />
-				<entry key="org.apache.ws.security.crypto.merlin.keystore.file" value="${http.certs.location}/server-truststore.jks" />
-			</map>
-		</argument>
+	
+	<!-- CXF Interceptor which hooks onto the JAAS reaml where our usernames/passwords live -->
+    <bean id="authenticationInterceptor" class="org.apache.cxf.interceptor.security.JAASLoginInterceptor">
+		<property name="contextName" value="${jaas.login.contextName}"/> 
+		<property name="reportFault" value="${jaas.login.reportFault}"/>
 	</bean>
 	
-	<!-- CXF Interceptor which parses the WS-Security headers -->
+	<!-- CXF Interceptor which parses the WS-Security header, so we can auth username/password against JAAS -->
 	<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		<argument>
 			<map>
-				<entry key="action" value="UsernameToken Timestamp Signature" />
-				<entry key="signaturePropRefId" value="wsCryptoProperties"/>
-				<entry key="wsCryptoProperties" value-ref="wsCryptoProperties"/>
+				<entry key="action" value="UsernameToken Timestamp" />
+				<entry key="passwordType" value="PasswordText" />
 			</map>
 		</argument>
 	</bean>
