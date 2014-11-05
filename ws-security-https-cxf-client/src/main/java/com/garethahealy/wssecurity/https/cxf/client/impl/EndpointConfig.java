@@ -39,6 +39,7 @@ public class EndpointConfig {
 	private static final Logger LOG = LoggerFactory.getLogger(EndpointService.class);
 	private static final String PATH_TO_KEYSTORE = "/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore";
 	private static final String CERT_ALIAS = "clientx509v1";
+	private static final String WS_ADDRESS = "https://0.0.0.0:9001/cxf/helloWorldService";
 	
 	public HelloWorldEndpoint getEndpoint(boolean isCxfDebug) {
 		List<Interceptor<? extends Message>> inInterceptors = new ArrayList<Interceptor<? extends Message>>();
@@ -60,7 +61,7 @@ public class EndpointConfig {
 		factoryBean.getInInterceptors().addAll(inInterceptors);
 		factoryBean.getOutInterceptors().addAll(outInterceptors);
 		factoryBean.setServiceClass(HelloWorldEndpoint.class);
-		factoryBean.setAddress("https://0.0.0.0:9001/cxf/helloWorldService");
+		factoryBean.setAddress(WS_ADDRESS);
 		
 		HelloWorldEndpoint port = (HelloWorldEndpoint) factoryBean.create();
 		

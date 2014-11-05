@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="helloworld" resourceRoot="" soapui-version="5.0.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="HelloWorldBinding" type="wsdl" bindingName="{http://helloworld.garethahealy.com}HelloWorldBinding" soapVersion="1_1" anonymous="optional" definition="file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl"><con:part><con:url>file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl</con:url><con:content><![CDATA[<!--Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.-->
+<wsdl:definitions targetNamespace="http://helloworld.garethahealy.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://helloworld.garethahealy.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <!--Type definitions for input- and output parameters for webservice-->
+  <wsdl:types>
+    <xs:schema targetNamespace="http://helloworld.garethahealy.com">
+      <xs:element name="helloWorldRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element type="xs:string" name="hello"/>
+            >
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="helloWorldResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element type="xs:string" name="goodbye"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <!--Message definitions for input and output-->
+  <wsdl:message name="helloWorldRequest">
+    <wsdl:part name="in" element="tns:helloWorldRequest"/>
+  </wsdl:message>
+  <wsdl:message name="helloWorldResponse">
+    <wsdl:part name="out" element="tns:helloWorldResponse"/>
+  </wsdl:message>
+  <!--Port (interface) definitions-->
+  <wsdl:portType name="HelloWorldEndpoint">
+    <wsdl:operation name="SayHello">
+      <wsdl:input message="tns:helloWorldRequest"/>
+      <wsdl:output message="tns:helloWorldResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--Port bindings to transports and encoding - HTTP, document literal encoding is used-->
+  <wsdl:binding name="HelloWorldBinding" type="tns:HelloWorldEndpoint">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="SayHello">
+      <soap:operation soapAction="http://helloworld.garethahealy.com/SayHello" style="document"/>
+      <wsdl:input>
+        <soap:body parts="in" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="out" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <!--Service definition-->
+  <wsdl:service name="HelloWorldEndpointService">
+    <wsdl:port name="HelloWorldEndpoint" binding="tns:HelloWorldBinding">
+      <soap:address location="http://localhost:9001/cxf/helloWorldService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9001/cxf/helloWorldService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://helloworld.garethahealy.com/SayHello" name="SayHello" bindingOperationName="SayHello" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1" outgoingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live"/><con:setting id="com.eviware.soapui.impl.support.AbstractHttpRequest@follow-redirects">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:9001/cxf/helloWorldService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:hel="http://helloworld.garethahealy.com" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body wsu:Id="id-F7F9762C6188D6DC3A14151977046676" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <hel:helloWorldRequest>
+         <hello>sss</hello>
+      </hel:helloWorldRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:username/><con:password/><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://helloworld.garethahealy.com/SayHello"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:endpointStrategy xsi:type="con:DefaultEndpointStrategy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:endpoint mode="COMPLEMENT" outgoingWss="cxf">http://localhost:9001/cxf/helloWorldService</con:endpoint></con:endpointStrategy><con:properties/><con:wssContainer><con:crypto><con:source>/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore/client-keystore.jks</con:source><con:password>storepassword</con:password><con:type>KEYSTORE</con:type><con:defaultAlias>clientx509v1</con:defaultAlias><con:aliasPassword>storepassword</con:aliasPassword></con:crypto><con:crypto><con:source>/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore/client-truststore.jks</con:source><con:password>storepassword</con:password><con:type>TRUSTSTORE</con:type><con:defaultAlias>serverx509v1</con:defaultAlias><con:aliasPassword>storepassword</con:aliasPassword></con:crypto><con:outgoing mustUnderstand="true" actor=""><con:name>cxf</con:name><con:username>clientx509v1</con:username><con:password>storepassword</con:password><con:entry type="Signature" username="clientx509v1" password="storepassword"><con:configuration><crypto>client-keystore.jks</crypto><keyIdentifierType>0</keyIdentifierType><signatureAlgorithm/><signatureCanonicalization/><useSingleCert>false</useSingleCert><digestAlgorithm/></con:configuration></con:entry><con:entry type="Timestamp"><con:configuration><timeToLive>1000</timeToLive><strictTimestamp>true</strictTimestamp></con:configuration></con:entry><con:entry type="Username" username="clientx509v1" password="storepassword"><con:configuration><addCreated>false</addCreated><addNonce>false</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

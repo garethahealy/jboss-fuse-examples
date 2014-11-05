@@ -72,7 +72,6 @@
 				<entry key="org.apache.ws.security.crypto.provider" value="org.apache.ws.security.components.crypto.Merlin" />
 				<entry key="org.apache.ws.security.crypto.merlin.keystore.type" value="jks" />
 				<entry key="org.apache.ws.security.crypto.merlin.keystore.password" value="${http.trustManagers.password}" />
-				<entry key="org.apache.ws.security.crypto.merlin.keystore.alias" value="clientx509v1" />
 				<entry key="org.apache.ws.security.crypto.merlin.keystore.file" value="${http.certs.location}/server-truststore.jks" />
 			</map>
 		</argument>
@@ -82,7 +81,7 @@
 	<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		<argument>
 			<map>
-				<entry key="action" value="UsernameToken Timestamp Signature" />
+				<entry key="action" value="UsernameToken Timestamp Signature" /> 
 				<entry key="signaturePropRefId" value="wsCryptoProperties"/>
 				<entry key="wsCryptoProperties" value-ref="wsCryptoProperties"/>
 			</map>
