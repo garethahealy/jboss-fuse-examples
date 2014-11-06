@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.garethahealy.helloworld.HelloWorldEndpoint;
+import com.garethahealy.helloworld.HelloWorldResponse;
 import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsEndpointConfiguration;
 import com.garethahealy.wssecurity.https.cxf.client.impl.WsHelloWorldService;
 
