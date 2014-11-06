@@ -42,10 +42,10 @@ public class WsInterceptorFactory {
 	private WSS4JOutInterceptor getWSS4JOutInterceptor(WsEndpointConfiguration<?> config) {
         Map<String, Object> outProps = new HashMap<String, Object>();
         outProps.put("action", "UsernameToken Timestamp Signature");
-        outProps.put("signaturePropFile", "ws-signature/Client_Sign.properties");
+        outProps.put("signaturePropFile", config.getSignaturePropFile());
         outProps.put("user", config.getCertifactionAlias());
         outProps.put("passwordType", "PasswordText");
-        outProps.put("passwordCallbackClass", "com.garethahealy.wssecurity.https.cxf.client.impl.UTPasswordCallback");
+        outProps.put("passwordCallbackClass", config.getPasswordCallbackClass());
    
         WSS4JOutInterceptor wss4j = new WSS4JOutInterceptor(outProps);
         return wss4j;

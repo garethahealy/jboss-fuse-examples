@@ -24,10 +24,7 @@ public class WsHelloWorldService {
 		return endpointFactory.getEndpoint(this.config);
 	}
 	
-	public HelloWorldResponse sayHello() {
-		HelloWorldRequest request = new HelloWorldRequest();
-		request.setHello("bob");
-		
+	public HelloWorldResponse sayHello(HelloWorldRequest request) {
 		HelloWorldEndpoint endpoint = resolveEndpoint();
 		return endpoint.sayHello(request);
 	}

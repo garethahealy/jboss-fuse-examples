@@ -13,6 +13,8 @@ public class WsEndpointConfiguration<T> {
 	private String keystorePassword; 
 	private String truststorePassword;
 	private String keyManagerPassword;
+	private String signaturePropFile;
+	private String passwordCallbackClass;
 
 	public boolean isCxfDebug() {
 		return isCxfDebug;
@@ -92,5 +94,21 @@ public class WsEndpointConfiguration<T> {
 
 	public void setKeyManagerPassword(String keyManagerPassword) {
 		this.keyManagerPassword = keyManagerPassword;
+	}
+
+	public String getSignaturePropFile() {
+		return signaturePropFile;
+	}
+
+	public void setSignaturePropFile(String signaturePropFile) {
+		this.signaturePropFile = signaturePropFile;
+	}
+
+	public String getPasswordCallbackClass() {
+		return passwordCallbackClass;
+	}
+
+	public void setPasswordCallbackClass(String passwordCallbackClass) {
+		this.passwordCallbackClass = passwordCallbackClass;
 	}
 }

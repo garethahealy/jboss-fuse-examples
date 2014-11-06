@@ -1,14 +1,18 @@
 package com.garethahealy.wssecurity.https.cxf.client;
 
 import com.garethahealy.helloworld.HelloWorldEndpoint;
+import com.garethahealy.helloworld.HelloWorldRequest;
 import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsEndpointConfiguration;
 import com.garethahealy.wssecurity.https.cxf.client.impl.WsHelloWorldService;
 
 public class Client {
 
 	public static void main(String [] args) {
+		HelloWorldRequest request = new HelloWorldRequest();
+		request.setHello("bob");
+		
 		WsHelloWorldService service = new WsHelloWorldService(getConfig());
-		service.sayHello();
+		service.sayHello(request);
 	}
 	
 	private static WsEndpointConfiguration<HelloWorldEndpoint> getConfig() {
@@ -24,6 +28,8 @@ public class Client {
 		config.setKeystorePassword("storepassword");
 		config.setTruststorePassword("storepassword");
 		config.setKeyManagerPassword("storepassword");
+		config.setSignaturePropFile("ws-signature/Client_Sign.properties");
+		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.UTPasswordCallback");
 		
 		return config;
 	}
