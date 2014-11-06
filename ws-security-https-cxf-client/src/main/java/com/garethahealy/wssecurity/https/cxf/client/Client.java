@@ -1,12 +1,12 @@
 package com.garethahealy.wssecurity.https.cxf.client;
 
-import com.garethahealy.wssecurity.https.cxf.client.impl.EndpointService;
+import com.garethahealy.wssecurity.https.cxf.client.impl.WsHelloWorldService;
 
 public class Client {
 
 	public static void main(String [] args)
 	{
-		EndpointService service = new EndpointService();
+		WsHelloWorldService service = new WsHelloWorldService();
 		service.sayHello();
 	}
 }
