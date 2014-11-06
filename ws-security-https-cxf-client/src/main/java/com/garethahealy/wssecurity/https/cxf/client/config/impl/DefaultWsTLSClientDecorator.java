@@ -20,13 +20,19 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.wssecurity.https.cxf.client.config.WsTLSClientDecorator;
 
 public class DefaultWsTLSClientDecorator implements WsTLSClientDecorator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultWsTLSClientDecorator.class);
-
-	public void configureSSLOnTheClient(WsEndpointConfiguration<?> config, Client client) {
+	private WsEndpointConfiguration<HelloWorldEndpoint> config;
+	
+	public DefaultWsTLSClientDecorator(WsEndpointConfiguration<HelloWorldEndpoint> config) {
+		this.config = config;
+	}
+	
+	public void configureSSLOnTheClient(Client client) {
 		HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
 
 		try {

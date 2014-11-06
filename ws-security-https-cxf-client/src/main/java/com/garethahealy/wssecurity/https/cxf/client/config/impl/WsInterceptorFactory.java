@@ -11,9 +11,17 @@ import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 
+import com.garethahealy.helloworld.HelloWorldEndpoint;
+
 public class WsInterceptorFactory {
 
-	public List<Interceptor<? extends Message>> getInInterceptors(WsEndpointConfiguration<?> config) {
+	private WsEndpointConfiguration<HelloWorldEndpoint> config;
+	
+	public WsInterceptorFactory(WsEndpointConfiguration<HelloWorldEndpoint> config) {
+		this.config = config;
+	}
+	
+	public List<Interceptor<? extends Message>> getInInterceptors() {
 		List<Interceptor<? extends Message>> inInterceptors = new ArrayList<Interceptor<? extends Message>>();
 		if (config.isCxfDebug()) {
 			LoggingInInterceptor loggingInInterceptor = new LoggingInInterceptor();
@@ -25,7 +33,7 @@ public class WsInterceptorFactory {
 		return inInterceptors;
 	}
 	
-	public List<Interceptor<? extends Message>> getOutInterceptors(WsEndpointConfiguration<?> config) {
+	public List<Interceptor<? extends Message>> getOutInterceptors() {
 		List<Interceptor<? extends Message>> outInterceptors = new ArrayList<Interceptor<? extends Message>>();
 		if (config.isCxfDebug()) {	
 			LoggingOutInterceptor loggingOutInterceptor = new LoggingOutInterceptor();
@@ -34,16 +42,16 @@ public class WsInterceptorFactory {
 			outInterceptors.add(loggingOutInterceptor);
 		}
 		
-		outInterceptors.add(getWSS4JOutInterceptor(config));
+		outInterceptors.add(getWSS4JOutInterceptor());
 		
 		return outInterceptors;
 	}
 	
-	private WSS4JOutInterceptor getWSS4JOutInterceptor(WsEndpointConfiguration<?> config) {
+	private WSS4JOutInterceptor getWSS4JOutInterceptor() {
         Map<String, Object> outProps = new HashMap<String, Object>();
         outProps.put("action", "Timestamp Signature");
 		outProps.put("signaturePropRefId", "wsCryptoProperties");
-		outProps.put("wsCryptoProperties", getWSCryptoProperties(config));
+		outProps.put("wsCryptoProperties", getWSCryptoProperties());
         outProps.put("signatureUser", config.getCertifactionAlias());
         outProps.put("passwordType", "PasswordText");
         outProps.put("passwordCallbackClass", config.getPasswordCallbackClass());
@@ -52,7 +60,7 @@ public class WsInterceptorFactory {
         return wss4j;
 	}
 	
-	private WSCryptoProperties getWSCryptoProperties(WsEndpointConfiguration<?> config) {
+	private WSCryptoProperties getWSCryptoProperties() {
 		Map<String, String> map = new HashMap<String,String>();
 		map.put("org.apache.ws.security.crypto.provider", "org.apache.ws.security.components.crypto.Merlin");
 		map.put("org.apache.ws.security.crypto.merlin.keystore.type", "jks");

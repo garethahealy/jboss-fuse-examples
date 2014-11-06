@@ -17,11 +17,11 @@ public class WsHelloWorldService {
 	}
 	
 	private HelloWorldEndpoint resolveEndpoint() {
-		WsInterceptorFactory wsInterceptorFactory = new WsInterceptorFactory();
-		DefaultWsTLSClientDecorator tlsClientdecorator = new DefaultWsTLSClientDecorator();
-		WsEndpointFactory endpointFactory = new WsEndpointFactory(wsInterceptorFactory, tlsClientdecorator);
+		WsInterceptorFactory wsInterceptorFactory = new WsInterceptorFactory(config);
+		DefaultWsTLSClientDecorator tlsClientdecorator = new DefaultWsTLSClientDecorator(config);
+		WsEndpointFactory endpointFactory = new WsEndpointFactory(wsInterceptorFactory, tlsClientdecorator, config);
 
-		return endpointFactory.getEndpoint(this.config);
+		return endpointFactory.getEndpoint();
 	}
 	
 	public HelloWorldResponse sayHello(HelloWorldRequest request) {
