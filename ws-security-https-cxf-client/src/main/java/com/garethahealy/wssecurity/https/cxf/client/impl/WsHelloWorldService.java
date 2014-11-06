@@ -2,6 +2,7 @@ package com.garethahealy.wssecurity.https.cxf.client.impl;
 
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
+import com.garethahealy.helloworld.HelloWorldResponse;
 import com.garethahealy.wssecurity.https.cxf.client.config.impl.DefaultWsTLSClientDecorator;
 import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsEndpointConfiguration;
 import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsEndpointFactory;
@@ -9,32 +10,25 @@ import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsInterceptorFac
 
 public class WsHelloWorldService {
 
-	public void sayHello() {
-		HelloWorldRequest request = new HelloWorldRequest();
-		request.setHello("bob");
-		
+	private WsEndpointConfiguration<HelloWorldEndpoint> config;
+	
+	public WsHelloWorldService(WsEndpointConfiguration<HelloWorldEndpoint> config) {
+		this.config = config;
+	}
+	
+	private HelloWorldEndpoint resolveEndpoint() {
 		WsInterceptorFactory wsInterceptorFactory = new WsInterceptorFactory();
 		DefaultWsTLSClientDecorator tlsClientdecorator = new DefaultWsTLSClientDecorator();
 		WsEndpointFactory endpointFactory = new WsEndpointFactory(wsInterceptorFactory, tlsClientdecorator);
 
-		HelloWorldEndpoint endpoint = endpointFactory.getEndpoint(getConfig());
-		endpoint.sayHello(request);
+		return endpointFactory.getEndpoint(this.config);
 	}
 	
-	private WsEndpointConfiguration<HelloWorldEndpoint> getConfig() {
-		WsEndpointConfiguration<HelloWorldEndpoint> config = new WsEndpointConfiguration<HelloWorldEndpoint>();
-		config.setCxfDebug(true);
-		config.setCertifactionAlias("clientx509v1");
-		config.setWsAddress("https://0.0.0.0:9001/cxf/helloWorldService");
-		config.setServiceClass(HelloWorldEndpoint.class);
-		config.setPathToKeystore("/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore");
-		config.setPathToTruststore("/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore");
-		config.setKeystoreFilename("client-keystore.jks");
-		config.setTruststoreFilename("client-truststore.jks");
-		config.setKeystorePassword("storepassword");
-		config.setTruststorePassword("storepassword");
-		config.setKeyManagerPassword("storepassword");
+	public HelloWorldResponse sayHello() {
+		HelloWorldRequest request = new HelloWorldRequest();
+		request.setHello("bob");
 		
-		return config;
+		HelloWorldEndpoint endpoint = resolveEndpoint();
+		return endpoint.sayHello(request);
 	}
 }

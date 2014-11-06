@@ -1,17 +1,15 @@
 package com.garethahealy.wssecurity.https.cxf.client;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsEndpointConfiguration;
 import com.garethahealy.wssecurity.https.cxf.client.impl.WsHelloWorldService;
 
-public class Client {
+public class WsHelloWorldServiceTest {
 
-	public static void main(String [] args) {
-		WsHelloWorldService service = new WsHelloWorldService(getConfig());
-		service.sayHello();
-	}
-	
-	private static WsEndpointConfiguration<HelloWorldEndpoint> getConfig() {
+	private static WsEndpointConfiguration<HelloWorldEndpoint> getDefaultConfig() {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = new WsEndpointConfiguration<HelloWorldEndpoint>();
 		config.setCxfDebug(true);
 		config.setCertifactionAlias("clientx509v1");
@@ -26,5 +24,13 @@ public class Client {
 		config.setKeyManagerPassword("storepassword");
 		
 		return config;
+	}
+	
+	@Test
+	public void can_get_response() {
+		WsHelloWorldService service = new WsHelloWorldService(getDefaultConfig());
+		HelloWorldResponse response = service.sayHello();
+		
+		Assert.assertNotNull(response);
 	}
 }
