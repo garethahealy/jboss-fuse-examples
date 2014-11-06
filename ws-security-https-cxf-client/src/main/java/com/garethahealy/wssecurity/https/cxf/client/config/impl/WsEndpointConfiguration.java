@@ -13,8 +13,9 @@ public class WsEndpointConfiguration<T> {
 	private String keystorePassword; 
 	private String truststorePassword;
 	private String keyManagerPassword;
-	private String signaturePropFile;
 	private String passwordCallbackClass;
+	private String signatureKeystoreFilename;
+	private String signatureKeystorePassword;
 
 	public boolean isCxfDebug() {
 		return isCxfDebug;
@@ -96,19 +97,44 @@ public class WsEndpointConfiguration<T> {
 		this.keyManagerPassword = keyManagerPassword;
 	}
 
-	public String getSignaturePropFile() {
-		return signaturePropFile;
-	}
-
-	public void setSignaturePropFile(String signaturePropFile) {
-		this.signaturePropFile = signaturePropFile;
-	}
-
 	public String getPasswordCallbackClass() {
 		return passwordCallbackClass;
 	}
 
 	public void setPasswordCallbackClass(String passwordCallbackClass) {
 		this.passwordCallbackClass = passwordCallbackClass;
+	}
+
+	public String getSignatureKeystoreFilename() {
+		return signatureKeystoreFilename;
+	}
+
+	public void setSignatureKeystoreFilename(String signatureKeystoreFilename) {
+		this.signatureKeystoreFilename = signatureKeystoreFilename;
+	}
+
+	public String getSignatureKeystorePassword() {
+		return signatureKeystorePassword;
+	}
+
+	public void setSignatureKeystorePassword(String signatureKeystorePassword) {
+		this.signatureKeystorePassword = signatureKeystorePassword;
+	}
+
+	@Override
+	public String toString() {
+		return "WsEndpointConfiguration [isCxfDebug=" + isCxfDebug
+				+ ", certifactionAlias=" + certifactionAlias + ", wsAddress="
+				+ wsAddress + ", serviceClass=" + serviceClass
+				+ ", pathToKeystore=" + pathToKeystore + ", pathToTruststore="
+				+ pathToTruststore + ", keystoreFilename=" + keystoreFilename
+				+ ", truststoreFilename=" + truststoreFilename
+				+ ", keystorePassword=" + keystorePassword
+				+ ", truststorePassword=" + truststorePassword
+				+ ", keyManagerPassword=" + keyManagerPassword
+				+ ", passwordCallbackClass=" + passwordCallbackClass
+				+ ", signatureKeystoreFilename=" + signatureKeystoreFilename
+				+ ", signatureKeystorePassword=" + signatureKeystorePassword
+				+ "]";
 	}
 }

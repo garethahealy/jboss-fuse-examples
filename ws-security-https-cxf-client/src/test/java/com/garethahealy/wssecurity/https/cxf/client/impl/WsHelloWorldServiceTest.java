@@ -27,8 +27,9 @@ public class WsHelloWorldServiceTest {
 		config.setKeystorePassword("storepassword");
 		config.setTruststorePassword("storepassword");
 		config.setKeyManagerPassword("storepassword");
-		config.setSignaturePropFile("ws-signature/Client_Sign.properties");
 		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.UTPasswordCallback");
+		config.setSignatureKeystoreFilename("keystore/client-keystore.jks");
+		config.setSignatureKeystorePassword("storepassword");
 		
 		return config;
 	}
@@ -54,7 +55,8 @@ public class WsHelloWorldServiceTest {
 		
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setCertifactionAlias("garethskey");
-		config.setSignaturePropFile("ws-signature/another-Client_Sign.properties");
+		config.setSignatureKeystoreFilename("keystore/another-client-keystore.jks");
+		config.setSignatureKeystorePassword("password");
 		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.FakeUTPasswordCallback");
 		
 		WsHelloWorldService service = new WsHelloWorldService(config);
@@ -149,7 +151,8 @@ public class WsHelloWorldServiceTest {
 		request.setHello("bob");
 		
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
-		config.setSignaturePropFile("");
+		config.setSignatureKeystoreFilename("");
+		config.setSignatureKeystorePassword("");
 		
 		WsHelloWorldService service = new WsHelloWorldService(config);
 		service.sayHello(request);
@@ -162,7 +165,8 @@ public class WsHelloWorldServiceTest {
 		
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setCertifactionAlias("mykey");
-		config.setSignaturePropFile("ws-signature/wrong-Client_Sign.properties");
+		config.setSignatureKeystoreFilename("keystore/wrong-keystore.jks");
+		config.setSignatureKeystorePassword("password");
 		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.FakeUTPasswordCallback");
 		
 		WsHelloWorldService service = new WsHelloWorldService(config);

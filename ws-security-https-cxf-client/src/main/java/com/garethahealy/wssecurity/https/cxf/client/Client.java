@@ -28,9 +28,10 @@ public class Client {
 		config.setKeystorePassword("storepassword");
 		config.setTruststorePassword("storepassword");
 		config.setKeyManagerPassword("storepassword");
-		config.setSignaturePropFile("ws-signature/Client_Sign.properties");
 		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.UTPasswordCallback");
-		
+		config.setSignatureKeystoreFilename("keystore/client-keystore.jks");
+		config.setSignatureKeystorePassword("storepassword");
+
 		return config;
 	}
 }

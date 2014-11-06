@@ -42,12 +42,23 @@ public class WsInterceptorFactory {
 	private WSS4JOutInterceptor getWSS4JOutInterceptor(WsEndpointConfiguration<?> config) {
         Map<String, Object> outProps = new HashMap<String, Object>();
         outProps.put("action", "Timestamp Signature");
-        outProps.put("signaturePropFile", config.getSignaturePropFile());
+		outProps.put("signaturePropRefId", "wsCryptoProperties");
+		outProps.put("wsCryptoProperties", getWSCryptoProperties(config));
         outProps.put("signatureUser", config.getCertifactionAlias());
         outProps.put("passwordType", "PasswordText");
         outProps.put("passwordCallbackClass", config.getPasswordCallbackClass());
    
         WSS4JOutInterceptor wss4j = new WSS4JOutInterceptor(outProps);
         return wss4j;
+	}
+	
+	private WSCryptoProperties getWSCryptoProperties(WsEndpointConfiguration<?> config) {
+		Map<String, String> map = new HashMap<String,String>();
+		map.put("org.apache.ws.security.crypto.provider", "org.apache.ws.security.components.crypto.Merlin");
+		map.put("org.apache.ws.security.crypto.merlin.keystore.type", "jks");
+		map.put("org.apache.ws.security.crypto.merlin.keystore.password", config.getSignatureKeystorePassword());
+		map.put("org.apache.ws.security.crypto.merlin.keystore.file", config.getSignatureKeystoreFilename());
+		
+		return new WSCryptoProperties(map);
 	}
 }
