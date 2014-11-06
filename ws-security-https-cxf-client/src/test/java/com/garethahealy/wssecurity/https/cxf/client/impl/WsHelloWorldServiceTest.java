@@ -120,13 +120,15 @@ public class WsHelloWorldServiceTest {
 		service.sayHello(request);
 	}
 	
-	//@Test//(expected=WebServiceException.class)
+	@Test(expected=SOAPFaultException.class)
 	public void throws_exception_due_wrong_signature_cert() {
 		HelloWorldRequest request = new HelloWorldRequest();
 		request.setHello("bob");
 		
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
+		config.setCertifactionAlias("mykey");
 		config.setSignaturePropFile("ws-signature/wrong-Client_Sign.properties");
+		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.FakeUTPasswordCallback");
 		
 		WsHelloWorldService service = new WsHelloWorldService(config);
 		service.sayHello(request);
