@@ -41,9 +41,9 @@ public class WsInterceptorFactory {
 	
 	private WSS4JOutInterceptor getWSS4JOutInterceptor(WsEndpointConfiguration<?> config) {
         Map<String, Object> outProps = new HashMap<String, Object>();
-        outProps.put("action", "UsernameToken Timestamp Signature");
+        outProps.put("action", "Timestamp Signature");
         outProps.put("signaturePropFile", config.getSignaturePropFile());
-        outProps.put("user", config.getCertifactionAlias());
+        outProps.put("signatureUser", config.getCertifactionAlias());
         outProps.put("passwordType", "PasswordText");
         outProps.put("passwordCallbackClass", config.getPasswordCallbackClass());
    

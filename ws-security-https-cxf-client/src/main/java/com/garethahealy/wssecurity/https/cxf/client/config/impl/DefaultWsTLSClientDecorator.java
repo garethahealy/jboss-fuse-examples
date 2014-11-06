@@ -28,7 +28,7 @@ public class DefaultWsTLSClientDecorator implements WsTLSClientDecorator {
 
 	public void configureSSLOnTheClient(WsEndpointConfiguration<?> config, Client client) {
 		HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
-		
+
 		try {
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			

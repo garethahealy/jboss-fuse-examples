@@ -66,6 +66,22 @@ public class WsHelloWorldServiceTest {
 		Assert.assertTrue(response.getGoodbye().startsWith(request.getHello()));
 	}
 	
+	@Test(expected=WebServiceException.class)
+	public void call_fails_over_http() {
+		HelloWorldRequest request = new HelloWorldRequest();
+		request.setHello("bob");
+		
+		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
+		config.setWsAddress("http://0.0.0.0:9001/cxf/helloWorldService");
+
+		WsHelloWorldService service = new WsHelloWorldService(config);
+		HelloWorldResponse response = service.sayHello(request);
+		
+		Assert.assertNotNull(response);
+		Assert.assertNotNull(response.getGoodbye());
+		Assert.assertTrue(response.getGoodbye().length() > 0);
+		Assert.assertTrue(response.getGoodbye().startsWith(request.getHello()));
+	}	
 	
 	@Test(expected=SOAPFaultException.class)
 	public void throws_exception_due_to_missing_client_alias() {

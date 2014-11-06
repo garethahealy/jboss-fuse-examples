@@ -26,7 +26,7 @@ public class WsEndpointFactory {
 		T port = (T)factoryBean.create();
 
 		tlsClientdecorator.configureSSLOnTheClient(config, ClientProxy.getClient(port));
-		
+
 		return port;
 	}
 }
