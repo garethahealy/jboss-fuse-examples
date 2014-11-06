@@ -3,12 +3,14 @@ package com.garethahealy.wssecurity.https.cxf.client.config.impl;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
+import com.garethahealy.wssecurity.https.cxf.client.config.WsTLSClientDecorator;
+
 public class WsEndpointFactory {
 
 	private WsInterceptorFactory wsInterceptorFactory;
-	private DefaultWsTLSClientDecorator tlsClientdecorator;
+	private WsTLSClientDecorator tlsClientdecorator;
 	
-	public WsEndpointFactory(WsInterceptorFactory wsInterceptorFactory, DefaultWsTLSClientDecorator tlsClientdecorator) {
+	public WsEndpointFactory(WsInterceptorFactory wsInterceptorFactory, WsTLSClientDecorator tlsClientdecorator) {
 		this.wsInterceptorFactory = wsInterceptorFactory;
 		this.tlsClientdecorator = tlsClientdecorator;
 	}

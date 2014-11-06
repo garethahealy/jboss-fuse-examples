@@ -1,6 +1,5 @@
 package com.garethahealy.wssecurity.https.cxf.client.config.impl;
 
-
 public class WsEndpointConfiguration<T> {
 
 	private boolean isCxfDebug;

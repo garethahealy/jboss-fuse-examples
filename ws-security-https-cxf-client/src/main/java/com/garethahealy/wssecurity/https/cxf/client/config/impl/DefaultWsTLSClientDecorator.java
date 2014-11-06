@@ -20,7 +20,9 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultWsTLSClientDecorator {
+import com.garethahealy.wssecurity.https.cxf.client.config.WsTLSClientDecorator;
+
+public class DefaultWsTLSClientDecorator implements WsTLSClientDecorator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultWsTLSClientDecorator.class);
 
