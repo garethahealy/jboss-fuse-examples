@@ -34,11 +34,30 @@ public class WsHelloWorldServiceTest {
 	}
 	
 	@Test
-	public void can_get_response() {
+	public void can_get_response_default_signature_cert() {
 		HelloWorldRequest request = new HelloWorldRequest();
 		request.setHello("bob");
 		
 		WsHelloWorldService service = new WsHelloWorldService(getDefaultConfig());
+		HelloWorldResponse response = service.sayHello(request);
+		
+		Assert.assertNotNull(response);
+		Assert.assertNotNull(response.getGoodbye());
+		Assert.assertTrue(response.getGoodbye().length() > 0);
+		Assert.assertTrue(response.getGoodbye().startsWith(request.getHello()));
+	}
+	
+	@Test
+	public void can_get_response_another_signature_cert() {
+		HelloWorldRequest request = new HelloWorldRequest();
+		request.setHello("bob");
+		
+		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
+		config.setCertifactionAlias("garethskey");
+		config.setSignaturePropFile("ws-signature/another-Client_Sign.properties");
+		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.FakeUTPasswordCallback");
+		
+		WsHelloWorldService service = new WsHelloWorldService(config);
 		HelloWorldResponse response = service.sayHello(request);
 		
 		Assert.assertNotNull(response);

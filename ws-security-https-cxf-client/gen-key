@@ -1,0 +1,3 @@
+keytool -genkey -keystore keystoretest.jks -alias garethskey -storepass password -keypass password -dname "CN=Gareth Healy, OU=Development, O=Gareth Healy Inc, L=Anytown, S=South Yorkshire, C=UK"
+keytool -export -rfc -keystore keystoretest.jks -storepass password -alias garethskey -file MyClient.cer
+keytool -import -trustcacerts -alias garethskey -file MyClient.cer -keystore server-truststore.jks

@@ -35,6 +35,7 @@ public class FakeUTPasswordCallback implements CallbackHandler {
 
     public FakeUTPasswordCallback() {
         passwords.put("mykey", "password");
+        passwords.put("garethskey", "password");
     }
 
     /**
