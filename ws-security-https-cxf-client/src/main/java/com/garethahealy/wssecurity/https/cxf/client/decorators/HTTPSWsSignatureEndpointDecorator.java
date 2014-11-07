@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.https.cxf.client.config.impl;
+package com.garethahealy.wssecurity.https.cxf.client.decorators;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,23 +16,37 @@ import javax.net.ssl.TrustManagerFactory;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.configuration.security.FiltersType;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.garethahealy.helloworld.HelloWorldEndpoint;
-import com.garethahealy.wssecurity.https.cxf.client.config.WsTLSClientDecorator;
+import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
 
-public class DefaultWsTLSClientDecorator implements WsTLSClientDecorator {
+public class HTTPSWsSignatureEndpointDecorator extends WsSignatureEndpointDecorator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultWsTLSClientDecorator.class);
-	private WsEndpointConfiguration<HelloWorldEndpoint> config;
+	private static final Logger LOG = LoggerFactory.getLogger(HTTPSWsSignatureEndpointDecorator.class);
 	
-	public DefaultWsTLSClientDecorator(WsEndpointConfiguration<HelloWorldEndpoint> config) {
-		this.config = config;
+	public HTTPSWsSignatureEndpointDecorator(WsEndpointConfiguration<?> config) {
+		super(config);
 	}
 	
-	public void configureSSLOnTheClient(Client client) {
+	@Override
+    public synchronized Object create() {
+		Object port = super.create();
+		
+		Client client = ClientProxy.getClient(port);
+		configureSSLOnTheClient(client);
+		
+		return port;
+	}
+	
+    @SuppressWarnings("unchecked")
+	public <T> T createTyped() {
+		return (T)create();
+	}
+	
+	private void configureSSLOnTheClient(Client client) {
 		HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
 
 		try {

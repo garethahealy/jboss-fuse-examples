@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.garethahealy.wssecurity.https.cxf.client.impl;
+package com.garethahealy.wssecurity.https.cxf.client.config;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -29,13 +29,13 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 /**
  * Callback handler to handle passwords
  */
-public class UTPasswordCallback implements CallbackHandler {
+public class FakeUTPasswordCallback implements CallbackHandler {
 
     private Map<String, String> passwords = new HashMap<String, String>();
 
-    public UTPasswordCallback() {
-        passwords.put("user.gareth", "healy");
-        passwords.put("clientx509v1", "storepassword");
+    public FakeUTPasswordCallback() {
+        passwords.put("mykey", "password");
+        passwords.put("garethskey", "password");
     }
 
     /**

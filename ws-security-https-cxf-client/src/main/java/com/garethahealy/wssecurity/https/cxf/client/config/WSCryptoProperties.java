@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.https.cxf.client.config.impl;
+package com.garethahealy.wssecurity.https.cxf.client.config;
 
 import java.util.Map;
 import java.util.Properties;

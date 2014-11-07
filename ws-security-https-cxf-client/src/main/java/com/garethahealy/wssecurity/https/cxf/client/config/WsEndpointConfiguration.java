@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.https.cxf.client.config.impl;
+package com.garethahealy.wssecurity.https.cxf.client.config;
 
 public class WsEndpointConfiguration<T> {
 

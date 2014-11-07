@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.https.cxf.client.impl;
+package com.garethahealy.wssecurity.https.cxf.client.services;
 
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
@@ -9,8 +9,8 @@ import org.junit.Test;
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
 import com.garethahealy.helloworld.HelloWorldResponse;
-import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsEndpointConfiguration;
-import com.garethahealy.wssecurity.https.cxf.client.impl.WsHelloWorldService;
+import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
+import com.garethahealy.wssecurity.https.cxf.client.services.WsHelloWorldService;
 
 public class WsHelloWorldServiceTest {
 
@@ -27,7 +27,7 @@ public class WsHelloWorldServiceTest {
 		config.setKeystorePassword("storepassword");
 		config.setTruststorePassword("storepassword");
 		config.setKeyManagerPassword("storepassword");
-		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.UTPasswordCallback");
+		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.config.UTPasswordCallback");
 		config.setSignatureKeystoreFilename("keystore/client-keystore.jks");
 		config.setSignatureKeystorePassword("storepassword");
 		
@@ -57,7 +57,7 @@ public class WsHelloWorldServiceTest {
 		config.setCertifactionAlias("garethskey");
 		config.setSignatureKeystoreFilename("keystore/another-client-keystore.jks");
 		config.setSignatureKeystorePassword("password");
-		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.FakeUTPasswordCallback");
+		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.config.FakeUTPasswordCallback");
 		
 		WsHelloWorldService service = new WsHelloWorldService(config);
 		HelloWorldResponse response = service.sayHello(request);
@@ -167,7 +167,7 @@ public class WsHelloWorldServiceTest {
 		config.setCertifactionAlias("mykey");
 		config.setSignatureKeystoreFilename("keystore/wrong-keystore.jks");
 		config.setSignatureKeystorePassword("password");
-		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.FakeUTPasswordCallback");
+		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.config.FakeUTPasswordCallback");
 		
 		WsHelloWorldService service = new WsHelloWorldService(config);
 		service.sayHello(request);

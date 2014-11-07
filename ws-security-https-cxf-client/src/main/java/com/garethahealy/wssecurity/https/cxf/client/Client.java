@@ -2,8 +2,8 @@ package com.garethahealy.wssecurity.https.cxf.client;
 
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
-import com.garethahealy.wssecurity.https.cxf.client.config.impl.WsEndpointConfiguration;
-import com.garethahealy.wssecurity.https.cxf.client.impl.WsHelloWorldService;
+import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
+import com.garethahealy.wssecurity.https.cxf.client.services.WsHelloWorldService;
 
 public class Client {
 
@@ -28,7 +28,7 @@ public class Client {
 		config.setKeystorePassword("storepassword");
 		config.setTruststorePassword("storepassword");
 		config.setKeyManagerPassword("storepassword");
-		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.impl.UTPasswordCallback");
+		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.config.UTPasswordCallback");
 		config.setSignatureKeystoreFilename("keystore/client-keystore.jks");
 		config.setSignatureKeystorePassword("storepassword");
 
