@@ -345,7 +345,7 @@
 			<uniqueVersion>false</uniqueVersion>
 			<id>snapshots</id>
 			<name>libs-snapshot</name>
-			<url>file:/home/gahealy/.m2/repository</url>
+			<url>file:/Users/garethah/.m2/repository</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
