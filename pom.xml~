@@ -25,7 +25,6 @@
 		<module>ws-security-https-cxf-wsdl-helloworld</module>
 		<module>ws-security-https-cxf-client</module>
 		<module>ws-security-https-cxf</module>
-		<module>database-playground</module>
 	</modules>
 
 	<properties>

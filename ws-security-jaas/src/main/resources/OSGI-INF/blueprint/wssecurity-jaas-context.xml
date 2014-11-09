@@ -23,17 +23,16 @@
 	    <jaas:module className="org.apache.karaf.jaas.modules.properties.PropertiesLoginModule" flags="required">
 			users = $[karaf.base]/etc/com.garethahealy.webservices.cfg
 			encryption.enabled = true
-			encryption.name = jasypt
+			encryption.name = basic
 			encryption.prefix = ENC(
 			encryption.suffix = )
-			
+			encryption.algorithm = SHA-1
+	     	encryption.encoding = base64
+	     	
 			detailed.login.exception = true
 			debug = true
 	    </jaas:module>
 	</jaas:config>
-    
-    <!-- encryption.algorithm = MD5
-	       encryption.encoding = base64 -->
     
 	<camelContext id="wssecurity-jaas-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint"/>
 	

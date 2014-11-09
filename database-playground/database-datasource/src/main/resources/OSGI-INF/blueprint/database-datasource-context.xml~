@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+                        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/spring/camel-blueprint.xsd">
+
+	<cm:property-placeholder persistent-id="com.garethahealy.databaseplayground.database.datasource" update-strategy="reload" />
+
+	<reference id="transactionManager" interface="javax.transaction.TransactionManager" />
+
+	<service ref="mysqlBasicManagedDataSource" interface="javax.sql.DataSource">
+		<service-properties>
+			<entry key="osgi.jndi.service.name" value="jdbc/mysqlBasicManagedDataSource" />
+		</service-properties>
+	</service>
+	
+	<bean id="mysqlXADataSource" class="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource">
+		<property name="url" value="${database.url}" />
+		<property name="user" value="${database.user}" />
+		<property name="password" value="${database.password}" />
+	</bean>
+	
+	<bean id="mysqlBasicManagedDataSource" class="org.apache.commons.dbcp.managed.BasicManagedDataSource" destroy-method="close">
+	    <property name="xaDataSourceInstance" ref="esbMysqlXADataSource" />
+	    <property name="transactionManager" ref="transactionManager" />
+	    <property name="initialSize" value="${database.initialSize}"/> 
+	    <property name="maxActive" value="${database.maxActive}"/>
+	    <property name="minIdle" value="${database.minIdle}"/>
+	    <property name="maxIdle" value="${database.maxIdle}"/>
+     	<property name="testOnBorrow" value="${database.testOnBorrow}"/>
+     	<property name="validationQuery" value="${database.validationQuery}"/>
+	</bean>
+	
+	<camelContext id="database-datasource" trace="false" xmlns="http://camel.apache.org/schema/blueprint" />
+</blueprint>

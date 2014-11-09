@@ -22,6 +22,19 @@
 		<feature version="${cxf-version}">cxf-ws-security</feature>
 	</feature>
 	
+	<feature name="${project.groupId}-openjpa-dependencies" version="${project.version}" resolver="(obr)">
+    	<feature version="${karaf-version}">transaction</feature>
+    	<feature version="${karaf-version}">jndi</feature>
+    	<feature version="${karaf-version}">jpa</feature>
+	</feature>
+	
+	<feature name="${project.groupId}-hibernate-dependencies" version="${project.version}" resolver="(obr)">
+    	<feature version="${karaf-version}">transaction</feature>
+    	<feature version="${karaf-version}">jndi</feature>
+    	<feature version="${karaf-version}">jpa</feature>
+    	<feature version="${karaf-version}">hibernate-jpa</feature>
+	</feature>
+	
 	<feature name="${project.groupId}-jaas-dependencies" version="${project.version}" resolver="(obr)">
     	<feature version="${karaf-version}">jasypt-encryption</feature>
 	</feature>

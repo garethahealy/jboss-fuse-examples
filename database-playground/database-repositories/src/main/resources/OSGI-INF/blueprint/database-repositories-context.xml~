@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.1.0" xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+                        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/spring/camel-blueprint.xsd
+                        http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd
+                        http://aries.apache.org/xmlns/jpa/v1.1.0 http://aries.apache.org/schemas/jpa/jpa_110.xsd">
+
+	<reference id="logger" interface="com.boohoo.esb.common.logging.ILogger" />
+
+  	<service interface="com.boohoo.esb.database.common.repositories.ITimerPollsRepository" ref="timerPollsRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IStockUpdateHistoryRepository" ref="stockUpdateHistoryRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IAllocatedOrdersRepository" ref="allocatedOrdersRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IConsumersCountRepository" ref="consumersCountRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IFeedFtpCredentialsRepository" ref="feedFtpCredentialsRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IFeedsRepository" ref="feedsRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IFrontendConnectionsRepository" ref="frontendConnectionsRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IFrontendConnectionsAdditionalRepository" ref="frontendConnectionsAdditionalRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IProductCacheRepository" ref="productCacheRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.ITimerPollsAdditionalRepository" ref="timerPollsAdditionalRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IVendaFtpCredentialsRepository" ref="vendaFtpCredentialsRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IVendaSoapCredentialsRepository" ref="vendaSoapCredentialsRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IWmsBinRepository" ref="wmsBinRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IAllocatedOrderLinesRepository" ref="allocatedOrderLinesRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.INominatedDeliveryRepository" ref="nominatedDeliveryRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.IVatByCountryRepository" ref="vatByCountryDaoImpl" />
+	<service interface="com.boohoo.esb.database.common.repositories.ISageMasterStockRepository" ref="sageMasterStockRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.ICreatedOrdersRepository" ref="createdOrdersRepository" />
+	<service interface="com.boohoo.esb.database.common.repositories.ICreatedOrderLinesRepository" ref="createdOrderLinesRepository" />
+	
+	<service ref="sageOrderStatusRepository" interface="com.boohoo.esb.database.common.repositories.ISageOrderStatusRepository"/>
+	<service ref="processedOrderLineRepository" interface="com.boohoo.esb.database.common.repositories.IProcessedOrderLineRepository"/>
+	<service ref="sageProductRepository" interface="com.boohoo.esb.database.common.repositories.ISageProductRepository"/>
+	<service ref="inventoryLevelRepository" interface="com.boohoo.esb.database.common.repositories.IInventoryLevelRepository"/>
+
+	<bean id="timerPollsRepository" class="com.boohoo.esb.database.osgiservices.repositories.TimerPollsRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="sageMasterStockRepository" class="com.boohoo.esb.database.osgiservices.repositories.SageMasterStockRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="stockUpdateHistoryRepository" class="com.boohoo.esb.database.osgiservices.repositories.StockUpdateHistoryRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	
+	<bean id="allocatedOrdersRepository" class="com.boohoo.esb.database.osgiservices.repositories.AllocatedOrdersRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="consumersCountRepository" class="com.boohoo.esb.database.osgiservices.repositories.ConsumersCountRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+	
+	<bean id="feedFtpCredentialsRepository" class="com.boohoo.esb.database.osgiservices.repositories.FeedFtpCredentialsRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="feedsRepository" class="com.boohoo.esb.database.osgiservices.repositories.FeedsRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="frontendConnectionsRepository" class="com.boohoo.esb.database.osgiservices.repositories.FrontendConnectionsRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="frontendConnectionsAdditionalRepository" class="com.boohoo.esb.database.osgiservices.repositories.FrontendConnectionsAdditionalRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="productCacheRepository" class="com.boohoo.esb.database.osgiservices.repositories.ProductCacheRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+	
+	<bean id="timerPollsAdditionalRepository" class="com.boohoo.esb.database.osgiservices.repositories.TimerPollsAdditionalRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="vendaFtpCredentialsRepository" class="com.boohoo.esb.database.osgiservices.repositories.VendaFtpCredentialsRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="vendaSoapCredentialsRepository" class="com.boohoo.esb.database.osgiservices.repositories.VendaSoapCredentialsRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="wmsBinRepository" class="com.boohoo.esb.database.osgiservices.repositories.WmsBinRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="allocatedOrderLinesRepository" class="com.boohoo.esb.database.osgiservices.repositories.AllocatedOrderLinesRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="nominatedDeliveryRepository" class="com.boohoo.esb.database.osgiservices.repositories.NominatedDeliveryRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<bean id="vatByCountryDaoImpl" class="com.boohoo.esb.database.osgiservices.repositories.VatByCountryRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+	
+	<bean id="createdOrderLinesRepository" class="com.boohoo.esb.database.osgiservices.repositories.CreatedOrderLinesRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	
+	<bean id="createdOrdersRepository" class="com.boohoo.esb.database.osgiservices.repositories.CreatedOrdersRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	
+	<bean id="sageOrderStatusRepository" class="com.boohoo.esb.database.osgiservices.repositories.SageOrderStatusRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-sqlserver-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+	
+	<bean id="processedOrderLineRepository" class="com.boohoo.esb.database.osgiservices.repositories.ProcessedOrderLineRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-sqlserver-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+	
+	<bean id="inventoryLevelRepository" class="com.boohoo.esb.database.osgiservices.repositories.InventoryLevelRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-sqlserver-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+	
+	<bean id="sageProductRepository" class="com.boohoo.esb.database.osgiservices.repositories.SageProductRepository">
+		<jpa:context property="entityManager" unitname="boohoo-esb-sqlserver-database-persistence" />
+		<tx:transaction method="*" value="Required" />
+		<argument ref="logger" />
+	</bean>
+
+	<!-- This declaration should be present for the test to pass. Because route test looks for this. If not found will bail  out waiting for camel context -->
+	<camelContext id="boohoo-esb-database-osgiservices" trace="false" xmlns="http://camel.apache.org/schema/blueprint" managementNamePattern="#name#-#counter#" />
+</blueprint>

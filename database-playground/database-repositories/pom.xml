@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.garethahealy</groupId>
+		<artifactId>database-playground</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+	<artifactId>database-repositories</artifactId>
+	<packaging>bundle</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<build.osgi.import.before.defaults>
+			com.mysql.jdbc,
+			javax.persistence,
+			org.osgi.service.jdbc;version="[1.0,2.0)",
+			org.apache.aries.transaction
+		</build.osgi.import.before.defaults>
+		<build.osgi.export.pkg>com.garethahealy.databaseplayground.database.repositories.*</build.osgi.export.pkg>
+		<build.osgi.export.service/>
+		<build.osgi.activator/>
+	</properties>
+
+<dependencies>
+		<dependency>
+			<groupId>mysql</groupId>
+	      	<artifactId>mysql-connector-java</artifactId>
+<version>5.1.33</version>
+	    
+</dependencies>	
+</project>
