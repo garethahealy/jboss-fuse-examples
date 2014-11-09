@@ -34,4 +34,4 @@ http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.
 	</bean>
 	
 	<camelContext id="database-datasource" trace="false" xmlns="http://camel.apache.org/schema/blueprint" />
-</bluepri
+</blueprint>

@@ -18,21 +18,20 @@
 			<!-- com.someone;version="[1.0,2.0)" -->
 		</build.osgi.import.before.defaults>
 		<build.osgi.export.pkg>com.garethahealy.databaseplayground.database.datasource.*</build.osgi.export.pkg>
-		<build.osgi.export.service/>
-		<build.osgi.activator/>
+		<build.osgi.export.service />
+		<build.osgi.activator />
 	</properties>
 
-<dependencies>
-<dependency>
+	<dependencies>
+		<dependency>
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
-<version>1.4_3</version>
-
+			<version>1.4_3</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
-	      	<artifactId>mysql-connector-java</artifactId>
-<version>5.1.33</version>
-	    
-</dependencies>	
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.33</version>
+		</dependency>
+	</dependencies>
 </project>
