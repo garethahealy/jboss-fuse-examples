@@ -20,8 +20,8 @@ public class WsHelloWorldServiceTest {
 		config.setCertifactionAlias("clientx509v1");
 		config.setWsAddress("https://0.0.0.0:9001/cxf/helloWorldService");
 		config.setServiceClass(HelloWorldEndpoint.class);
-		config.setPathToKeystore("/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore");
-		config.setPathToTruststore("/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore");
+		config.setPathToKeystore("/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore");
+		config.setPathToTruststore("/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore");
 		config.setKeystoreFilename("client-keystore.jks");
 		config.setTruststoreFilename("client-truststore.jks");
 		config.setKeystorePassword("storepassword");

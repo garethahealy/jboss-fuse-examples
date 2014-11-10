@@ -12,10 +12,5 @@
 	<artifactId>openjpa</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
-<!--
-	<modules>
-		<module>hibernate</module>
-		<module>openjpa</module>
-	</modules>-->
-	
+
 </project>

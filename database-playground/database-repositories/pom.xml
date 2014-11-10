@@ -9,7 +9,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
-	<artifactId>hibernate</artifactId>
+	<artifactId>database-repositories</artifactId>
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
