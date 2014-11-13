@@ -21,7 +21,7 @@ public class WsSignatureEndpointDecorator extends LoggingWsEndpointDecorator {
 		return super.create();
 	}
 	
-	private WSS4JOutInterceptor getWSS4JOutInterceptor() {
+	public WSS4JOutInterceptor getWSS4JOutInterceptor() {
         Map<String, Object> outProps = new HashMap<String, Object>();
         outProps.put("action", "Timestamp Signature");
 		outProps.put("signaturePropRefId", "wsCryptoProperties");

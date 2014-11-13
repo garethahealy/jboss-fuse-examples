@@ -41,12 +41,7 @@ public class HTTPSWsSignatureEndpointDecorator extends WsSignatureEndpointDecora
 		return port;
 	}
 	
-    @SuppressWarnings("unchecked")
-	public <T> T createTyped() {
-		return (T)create();
-	}
-	
-	private void configureSSLOnTheClient(Client client) {
+	public void configureSSLOnTheClient(Client client) {
 		HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
 
 		try {

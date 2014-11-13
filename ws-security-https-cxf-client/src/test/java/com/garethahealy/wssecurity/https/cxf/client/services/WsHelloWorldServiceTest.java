@@ -14,7 +14,7 @@ import com.garethahealy.wssecurity.https.cxf.client.services.WsHelloWorldService
 
 public class WsHelloWorldServiceTest {
 
-	private static WsEndpointConfiguration<HelloWorldEndpoint> getDefaultConfig() {
+	private WsEndpointConfiguration<HelloWorldEndpoint> getDefaultConfig() {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = new WsEndpointConfiguration<HelloWorldEndpoint>();
 		config.setCxfDebug(true);
 		config.setCertifactionAlias("clientx509v1");
@@ -34,12 +34,16 @@ public class WsHelloWorldServiceTest {
 		return config;
 	}
 	
+	private boolean isCxfBeanFactory() {
+		return true;
+	}
+	
 	@Test
 	public void can_get_response_default_signature_cert() {
 		HelloWorldRequest request = new HelloWorldRequest();
 		request.setHello("bob");
 		
-		WsHelloWorldService service = new WsHelloWorldService(getDefaultConfig());
+		WsHelloWorldService service = new WsHelloWorldService(getDefaultConfig(), isCxfBeanFactory());
 		HelloWorldResponse response = service.sayHello(request);
 		
 		Assert.assertNotNull(response);
@@ -59,7 +63,7 @@ public class WsHelloWorldServiceTest {
 		config.setSignatureKeystorePassword("password");
 		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.config.FakeUTPasswordCallback");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		HelloWorldResponse response = service.sayHello(request);
 		
 		Assert.assertNotNull(response);
@@ -76,7 +80,7 @@ public class WsHelloWorldServiceTest {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setWsAddress("http://0.0.0.0:9001/cxf/helloWorldService");
 
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		HelloWorldResponse response = service.sayHello(request);
 		
 		Assert.assertNotNull(response);
@@ -93,7 +97,7 @@ public class WsHelloWorldServiceTest {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setCertifactionAlias("");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 	
@@ -105,7 +109,7 @@ public class WsHelloWorldServiceTest {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setKeystorePassword("");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 	
@@ -117,7 +121,7 @@ public class WsHelloWorldServiceTest {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setTruststorePassword("");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 	
@@ -129,7 +133,7 @@ public class WsHelloWorldServiceTest {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setTruststoreFilename("");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 	
@@ -141,7 +145,7 @@ public class WsHelloWorldServiceTest {
 		WsEndpointConfiguration<HelloWorldEndpoint> config = getDefaultConfig();
 		config.setKeystoreFilename("");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 	
@@ -154,7 +158,7 @@ public class WsHelloWorldServiceTest {
 		config.setSignatureKeystoreFilename("");
 		config.setSignatureKeystorePassword("");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 	
@@ -169,7 +173,7 @@ public class WsHelloWorldServiceTest {
 		config.setSignatureKeystorePassword("password");
 		config.setPasswordCallbackClass("com.garethahealy.wssecurity.https.cxf.client.config.FakeUTPasswordCallback");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 	
@@ -184,7 +188,7 @@ public class WsHelloWorldServiceTest {
 		config.setKeystorePassword("password");
 		config.setTruststorePassword("password");
 		
-		WsHelloWorldService service = new WsHelloWorldService(config);
+		WsHelloWorldService service = new WsHelloWorldService(config, isCxfBeanFactory());
 		service.sayHello(request);
 	}
 }

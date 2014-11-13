@@ -29,7 +29,7 @@ public class LoggingWsEndpointDecorator extends JaxWsProxyFactoryBean {
 		return super.create();
 	}
 	
-	private List<Interceptor<? extends Message>> getLogInInterceptors() {
+	public List<Interceptor<? extends Message>> getLogInInterceptors() {
 		List<Interceptor<? extends Message>> inInterceptors = new ArrayList<Interceptor<? extends Message>>();
 		if (config.isCxfDebug()) {
 			LoggingInInterceptor loggingInInterceptor = new LoggingInInterceptor();
@@ -41,7 +41,7 @@ public class LoggingWsEndpointDecorator extends JaxWsProxyFactoryBean {
 		return inInterceptors;
 	}
 	
-	private List<Interceptor<? extends Message>> getLogOutInterceptors() {
+	public List<Interceptor<? extends Message>> getLogOutInterceptors() {
 		List<Interceptor<? extends Message>> outInterceptors = new ArrayList<Interceptor<? extends Message>>();
 		if (config.isCxfDebug()) {	
 			LoggingOutInterceptor loggingOutInterceptor = new LoggingOutInterceptor();

@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.https.cxf.client.;
+package com.garethahealy.wssecurity.https.cxf.client;
 
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
@@ -11,7 +11,7 @@ public class Client {
 		HelloWorldRequest request = new HelloWorldRequest();
 		request.setHello("bob");
 		
-		WsHelloWorldService service = new WsHelloWorldService(getConfig());
+		WsHelloWorldService service = new WsHelloWorldService(getConfig(), false);
 		service.sayHello(request);
 	}
 	
