@@ -4,6 +4,7 @@
 	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
 	xmlns:cxfcore="http://cxf.apache.org/blueprint/core"
 	xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf" 
+	xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws" 
   	xmlns:sec="http://cxf.apache.org/configuration/security"
   	xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
 	xmlns:enc="http://karaf.apache.org/xmlns/jasypt/v1.0.0"
@@ -13,6 +14,7 @@
        http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
        http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
        http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/schemas/blueprint/jaxws.xsd
        http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
        http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd">
 
@@ -87,23 +89,35 @@
 		</argument>
 	</bean>
 	 
-    <!-- CXF Endpoint which is used like a proxy within the route -->
+    <!-- CXF Endpoint which is used like a proxy within the route 
     <cxf:cxfEndpoint id="helloWorldCxf" 
     	address="${cxf.helloworld.transport}://0.0.0.0:${cxf.helloworld.port}/cxf/helloWorldService" 
     	serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
     	endpointName="HelloWorldEndpoint"
 	    serviceName="HelloWorldEndpointService"/>
+	--> 
+	
+	<!-- JAXWS endpoint which goes to an implemtation class -->
+    <jaxws:endpoint id="helloWorldCxf" 
+    	address="${cxf.helloworld.transport}://0.0.0.0:${cxf.helloworld.port}/cxf/helloWorldService" 
+    	implementor="#helloWorldEndpointService"
+    	endpointName="HelloWorldEndpoint"
+	    serviceName="HelloWorldEndpointService"/>
 	
 	<bean id="helloWorldResponseBuilder" class="com.garethahealy.wssecurity.https.cxf.impl.HelloWorldResponseBuilder"/>
 	
+	<bean id="helloWorldEndpointService" class="com.garethahealy.wssecurity.https.cxf.services.HelloWorldEndpointService">
+		<argument ref="helloWorldResponseBuilder"/>
+	</bean>
+	
 	<camelContext id="wssecurity-https-cxf-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
  
- 		<!-- Simple route which returns a Response so that the CXF flow can work -->
+ 		<!-- Simple route which returns a Response so that the CXF flow can work 
 		<route id="helloWorldCxfRoute">
 			<from uri="cxf:bean:helloWorldCxf" />
 			<log message="Received..." />
 			<bean ref="helloWorldResponseBuilder" method="getResponse"/>
-		</route>
+		</route> -->
 		
 	</camelContext>
 </blueprint>
