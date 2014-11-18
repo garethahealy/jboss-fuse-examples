@@ -145,7 +145,45 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>${exec-maven-plugin-version}</version>
-			</plugin>
+				</plugin>
+				<plugin>
+					<!-- https://www.eclipse.org/m2e/documentation/m2e-execution-not-covered.html -->
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.felix</groupId>
+										<artifactId>maven-bundle-plugin</artifactId>
+										<versionRange>[${maven-bundle-plugin-version},)</versionRange>
+										<goals>
+											<goal>cleanVersions</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.servicemix.tooling</groupId>
+										<artifactId>depends-maven-plugin</artifactId>
+										<versionRange>[${depends-maven-plugin-version},)</versionRange>
+										<goals>
+											<goal>generate-depends-file</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -261,13 +299,7 @@
 				<scope>provided</scope>
 			</dependency>
 			
-			<!-- CXF Client -->
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-bundle</artifactId>
-				<version>${cxf-version}</version>
-				<scope>compile</scope>
-			</dependency>
+			<!-- Logging for local apps -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -287,6 +319,12 @@
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-quartz2</artifactId>
+				<version>${camel-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-ftp</artifactId>
 				<version>${camel-version}</version>
 				<scope>provided</scope>
 			</dependency>
@@ -345,7 +383,7 @@
 			<uniqueVersion>false</uniqueVersion>
 			<id>snapshots</id>
 			<name>libs-snapshot</name>
-			<url>file:/Users/garethah/.m2/repository</url>
+			<url>file:${user.home}/.m2/repository</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
