@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.https.cxf;
+package com.garethahealy.wssecurity.https.cxf.routes;
 
 import org.junit.Assert;
 import org.junit.Test;

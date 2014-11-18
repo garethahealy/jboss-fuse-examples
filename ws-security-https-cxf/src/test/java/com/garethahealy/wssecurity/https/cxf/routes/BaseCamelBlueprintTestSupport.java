@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.https.cxf;
+package com.garethahealy.wssecurity.https.cxf.routes;
 
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 

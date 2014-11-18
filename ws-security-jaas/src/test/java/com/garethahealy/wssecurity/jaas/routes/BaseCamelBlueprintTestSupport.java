@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.jaas;
+package com.garethahealy.wssecurity.jaas.routes;
 
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 

@@ -1,4 +1,4 @@
-package com.garethahealy.wssecurity.jaas;
+package com.garethahealy.wssecurity.jaas.routes;
 
 import org.junit.Assert;
 import org.junit.Test;
