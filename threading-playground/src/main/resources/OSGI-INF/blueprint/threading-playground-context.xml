@@ -9,7 +9,16 @@
 
 	<cm:property-placeholder persistent-id="com.garethahealy.threading.playground" update-strategy="reload">
 		<cm:default-properties>
-			<cm:property name="todo" value="10" />
+			<cm:property name="uploadFilesUsingThreadPool.startup" value="true" />
+			<cm:property name="uploadFilesUsingThreadPool.path" value="/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/threading-playground/upload" />
+			<cm:property name="uploadFilesUsingThreadPool.initialDelay" value="1seconds" />
+			<cm:property name="uploadFilesUsingThreadPool.delay" value="1minutes" />
+			<cm:property name="uploadFilesUsingThreadPool.readLock" value="markerFile" />
+			<cm:property name="ftp.hostname" value="localhost" />
+			<cm:property name="ftp.username" value="test" />
+			<cm:property name="ftp.password" value="password" />
+			<cm:property name="uploadFilesThreadPool.poolSize" value="60" />
+			<cm:property name="uploadFilesThreadPool.maxQueueSize" value="100" />
 		</cm:default-properties>
 	</cm:property-placeholder>
 
@@ -17,6 +26,16 @@
 
 	<camelContext id="threading-playground-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
  
+ 		<threadPool id="uploadFilesThreadPool" poolSize="{{uploadFilesThreadPool.poolSize}}" threadName="Upload File ThreadPool" 
+ 			maxQueueSize="{{uploadFilesThreadPool.maxQueueSize}}" rejectedPolicy="CallerRuns" />
+		
+		<route id="uploadFilesUsingThreadPool" autoStartup="{{uploadFilesUsingThreadPool.startup}}">
+			<from uri="file://{{uploadFilesUsingThreadPool.path}}?initialDelay={{uploadFilesUsingThreadPool.initialDelay}}&amp;delay={{uploadFilesUsingThreadPool.delay}}&amp;useFixedDelay=true&amp;readLock={{uploadFilesUsingThreadPool.readLock}}&amp;charset=utf-8&amp;runLoggingLevel=INFO" />
+     		<threads executorServiceRef="uploadFilesThreadPool">
+				<to	uri="ftp://{{ftp.username}}@{{ftp.hostname}}?password={{ftp.password}}&amp;tempFileName=${file:name.noext}.noext&amp;charset=utf-8&amp;ftpClient.controlEncoding=UTF-8" />
+			</threads>
+		</route>
+		
 		<route id="testThreadinh">
 			<from uri="timer:threading?repeatCount=1" />
 			<bean ref="exampleThreading" method="doSingleThread"/>

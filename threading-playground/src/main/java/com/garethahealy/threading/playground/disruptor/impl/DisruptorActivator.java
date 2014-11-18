@@ -3,12 +3,8 @@ package com.garethahealy.threading.playground.disruptor.impl;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executors;
 
-import org.apache.camel.Exchange;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-
-import com.lmax.disruptor.RingBuffer;
-import com.lmax.disruptor.dsl.Disruptor;
 
 public class DisruptorActivator implements BundleActivator {
 

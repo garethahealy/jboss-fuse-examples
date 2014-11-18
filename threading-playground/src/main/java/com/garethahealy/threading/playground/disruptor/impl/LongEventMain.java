@@ -1,19 +1,9 @@
 package com.garethahealy.threading.playground.disruptor.impl;
 
-import java.nio.ByteBuffer;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.camel.Exchange;
-
-import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.TimeoutException;
-import com.lmax.disruptor.dsl.Disruptor;
 
 public class LongEventMain {
 
-	@SuppressWarnings("unchecked")
 	public void doWork() throws TimeoutException {
 //		// Executor that will be used to construct new threads for consumers
 //		Executor executor = Executors.newCachedThreadPool();
