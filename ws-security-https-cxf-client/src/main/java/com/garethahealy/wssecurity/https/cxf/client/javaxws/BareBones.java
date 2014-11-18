@@ -8,18 +8,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cxf.endpoint.Endpoint;
-
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.HandlerResolver;
 import javax.xml.ws.handler.PortInfo;
 
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.interceptor.Interceptor;
-import org.apache.cxf.message.Message;
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.Endpoint;
+import org.apache.cxf.frontend.ClientProxy;
 
 import com.garethahealy.helloworld.HelloWorldEndpointService;
 import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;

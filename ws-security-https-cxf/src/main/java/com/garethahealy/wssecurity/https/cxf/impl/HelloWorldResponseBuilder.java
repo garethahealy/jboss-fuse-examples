@@ -8,7 +8,7 @@ public class HelloWorldResponseBuilder {
 	public HelloWorldResponse getResponse(HelloWorldRequest body) {
 		HelloWorldResponse response = new HelloWorldResponse();
 		response.setGoodbye(body.getHello() + " # Ahhh...what a shame to see you leave :(");
-		org.apache.karaf.jaas.modules.properties.PropertiesLoginModule ddd;
+
 		return response;
 	}
 }

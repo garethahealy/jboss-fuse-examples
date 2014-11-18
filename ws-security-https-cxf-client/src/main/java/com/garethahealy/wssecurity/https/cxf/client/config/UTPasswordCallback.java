@@ -66,14 +66,6 @@ public class UTPasswordCallback implements CallbackHandler {
         }
     }
     
-    private String getPassword(Callback callback) {
-        try {
-            return (String)callback.getClass().getMethod("getPassword").invoke(callback);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private String getIdentifier(Callback cb) {
         try {
             return (String)cb.getClass().getMethod("getIdentifier").invoke(cb);
@@ -87,26 +79,5 @@ public class UTPasswordCallback implements CallbackHandler {
      */
     public void setAliasPassword(String alias, String password) {
         passwords.put(alias, password);
-    }
-    
-    private String getPasswordType(Callback pc) {
-        try {
-            Method getType = null;
-            try {
-                getType = pc.getClass().getMethod("getPasswordType");
-            } catch (NoSuchMethodException ex) {
-                // keep looking 
-            } catch (SecurityException ex) {
-                // keep looking
-            }
-            if (getType == null) {
-                getType = pc.getClass().getMethod("getType");
-            }
-            String result = (String)getType.invoke(pc);
-            return result;
-            
-        } catch (Exception ex) {
-            return null;
-        }
     }
 }
