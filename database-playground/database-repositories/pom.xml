@@ -10,7 +10,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>database-repositories</artifactId>
-	<packaging>pom</packaging>
+	<packaging>bundle</packaging>
 	<name>${project.artifactId}</name>
 
 </project>

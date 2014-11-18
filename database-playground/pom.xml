@@ -16,8 +16,8 @@
 	<modules>
 		<module>database-datasource</module>
 		<module>database-repositories</module> 
-		<module>hibernate</module>
-		<module>openjpa</module>
+		<module>database-hibernate</module>
+		<module>database-openjpa</module>
 	</modules>
 
 </project>

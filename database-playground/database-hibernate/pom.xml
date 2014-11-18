@@ -9,8 +9,20 @@
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
-	<artifactId>hibernate</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>database-hibernate</artifactId>
+	<packaging>bundle</packaging>
 	<name>${project.artifactId}</name>
+	
+	<!-- https://github.com/pires/fabric8-persistence-hibernate/ -->
+	
+	<properties>
+		<build.osgi.import.before.defaults>
+			<!-- com.someone;version="[1.0,2.0)" -->
+		</build.osgi.import.before.defaults>
+		<build.osgi.export.pkg>com.garethahealy.databaseplayground.database.entities.*</build.osgi.export.pkg>
+		<build.osgi.export.service />
+		<build.osgi.activator />
+	</properties>
+	
 
 </project>

@@ -24,7 +24,7 @@
 	</bean>
 	
 	<bean id="mysqlBasicManagedDataSource" class="org.apache.commons.dbcp.managed.BasicManagedDataSource" destroy-method="close">
-	    <property name="xaDataSourceInstance" ref="esbMysqlXADataSource" />
+	    <property name="xaDataSourceInstance" ref="mysqlXADataSource" />
 	    <property name="transactionManager" ref="transactionManager" />
 	    <property name="initialSize" value="${database.initialSize}"/> 
 	    <property name="maxActive" value="${database.maxActive}"/>
@@ -34,5 +34,4 @@
      	<property name="validationQuery" value="${database.validationQuery}"/>
 	</bean>
 	
-	<camelContext id="database-datasource" trace="false" xmlns="http://camel.apache.org/schema/blueprint" />
 </blueprint>
