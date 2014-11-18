@@ -1,4 +1,4 @@
-package com.garethahealy.databaseplayground.database.entities;
+package com.garethahealy.databaseplayground.database.model.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

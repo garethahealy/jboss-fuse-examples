@@ -7,7 +7,19 @@
 		http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/spring/camel-blueprint.xsd
 		http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 
-	<cm:property-placeholder persistent-id="com.garethahealy.databaseplayground.database.datasource" update-strategy="reload" />
+	<cm:property-placeholder persistent-id="com.garethahealy.databaseplayground.database.datasource" update-strategy="reload">
+		<cm:default-properties>
+            <cm:property name="database.url" value="jdbc:mysql://localhost:3306/DatabasePlayground?autoReconnect=true"/>
+            <cm:property name="database.user" value="test"/>
+            <cm:property name="database.password" value="password"/>
+            <cm:property name="database.initialSize" value="16"/>
+            <cm:property name="database.maxActive" value="32"/>  
+            <cm:property name="database.minIdle" value="4"/> 
+            <cm:property name="database.maxIdle" value="16"/> 
+            <cm:property name="database.testOnBorrow" value="true"/> 
+            <cm:property name="database.validationQuery" value="SELECT 1 FROM DUAL"/> 
+        </cm:default-properties>
+	</cm:property-placeholder>
 
 	<reference id="transactionManager" interface="javax.transaction.TransactionManager" />
 

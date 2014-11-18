@@ -5,7 +5,7 @@
 	<persistence-unit name="garethahealy-databaseplayground-openjpa-persistence" transaction-type="JTA">
 		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 		<jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/mysqlBasicManagedDataSource)</jta-data-source>
-		<class>com.garethahealy.databaseplayground.database.entities.Beer</class>
+		<class>com.garethahealy.databaseplayground.database.model.entities.Beer</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="openjpa.jdbc.DBDictionary" value="mysql(SimulateLocking=true)"/>
