@@ -33,7 +33,5 @@
         <property name="maximumActiveSessionPerConnection" value="${activemq.maximumActiveSessionPerConnection}"/>
         <property name="connectionFactory" ref="amqConnectionFactory"/>
     </bean>
-    
-  <camelContext id="activemq-service-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint"/>
 
 </blueprint>
