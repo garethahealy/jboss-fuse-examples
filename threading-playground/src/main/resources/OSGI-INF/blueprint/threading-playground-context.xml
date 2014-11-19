@@ -17,8 +17,8 @@
 			<cm:property name="ftp.hostname" value="localhost" />
 			<cm:property name="ftp.username" value="test" />
 			<cm:property name="ftp.password" value="password" />
-			<cm:property name="uploadFilesThreadPool.poolSize" value="60" />
-			<cm:property name="uploadFilesThreadPool.maxQueueSize" value="100" />
+			<cm:property name="uploadFilesThreadPool.poolSize" value="16" />
+			<cm:property name="uploadFilesThreadPool.maxQueueSize" value="32" />
 		</cm:default-properties>
 	</cm:property-placeholder>
 

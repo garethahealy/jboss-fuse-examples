@@ -34,6 +34,7 @@
 	    <build.osgi.failok>false</build.osgi.failok>
 	    <build.osgi.private.pkg>!*</build.osgi.private.pkg>
 	    <build.osgi.export>${build.osgi.export.pkg};${build.osgi.version}</build.osgi.export>
+	    <build.osgi.meta.persistence/>
 	    <build.osgi.version>version=${project.version}</build.osgi.version>
 	    <build.osgi.split.pkg>-split-package:=first</build.osgi.split.pkg>
 	    <build.osgi.import>${build.osgi.import.pkg}</build.osgi.import>
@@ -185,8 +186,9 @@
 						<Export-Package>${build.osgi.export}</Export-Package>
 						<Import-Package>${build.osgi.import}</Import-Package>
 						<Private-Package>${build.osgi.private.pkg}</Private-Package>
-						<Import-Service>${camel.osgi.import.service}</Import-Service>
-            			<Export-Service>${camel.osgi.export.service}</Export-Service>
+						<Import-Service>${build.osgi.import.service}</Import-Service>
+            			<Export-Service>${build.osgi.export.service}</Export-Service>
+            			<Meta-Persistence>${build.osgi.meta.persistence}</Meta-Persistence>
 						<Implementation-Title>${build.osgi.implementation.title}</Implementation-Title>
 						<Implementation-Version>${project.version}</Implementation-Version>
 						<Karaf-Info>${build.osgi.symbolic.name}=${build.osgi.version.clean}</Karaf-Info>
