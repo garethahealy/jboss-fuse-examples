@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "BEERS")
+@Table(name = "beers")
 public class Beer implements Serializable {
 
         private static final long serialVersionUID = -5958885654581897644L;
@@ -23,7 +23,7 @@ public class Beer implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        @Column(name = "ID", unique = true, nullable = false)
+        @Column(name = "id", unique = true, nullable = false)
         public Integer getId() {
                 return this.id;
         }
@@ -32,7 +32,7 @@ public class Beer implements Serializable {
                 this.id = id;
         }
 
-        @Column(name = "NAME")
+        @Column(name = "name")
         public String getName() {
                 return name;
         }
