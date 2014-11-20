@@ -17,11 +17,11 @@
 -->
 
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-	xmlns:tns="http://helloworld.garethahealy.com"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
-	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-	targetNamespace="http://helloworld.garethahealy.com">
+                  xmlns:tns="http://helloworld.garethahealy.com"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  targetNamespace="http://helloworld.garethahealy.com">
 
     <!-- Type definitions for input- and output parameters for webservice -->
     <wsdl:types>

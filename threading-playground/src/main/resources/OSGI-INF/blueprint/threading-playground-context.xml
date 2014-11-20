@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/blueprint"
-	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
-	xsi:schemaLocation="
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xsi:schemaLocation="
        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
        http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 
-	<cm:property-placeholder persistent-id="com.garethahealy.threading.playground" update-strategy="reload">
-		<cm:default-properties>
-			<cm:property name="uploadFilesUsingThreadPool.startup" value="true" />
-			<cm:property name="uploadFilesUsingThreadPool.path" value="/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/threading-playground/upload" />
-			<cm:property name="uploadFilesUsingThreadPool.initialDelay" value="1seconds" />
-			<cm:property name="uploadFilesUsingThreadPool.delay" value="1minutes" />
-			<cm:property name="uploadFilesUsingThreadPool.readLock" value="markerFile" />
-			<cm:property name="ftp.hostname" value="localhost" />
-			<cm:property name="ftp.username" value="test" />
-			<cm:property name="ftp.password" value="password" />
-			<cm:property name="uploadFilesThreadPool.poolSize" value="16" />
-			<cm:property name="uploadFilesThreadPool.maxQueueSize" value="32" />
-		</cm:default-properties>
-	</cm:property-placeholder>
+    <cm:property-placeholder persistent-id="com.garethahealy.threading.playground" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="uploadFilesUsingThreadPool.startup" value="true"/>
+            <cm:property name="uploadFilesUsingThreadPool.path"
+                         value="/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/threading-playground/upload"/>
+            <cm:property name="uploadFilesUsingThreadPool.initialDelay" value="1seconds"/>
+            <cm:property name="uploadFilesUsingThreadPool.delay" value="1minutes"/>
+            <cm:property name="uploadFilesUsingThreadPool.readLock" value="markerFile"/>
+            <cm:property name="ftp.hostname" value="localhost"/>
+            <cm:property name="ftp.username" value="test"/>
+            <cm:property name="ftp.password" value="password"/>
+            <cm:property name="uploadFilesThreadPool.poolSize" value="16"/>
+            <cm:property name="uploadFilesThreadPool.maxQueueSize" value="32"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
 
-	<bean class="com.garethahealy.threading.playground.executorservice.ExampleThreading" id="exampleThreading"/>
+    <bean class="com.garethahealy.threading.playground.executorservice.ExampleThreading" id="exampleThreading"/>
 
-	<camelContext id="threading-playground-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
- 
- 		<threadPool id="uploadFilesThreadPool" poolSize="{{uploadFilesThreadPool.poolSize}}" threadName="Upload File ThreadPool" 
- 			maxQueueSize="{{uploadFilesThreadPool.maxQueueSize}}" rejectedPolicy="CallerRuns" />
-		
-		<route id="uploadFilesUsingThreadPool" autoStartup="{{uploadFilesUsingThreadPool.startup}}">
-			<from uri="file://{{uploadFilesUsingThreadPool.path}}?initialDelay={{uploadFilesUsingThreadPool.initialDelay}}&amp;delay={{uploadFilesUsingThreadPool.delay}}&amp;useFixedDelay=true&amp;readLock={{uploadFilesUsingThreadPool.readLock}}&amp;charset=utf-8&amp;runLoggingLevel=INFO" />
-     		<threads executorServiceRef="uploadFilesThreadPool">
-				<to	uri="ftp://{{ftp.username}}@{{ftp.hostname}}?password={{ftp.password}}&amp;tempFileName=${file:name.noext}.noext&amp;charset=utf-8&amp;ftpClient.controlEncoding=UTF-8" />
-			</threads>
-		</route>
-		
-		<route id="testThreadinh">
-			<from uri="timer:threading?repeatCount=1" />
-			<bean ref="exampleThreading" method="doSingleThread"/>
-			<bean ref="exampleThreading" method="doThreadPool"/>
-			<bean ref="exampleThreading" method="logMessageHistory"/>
-		</route>
-		
-	</camelContext>
+    <camelContext id="threading-playground-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+
+        <threadPool id="uploadFilesThreadPool" poolSize="{{uploadFilesThreadPool.poolSize}}"
+                    threadName="Upload File ThreadPool"
+                    maxQueueSize="{{uploadFilesThreadPool.maxQueueSize}}" rejectedPolicy="CallerRuns"/>
+
+        <route id="uploadFilesUsingThreadPool" autoStartup="{{uploadFilesUsingThreadPool.startup}}">
+            <from uri="file://{{uploadFilesUsingThreadPool.path}}?initialDelay={{uploadFilesUsingThreadPool.initialDelay}}&amp;delay={{uploadFilesUsingThreadPool.delay}}&amp;useFixedDelay=true&amp;readLock={{uploadFilesUsingThreadPool.readLock}}&amp;charset=utf-8&amp;runLoggingLevel=INFO"/>
+            <threads executorServiceRef="uploadFilesThreadPool">
+                <to uri="ftp://{{ftp.username}}@{{ftp.hostname}}?password={{ftp.password}}&amp;tempFileName=${file:name.noext}.noext&amp;charset=utf-8&amp;ftpClient.controlEncoding=UTF-8"/>
+            </threads>
+        </route>
+
+        <route id="testThreadinh">
+            <from uri="timer:threading?repeatCount=1"/>
+            <bean ref="exampleThreading" method="doSingleThread"/>
+            <bean ref="exampleThreading" method="doThreadPool"/>
+            <bean ref="exampleThreading" method="logMessageHistory"/>
+        </route>
+
+    </camelContext>
 </blueprint>

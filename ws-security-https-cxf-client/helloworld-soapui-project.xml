@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="helloworld" resourceRoot="" soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="HelloWorldBinding" type="wsdl" bindingName="{http://helloworld.garethahealy.com}HelloWorldBinding" soapVersion="1_1" anonymous="optional" definition="file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl"><con:part><con:url>file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl</con:url><con:content><![CDATA[<!--Licensed to the Apache Software Foundation (ASF) under one or more
+<con:soapui-project xmlns:con="http://eviware.com/soapui/config" activeEnvironment="Default" name="helloworld" resourceRoot=""
+                    soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL">
+    <con:settings/>
+    <con:interface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="con:WsdlInterface" wsaVersion="NONE" name="HelloWorldBinding"
+                   type="wsdl" bindingName="{http://helloworld.garethahealy.com}HelloWorldBinding"
+                   soapVersion="1_1"
+                   anonymous="optional"
+                   definition="file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl">
+        <con:settings/>
+        <con:definitionCache type="TEXT"
+                             rootPart="file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl">
+            <con:part>
+                <con:url>
+                    file:/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl
+                </con:url>
+                <con:content><![CDATA[<!--Licensed to the Apache Software Foundation (ASF) under one or more
     contributor license agreements.  See the NOTICE file distributed with
     this work for additional information regarding copyright ownership.
     The ASF licenses this file to You under the Apache License, Version 2.0
@@ -67,12 +82,51 @@
       <soap:address location="http://localhost:9001/cxf/helloWorldService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9001/cxf/helloWorldService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://helloworld.garethahealy.com/SayHello" name="SayHello" bindingOperationName="SayHello" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Working" outgoingWss="cxf" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:9001/cxf/helloWorldService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="http://helloworld.garethahealy.com">
+</wsdl:definitions>]]></con:content>
+                <con:type>http://schemas.xmlsoap.org/wsdl/</con:type>
+            </con:part>
+        </con:definitionCache>
+        <con:endpoints>
+            <con:endpoint>http://localhost:9001/cxf/helloWorldService</con:endpoint>
+        </con:endpoints>
+        <con:operation isOneWay="false" action="http://helloworld.garethahealy.com/SayHello" name="SayHello"
+                       bindingOperationName="SayHello" type="Request-Response" inputName="" receivesAttachments="false"
+                       sendsAttachments="false" anonymous="optional">
+            <con:settings/>
+            <con:call name="Working" outgoingWss="cxf" wssPasswordType="PasswordText">
+                <con:settings>
+                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                    </con:setting>
+                </con:settings>
+                <con:encoding>UTF-8</con:encoding>
+                <con:endpoint>https://localhost:9001/cxf/helloWorldService</con:endpoint>
+                <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="http://helloworld.garethahealy.com">
    <soapenv:Header/>
    <soapenv:Body>
       <hel:helloWorldRequest>
          <hello>hello</hello>
-      </hel:helloWorldRequest></soapenv:Body></soapenv:Envelope>]]></con:request><con:credentials><con:username>clientx509v1</con:username><con:password>storepassword</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://helloworld.garethahealy.com/SayHello"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Request 2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:9001/cxf/helloWorldService</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      </hel:helloWorldRequest></soapenv:Body></soapenv:Envelope>]]></con:request>
+                <con:credentials>
+                    <con:username>clientx509v1</con:username>
+                    <con:password>storepassword</con:password>
+                    <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
+                    <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
+                    <con:authType>Global HTTP Settings</con:authType>
+                </con:credentials>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:wsaConfig mustUnderstand="NONE" version="200508"
+                               action="http://helloworld.garethahealy.com/SayHello"/>
+                <con:wsrmConfig version="1.2"/>
+            </con:call>
+            <con:call name="Request 2">
+                <con:settings>
+                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                    </con:setting>
+                </con:settings>
+                <con:encoding>UTF-8</con:encoding>
+                <con:endpoint>https://localhost:9001/cxf/helloWorldService</con:endpoint>
+                <con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
     <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" soap:mustUnderstand="1">
       <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="SIG-76151EE5B8AF46E58914152846742047">
@@ -116,4 +170,67 @@
   <soap:Body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-76151EE5B8AF46E58914152846741976">
     <ns2:helloWorldRequest xmlns:ns2="http://helloworld.garethahealy.com">
       <hello>bob</hello>
-    </ns2:helloWorldRequest></soap:Body></soap:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://helloworld.garethahealy.com/SayHello"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer><con:crypto><con:source>/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore/client-keystore.jks</con:source><con:password>storepassword</con:password><con:type>KEYSTORE</con:type><con:defaultAlias>clientx509v1</con:defaultAlias><con:aliasPassword>storepassword</con:aliasPassword></con:crypto><con:crypto><con:source>/NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore/client-truststore.jks</con:source><con:password>storepassword</con:password><con:type>TRUSTSTORE</con:type><con:defaultAlias>serverx509v1</con:defaultAlias><con:aliasPassword>storepassword</con:aliasPassword></con:crypto><con:outgoing mustUnderstand="true" actor=""><con:name>cxf</con:name><con:username>clientx509v1</con:username><con:password>storepassword</con:password><con:entry type="Signature" username="clientx509v1" password="storepassword"><con:configuration><crypto>client-keystore.jks</crypto><keyIdentifierType>0</keyIdentifierType><signatureAlgorithm/><signatureCanonicalization/><useSingleCert>false</useSingleCert><digestAlgorithm/></con:configuration></con:entry><con:entry type="Timestamp"><con:configuration><timeToLive>1000</timeToLive><strictTimestamp>true</strictTimestamp></con:configuration></con:entry><con:entry type="Username" username="clientx509v1" password="storepassword"><con:configuration><addCreated>false</addCreated><addNonce>false</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+    </ns2:helloWorldRequest></soap:Body></soap:Envelope>]]></con:request>
+                <con:credentials>
+                    <con:authType>No Authorization</con:authType>
+                </con:credentials>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:wsaConfig mustUnderstand="NONE" version="200508"
+                               action="http://helloworld.garethahealy.com/SayHello"/>
+                <con:wsrmConfig version="1.2"/>
+            </con:call>
+        </con:operation>
+    </con:interface>
+    <con:properties/>
+    <con:wssContainer>
+        <con:crypto>
+            <con:source>
+                /NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore/client-keystore.jks
+            </con:source>
+            <con:password>storepassword</con:password>
+            <con:type>KEYSTORE</con:type>
+            <con:defaultAlias>clientx509v1</con:defaultAlias>
+            <con:aliasPassword>storepassword</con:aliasPassword>
+        </con:crypto>
+        <con:crypto>
+            <con:source>
+                /NotBackedUp/jboss-studio-workspace/jboss-fuse-examples/ws-security-https-cxf-client/src/main/resources/keystore/client-truststore.jks
+            </con:source>
+            <con:password>storepassword</con:password>
+            <con:type>TRUSTSTORE</con:type>
+            <con:defaultAlias>serverx509v1</con:defaultAlias>
+            <con:aliasPassword>storepassword</con:aliasPassword>
+        </con:crypto>
+        <con:outgoing mustUnderstand="true" actor="">
+            <con:name>cxf</con:name>
+            <con:username>clientx509v1</con:username>
+            <con:password>storepassword</con:password>
+            <con:entry type="Signature" username="clientx509v1" password="storepassword">
+                <con:configuration>
+                    <crypto>client-keystore.jks</crypto>
+                    <keyIdentifierType>0</keyIdentifierType>
+                    <signatureAlgorithm/>
+                    <signatureCanonicalization/>
+                    <useSingleCert>false</useSingleCert>
+                    <digestAlgorithm/>
+                </con:configuration>
+            </con:entry>
+            <con:entry type="Timestamp">
+                <con:configuration>
+                    <timeToLive>1000</timeToLive>
+                    <strictTimestamp>true</strictTimestamp>
+                </con:configuration>
+            </con:entry>
+            <con:entry type="Username" username="clientx509v1" password="storepassword">
+                <con:configuration>
+                    <addCreated>false</addCreated>
+                    <addNonce>false</addNonce>
+                    <passwordType>PasswordText</passwordType>
+                </con:configuration>
+            </con:entry>
+        </con:outgoing>
+    </con:wssContainer>
+    <con:oAuth2ProfileContainer/>
+    <con:sensitiveInformation/>
+</con:soapui-project>

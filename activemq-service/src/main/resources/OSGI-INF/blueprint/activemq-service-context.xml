@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:camel="http://camel.apache.org/schema/blueprint"
-       xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
-       xsi:schemaLocation="
-	       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-	       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
 	       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
-  
-	<cm:property-placeholder persistent-id="com.garethahealy.activemq.service" update-strategy="reload">
-		<cm:default-properties>
+
+    <cm:property-placeholder persistent-id="com.garethahealy.activemq.service" update-strategy="reload">
+        <cm:default-properties>
             <cm:property name="activemq.url" value="discovery:(fabric:default)?jms.prefetchPolicy.all=100"/>
             <cm:property name="activemq.username" value="admin"/>
             <cm:property name="activemq.password" value="admin"/>
             <cm:property name="activemq.maxConnections" value="16"/>
-            <cm:property name="activemq.maximumActiveSessionPerConnection" value="500"/>     
+            <cm:property name="activemq.maximumActiveSessionPerConnection" value="500"/>
         </cm:default-properties>
-	</cm:property-placeholder>
+    </cm:property-placeholder>
 
-	<service ref="amqPooledConnectionFactory" interface="javax.jms.ConnectionFactory" />
-	
-	<!-- Connection factory for AMQ -->
-	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+    <service ref="amqPooledConnectionFactory" interface="javax.jms.ConnectionFactory"/>
+
+    <!-- Connection factory for AMQ -->
+    <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="${activemq.url}"/>
-        <property name="userName" value="${activemq.username}" />
-		<property name="password" value="${activemq.password}" />
+        <property name="userName" value="${activemq.username}"/>
+        <property name="password" value="${activemq.password}"/>
     </bean>
-    
-	<!-- Pooled Connection factory for AMQ (NOTE: This uses the above connection factory)  -->
-    <bean id="amqPooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
+
+    <!-- Pooled Connection factory for AMQ (NOTE: This uses the above connection factory)  -->
+    <bean id="amqPooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start"
+          destroy-method="stop">
         <property name="maxConnections" value="${activemq.maxConnections}"/>
         <property name="maximumActiveSessionPerConnection" value="${activemq.maximumActiveSessionPerConnection}"/>
         <property name="connectionFactory" ref="amqConnectionFactory"/>

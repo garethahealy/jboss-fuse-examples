@@ -1,5 +1,16 @@
 package com.garethahealy.wssecurity.https.cxf.client.decorators;
 
+import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
+import org.apache.cxf.configuration.jsse.TLSClientParameters;
+import org.apache.cxf.configuration.security.FiltersType;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,81 +21,68 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-
-import org.apache.cxf.configuration.jsse.TLSClientParameters;
-import org.apache.cxf.configuration.security.FiltersType;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.transport.http.HTTPConduit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
-
 public class HTTPSWsSignatureEndpointDecorator extends WsSignatureEndpointDecorator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(HTTPSWsSignatureEndpointDecorator.class);
-	
-	public HTTPSWsSignatureEndpointDecorator(WsEndpointConfiguration<?> config) {
-		super(config);
-	}
-	
-	@Override
-    public synchronized Object create() {
-		Object port = super.create();
-		
-		Client client = ClientProxy.getClient(port);
-		configureSSLOnTheClient(client);
-		
-		return port;
-	}
-	
-	public void configureSSLOnTheClient(Client client) {
-		HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        private static final Logger LOG = LoggerFactory.getLogger(HTTPSWsSignatureEndpointDecorator.class);
 
-		try {
-			KeyStore keyStore = KeyStore.getInstance("JKS");
-			
-			//NOTE: The below order matters!
-			File keyStoreClient = new File(config.getKeystorePath());
-			keyStore.load(new FileInputStream(keyStoreClient), config.getKeystorePassword().toCharArray());
-			
-			KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-			keyFactory.init(keyStore, config.getKeyManagerPassword().toCharArray());
-			
-			File truststoreClient = new File(config.getTruststorePath());
-			keyStore.load(new FileInputStream(truststoreClient), config.getTruststorePassword().toCharArray());
-			
-			TrustManagerFactory trustFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			trustFactory.init(keyStore);
-			
-			FiltersType filter = new FiltersType();
-			filter.getInclude().add(".*_WITH_3DES_.*");
-			filter.getInclude().add(".*_WITH_DES_.*");
-			filter.getInclude().add(".*_WITH_NULL_.*");
-			filter.getExclude().add(".*_DH_anon_.*");
-			
-			TLSClientParameters tlsParams = new TLSClientParameters();
-			tlsParams.setDisableCNCheck(true);
-			tlsParams.setTrustManagers(trustFactory.getTrustManagers());
-			tlsParams.setKeyManagers(keyFactory.getKeyManagers());
-			tlsParams.setCipherSuitesFilter(filter);
-			
-			httpConduit.setTlsClientParameters(tlsParams);
-		} catch (KeyStoreException kse) {
-			LOG.error("Security configuration failed with the following: " + kse.getCause());
-		} catch (NoSuchAlgorithmException nsa) {
-			LOG.error("Security configuration failed with the following: " + nsa.getCause());
-		} catch (FileNotFoundException fnfe) {
-			LOG.error("Security configuration failed with the following: " + fnfe.getCause());
-		} catch (UnrecoverableKeyException uke) {
-			LOG.error("Security configuration failed with the following: " + uke.getCause());
-		} catch (CertificateException ce) {
-			LOG.error("Security configuration failed with the following: " + ce.getCause());
-		} catch (IOException ioe) {
-			LOG.error("Security configuration failed with the following: " + ioe.getCause());
-		}
-	}
+        public HTTPSWsSignatureEndpointDecorator(WsEndpointConfiguration<?> config) {
+                super(config);
+        }
+
+        @Override
+        public synchronized Object create() {
+                Object port = super.create();
+
+                Client client = ClientProxy.getClient(port);
+                configureSSLOnTheClient(client);
+
+                return port;
+        }
+
+        public void configureSSLOnTheClient(Client client) {
+                HTTPConduit httpConduit = (HTTPConduit)client.getConduit();
+
+                try {
+                        KeyStore keyStore = KeyStore.getInstance("JKS");
+
+                        //NOTE: The below order matters!
+                        File keyStoreClient = new File(config.getKeystorePath());
+                        keyStore.load(new FileInputStream(keyStoreClient), config.getKeystorePassword().toCharArray());
+
+                        KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+                        keyFactory.init(keyStore, config.getKeyManagerPassword().toCharArray());
+
+                        File truststoreClient = new File(config.getTruststorePath());
+                        keyStore.load(new FileInputStream(truststoreClient), config.getTruststorePassword().toCharArray());
+
+                        TrustManagerFactory trustFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                        trustFactory.init(keyStore);
+
+                        FiltersType filter = new FiltersType();
+                        filter.getInclude().add(".*_WITH_3DES_.*");
+                        filter.getInclude().add(".*_WITH_DES_.*");
+                        filter.getInclude().add(".*_WITH_NULL_.*");
+                        filter.getExclude().add(".*_DH_anon_.*");
+
+                        TLSClientParameters tlsParams = new TLSClientParameters();
+                        tlsParams.setDisableCNCheck(true);
+                        tlsParams.setTrustManagers(trustFactory.getTrustManagers());
+                        tlsParams.setKeyManagers(keyFactory.getKeyManagers());
+                        tlsParams.setCipherSuitesFilter(filter);
+
+                        httpConduit.setTlsClientParameters(tlsParams);
+                } catch (KeyStoreException kse) {
+                        LOG.error("Security configuration failed with the following: " + kse.getCause());
+                } catch (NoSuchAlgorithmException nsa) {
+                        LOG.error("Security configuration failed with the following: " + nsa.getCause());
+                } catch (FileNotFoundException fnfe) {
+                        LOG.error("Security configuration failed with the following: " + fnfe.getCause());
+                } catch (UnrecoverableKeyException uke) {
+                        LOG.error("Security configuration failed with the following: " + uke.getCause());
+                } catch (CertificateException ce) {
+                        LOG.error("Security configuration failed with the following: " + ce.getCause());
+                } catch (IOException ioe) {
+                        LOG.error("Security configuration failed with the following: " + ioe.getCause());
+                }
+        }
 }

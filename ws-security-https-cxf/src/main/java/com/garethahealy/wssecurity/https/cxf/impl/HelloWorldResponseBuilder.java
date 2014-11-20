@@ -5,10 +5,10 @@ import com.garethahealy.helloworld.HelloWorldResponse;
 
 public class HelloWorldResponseBuilder {
 
-	public HelloWorldResponse getResponse(HelloWorldRequest body) {
-		HelloWorldResponse response = new HelloWorldResponse();
-		response.setGoodbye(body.getHello() + " # Ahhh...what a shame to see you leave :(");
+        public HelloWorldResponse getResponse(HelloWorldRequest body) {
+                HelloWorldResponse response = new HelloWorldResponse();
+                response.setGoodbye(body.getHello() + " # Ahhh...what a shame to see you leave :(");
 
-		return response;
-	}
+                return response;
+        }
 }
