@@ -1,19 +1,22 @@
+# IntelliJ IDEA #
+.idea/
+*.iml
+
 # Eclipse Files #
 .metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-.settings/
-.loadpath
+.settings
 .project
 .classpath
-.attach_pid*
+RemoteSystemsTempFiles
+
+# General Java Folders #
+bin/
 target/
 
-# Package Files #
+# Java Package Files #
 *.jar
-*.war
-*.ear
 *.class
+
+# General #
+tmp/
+*.tmp
