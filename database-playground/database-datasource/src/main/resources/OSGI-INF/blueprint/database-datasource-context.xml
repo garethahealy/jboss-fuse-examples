@@ -9,7 +9,7 @@
     <cm:property-placeholder persistent-id="com.garethahealy.databaseplayground.database.datasource"
                              update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="database.url" value="jdbc:mysql://localhost:3306/DatabasePlayground?autoReconnect=true"/>
+            <cm:property name="database.url" value="jdbc:mysql://localhost:3306/database_playground?autoReconnect=true"/>
             <cm:property name="database.user" value="gareth"/>
             <cm:property name="database.password" value="healy"/>
             <cm:property name="database.initialSize" value="16"/>
