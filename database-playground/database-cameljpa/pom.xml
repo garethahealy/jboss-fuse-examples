@@ -17,6 +17,7 @@
         <build.osgi.import.before.defaults>
             <!-- com.someone;version="[1.0,2.0)" -->
         </build.osgi.import.before.defaults>
+        <build.osgi.import.service>javax.sql.DataSource;osgi.jndi.service.name=jdbc/mysqlBasicManagedDataSource</build.osgi.import.service>
         <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.cameljpa.*</build.osgi.export.pkg>
         <build.osgi.export.service/>
         <build.osgi.activator/>

@@ -74,7 +74,6 @@
     <feature name="${project.groupId}-database-playground" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-openjpa-dependencies</feature>
         <bundle>mvn:${project.groupId}/database-datasource/${project.version}</bundle>
-        <!--<bundle>mvn:${project.groupId}/database-openjpa/${project.version}</bundle>-->
-        <bundle>mvn:${project.groupId}/database-repositories/${project.version}</bundle>
+        <bundle>mvn:${project.groupId}/database-cameljpa/${project.version}</bundle>
     </feature>
 </features>
