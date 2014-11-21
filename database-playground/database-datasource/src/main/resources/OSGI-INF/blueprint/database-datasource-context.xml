@@ -28,7 +28,13 @@
             <entry key="osgi.jndi.service.name" value="jdbc/mysqlBasicManagedDataSource"/>
         </service-properties>
     </service>
-
+<!--
+    <service ref="mysqlBasicDataSource" interface="javax.sql.DataSource">
+        <service-properties>
+            <entry key="osgi.jndi.service.name" value="jdbc/mysqlBasicDataSource"/>
+        </service-properties>
+    </service>
+-->
     <bean id="mysqlXADataSource" class="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource">
         <property name="url" value="${database.url}"/>
         <property name="user" value="${database.user}"/>
@@ -39,6 +45,20 @@
           destroy-method="close">
         <property name="xaDataSourceInstance" ref="mysqlXADataSource"/>
         <property name="transactionManager" ref="transactionManager"/>
+        <property name="initialSize" value="${database.initialSize}"/>
+        <property name="maxActive" value="${database.maxActive}"/>
+        <property name="minIdle" value="${database.minIdle}"/>
+        <property name="maxIdle" value="${database.maxIdle}"/>
+        <property name="testOnBorrow" value="${database.testOnBorrow}"/>
+        <property name="validationQuery" value="${database.validationQuery}"/>
+    </bean>
+
+    <bean id="mysqlBasicDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.user}"/>
+        <property name="password" value="${database.password}"/>
         <property name="initialSize" value="${database.initialSize}"/>
         <property name="maxActive" value="${database.maxActive}"/>
         <property name="minIdle" value="${database.minIdle}"/>

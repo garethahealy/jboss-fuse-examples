@@ -1,32 +1,51 @@
 package com.garethahealy.databaseplayground.database.model.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "Beer")
-@NamedNativeQueries({
-	@NamedNativeQuery(name = "1", query = "{call Somet(?,?,?,?)}")
-})
-public class Beer {
+@Table(name = "beers")
+public class Beer implements Serializable {
 
-	private Integer id;
-	
-	public Beer() {
-		
-	}
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "Id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+        private static final long serialVersionUID = -5958885654581897644L;
 
+        private Integer id;
+        private String name;
+
+        public Beer() {
+
+        }
+
+        public Beer(Integer id, String name) {
+                this.id = id;
+                this.name = name;
+        }
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        @Column(name = "id", unique = true, nullable = false)
+        public Integer getId() {
+                return this.id;
+        }
+
+        public void setId(Integer id) {
+                this.id = id;
+        }
+
+        @Column(name = "name")
+        public String getName() {
+                return name;
+        }
+
+        public void setName(String name) {
+                this.name = name;
+        }
+
+        @Override
+        public String toString() {
+                return "com.garethahealy.databaseplayground.database.model.entities.Beer{" +
+                       "id=" + getId() +
+                       ", name='" + getName() + '\'' +
+                       '}';
+        }
 }

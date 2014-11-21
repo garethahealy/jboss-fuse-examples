@@ -16,7 +16,21 @@
 	<service ref="beerRepository" interface="com.garethahealy.databaseplayground.database.model.repositories.BeerRepository"/>
 
 	<bean id="beerRepository" class="com.garethahealy.databaseplayground.database.repositories.impl.BeerRepositoryImpl">
-		<jpa:context unitname="garethahealy-databaseplayground-openjpa-persistence" property="entityManager"/>
+		<jpa:context unitname="playground-persistence" property="entityManager"/>
     	<tx:transaction method="*" value="Required"/>
   	</bean>
+
+	<camelContext id="database-repositories-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+
+		<route id="consumeBeerViaBeans">
+			<from uri="timer://tickEveryMinute?period=1minute"/>
+			<bean ref="beerRepository" method="getBeers"/>
+			<split parallelProcessing="true">
+				<simple>${body}</simple>
+				<log message="Hmm beer: ${body}"/>
+			</split>
+		</route>
+
+	</camelContext>
+
 </blueprint>

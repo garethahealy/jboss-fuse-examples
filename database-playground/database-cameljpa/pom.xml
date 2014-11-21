@@ -15,13 +15,11 @@
 
     <properties>
         <build.osgi.import.before.defaults>
-            <!-- com.someone;version="[1.0,2.0)" -->
+            javax.persistence
         </build.osgi.import.before.defaults>
-        <build.osgi.import.service>javax.sql.DataSource;osgi.jndi.service.name=jdbc/mysqlBasicManagedDataSource</build.osgi.import.service>
         <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.cameljpa.*</build.osgi.export.pkg>
         <build.osgi.export.service/>
         <build.osgi.activator/>
-        <build.osgi.meta.persistence>META-INF/persistence.xml</build.osgi.meta.persistence>
     </properties>
 
     <dependencies>
@@ -29,45 +27,6 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jpa_2.0_spec</artifactId>
-        </dependency>
     </dependencies>
-
-    <build>
-        <defaultGoal>install</defaultGoal>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.openjpa</groupId>
-                <artifactId>openjpa-maven-plugin</artifactId>
-                <configuration>
-                    <includes>**/entities/*.class</includes>
-                    <addDefaultConstructor>true</addDefaultConstructor>
-                    <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>enhancer</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.openjpa</groupId>
-                        <artifactId>openjpa</artifactId>
-                        <version>${openjpa-version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
