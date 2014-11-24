@@ -20,7 +20,7 @@ public class BeerRepositoryImpl implements BeerRepository {
 
         @Override
         public List<Beer> getBeers() {
-                TypedQuery<Beer> beersQuery = entityManager.createQuery("SELECT b.id, b.name FROM Beer b", Beer.class);
+                TypedQuery<Beer> beersQuery = entityManager.createNamedQuery(Beer.SELECT_ALL_QUERY, Beer.class);
                 return beersQuery.getResultList();
         }
 }

@@ -7,7 +7,6 @@
     <persistence-unit name="playground-persistence" transaction-type="JTA"> <!-- RESOURCE_LOCAL -->
         <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
         <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/mysqlBasicManagedDataSource)</jta-data-source>
-        <!--<non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/mysqlBasicDataSource)</non-jta-data-source>-->
         <class>com.garethahealy.databaseplayground.database.model.entities.Beer</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>

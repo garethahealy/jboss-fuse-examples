@@ -22,8 +22,11 @@
     <camelContext id="database-cameljpa-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
         <route id="consumeBeerViaCamelJpa">
-            <from uri="jpa://com.garethahealy.databaseplayground.database.model.entities.Beer?consumer.query=SELECT b.id, b.name FROM Beer b"/>
-            <log message="got the following from db: ${body}"/>
+            <from uri="jpa://com.garethahealy.databaseplayground.database.model.entities.Beer?consumer.initialDelay=10seconds&amp;consumer.useFixedDelay=true&amp;consumer.delay=1minute&amp;consumer.namedQuery=Beer.SelectAll"/>
+			<split parallelProcessing="true">
+				<simple>${body}</simple>
+				<log message="${body}"/>
+			</split>
         </route>
 
     </camelContext>

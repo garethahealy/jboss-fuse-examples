@@ -15,7 +15,7 @@
 	
 	<properties>
 		<build.osgi.import.before.defaults>
-			<!-- com.someone;version="[1.0,2.0)" -->
+			javax.persistence
 		</build.osgi.import.before.defaults>
 		<build.osgi.export.pkg>com.garethahealy.databaseplayground.database.repositories.*</build.osgi.export.pkg>
 		<build.osgi.export.service />

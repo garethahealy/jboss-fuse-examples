@@ -5,10 +5,12 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "beers")
+@NamedQueries(@NamedQuery(name = Beer.SELECT_ALL_QUERY, query = "SELECT b FROM Beer b"))
 public class Beer implements Serializable {
 
         private static final long serialVersionUID = -5958885654581897644L;
 
+        public static final String SELECT_ALL_QUERY = "Beer.SelectAll";
         private Integer id;
         private String name;
 

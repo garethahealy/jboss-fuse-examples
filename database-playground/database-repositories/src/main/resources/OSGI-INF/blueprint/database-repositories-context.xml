@@ -25,9 +25,10 @@
 		<route id="consumeBeerViaBeans">
 			<from uri="timer://tickEveryMinute?period=1minute"/>
 			<bean ref="beerRepository" method="getBeers"/>
+			<log message="Number of items returned: ${body.size}"/>
 			<split parallelProcessing="true">
 				<simple>${body}</simple>
-				<log message="Hmm beer: ${body}"/>
+				<log message="${body}"/>
 			</split>
 		</route>
 
