@@ -14,7 +14,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <!-- Build propertis -->
+        <!-- Build propertis based on the Apache Camel project -->
         <build.osgi.import.build.version>
             version="[$(version;==;${build.osgi.version.clean}),$(version;=+;${build.osgi.version.clean}))"
         </build.osgi.import.build.version>
