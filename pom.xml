@@ -68,6 +68,13 @@
         <jpa-feature-version>1.0.0</jpa-feature-version>
         <jndi-feature-version>1.0.0</jndi-feature-version>
         <transaction-feature-version>1.0.1.${redhat-version}</transaction-feature-version>
+        <hibernate-core-version>4.2.9.Final</hibernate-core-version>
+
+        <!-- Ranges for versions -->
+        <persistence-range-version>"[1.1,2)"</persistence-range-version>
+        <dbcp-range-version>"[1.4,1.5)"</dbcp-range-version>
+        <javassist-range-version>"[3.18,4)"</javassist-range-version>
+        <hibernate-range-version>"[4.2,4.3)"</hibernate-range-version>
 
         <!-- Project settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -361,6 +368,12 @@
                 <groupId>org.apache.openjpa</groupId>
                 <artifactId>openjpa</artifactId>
                 <version>${openjpa-version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate-core-version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>

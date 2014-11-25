@@ -15,8 +15,9 @@
 
     <properties>
         <build.osgi.import.before.defaults>
-            javax.persistence
+            javax.persistence;version=${persistence-range-version}
         </build.osgi.import.before.defaults>
+        <build.osgi.import.service>org.springframework.transaction.PlatformTransactionManager</build.osgi.import.service>
         <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.cameljpa.*</build.osgi.export.pkg>
         <build.osgi.export.service/>
         <build.osgi.activator/>

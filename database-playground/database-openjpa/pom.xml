@@ -15,8 +15,8 @@
 
     <properties>
         <build.osgi.import.before.defaults>
-            javax.persistence,
-            org.apache.openjpa.persistence
+            javax.persistence;version=${persistence-range-version},
+            org.apache.openjpa.persistence;version=${openjpa-version}
         </build.osgi.import.before.defaults>
         <build.osgi.import.service>javax.sql.DataSource;osgi.jndi.service.name=jdbc/mysqlBasicManagedDataSource</build.osgi.import.service>
         <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.model.*</build.osgi.export.pkg>

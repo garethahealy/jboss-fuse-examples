@@ -27,21 +27,21 @@
         <feature version="${jpa-feature-version}">jpa</feature>
         <feature version="${jndi-feature-version}">jndi</feature>
         <feature version="${transaction-feature-version}">transaction</feature>
-        <bundle>mvn:mysql/mysql-connector-java/${mysql-connector-version}</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/${commons-dbcp-version}</bundle>
+        <bundle>mvn:mysql/mysql-connector-java/${mysql-connector-version}</bundle>
         <bundle>mvn:commons-pool/commons-pool/${commons-pool-version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.serp/${serp-version}</bundle>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/${geronimo-jpa-version}</bundle>
     </feature>
 
     <feature name="${project.groupId}-openjpa-dependencies" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-database-dependencies</feature>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.serp/${serp-version}</bundle>
+        <bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/${geronimo-jpa-version}</bundle>
         <bundle>mvn:org.apache.openjpa/openjpa/${openjpa-version}</bundle>
     </feature>
 
     <feature name="${project.groupId}-hibernate-dependencies" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-database-dependencies</feature>
-        <feature version="${karaf-version}">hibernate-jpa</feature>
+        <feature version="${karaf-version}">jpa-hibernate</feature>
     </feature>
 
     <feature name="${project.groupId}-jaas-dependencies" version="${project.version}" resolver="(obr)">
@@ -51,7 +51,7 @@
     <!-- $Bundle-SymbolicName=activemq-pool&Bundle-Version=${activemq-version}; -->
     <feature name="${project.groupId}-camel-activemq-transacted" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-activemq-dependencies</feature>
-        <bundle dependency="true">mvn:${project.groupId}/activemq-service/${project.version}</bundle>
+        <bundle>mvn:${project.groupId}/activemq-service/${project.version}</bundle>
         <bundle>mvn:${project.groupId}/camel-activemq-transacted/${project.version}</bundle>
     </feature>
 
@@ -59,7 +59,7 @@
         <details>The disruptor bundle can only run on a SUN JVM. You need to add the package 'sun.misc' in the
             etc/jre.properties file, for the container
         </details>
-        <bundle dependency="true">mvn:com.lmax/disruptor/${disruptor-version}</bundle>
+        <bundle>mvn:com.lmax/disruptor/${disruptor-version}</bundle>
         <bundle>mvn:${project.groupId}/threading-playground/${project.version}</bundle>
     </feature>
 
@@ -71,10 +71,23 @@
         <bundle>mvn:${project.groupId}/ws-security-https-cxf/${project.version}</bundle>
     </feature>
 
-    <feature name="${project.groupId}-database-playground" version="${project.version}" resolver="(obr)">
+    <feature name="${project.groupId}-database-playground-cameljpa" version="${project.version}" resolver="(obr)">
+        <details>This needs to be installed after the other databaseplayground features, due to the spring platform manager
+        </details>
+        <bundle>mvn:${project.groupId}/database-cameljpa/${project.version}</bundle>
+    </feature>
+
+    <feature name="${project.groupId}-database-playground-openjpa" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-openjpa-dependencies</feature>
         <bundle>mvn:${project.groupId}/database-datasource/${project.version}</bundle>
+        <bundle>mvn:${project.groupId}/database-repositories/${project.version}</bundle>
         <bundle>mvn:${project.groupId}/database-openjpa/${project.version}</bundle>
-        <bundle>mvn:${project.groupId}/database-cameljpa/${project.version}</bundle>
+    </feature>
+
+    <feature name="${project.groupId}-database-playground-hibernate" version="${project.version}" resolver="(obr)">
+        <feature version="${project.version}">${project.groupId}-hibernate-dependencies</feature>
+        <bundle>mvn:${project.groupId}/database-datasource/${project.version}</bundle>
+        <bundle>mvn:${project.groupId}/database-repositories/${project.version}</bundle>
+        <bundle>mvn:${project.groupId}/database-hibernate/${project.version}</bundle>
     </feature>
 </features>

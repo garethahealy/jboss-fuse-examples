@@ -13,16 +13,24 @@
     <packaging>bundle</packaging>
     <name>${project.artifactId}</name>
 
-    <!-- https://github.com/pires/fabric8-persistence-hibernate/ -->
-
     <properties>
         <build.osgi.import.before.defaults>
-            <!-- com.someone;version="[1.0,2.0)" -->
+            javax.persistence;version=${persistence-range-version},
+            javassist.util.proxy;version=${javassist-range-version},
+            org.hibernate.proxy;version=${hibernate-range-version}
         </build.osgi.import.before.defaults>
-        <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.entities.*</build.osgi.export.pkg>
+        <build.osgi.import.service>javax.sql.DataSource;osgi.jndi.service.name=jdbc/mysqlBasicManagedDataSource</build.osgi.import.service>
+        <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.model.*</build.osgi.export.pkg>
         <build.osgi.export.service/>
         <build.osgi.activator/>
+        <build.osgi.meta.persistence>META-INF/persistence.xml</build.osgi.meta.persistence>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

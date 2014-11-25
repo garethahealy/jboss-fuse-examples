@@ -15,7 +15,7 @@
 
     <properties>
         <build.osgi.import.before.defaults>
-            org.apache.commons.dbcp.managed,
+            org.apache.commons.dbcp.managed;version=${dbcp-range-version},
             com.mysql.jdbc.jdbc2.optional;version=${mysql-connector-version}
         </build.osgi.import.before.defaults>
         <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.datasource.*</build.osgi.export.pkg>

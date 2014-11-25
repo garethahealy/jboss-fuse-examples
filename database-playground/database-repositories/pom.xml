@@ -15,7 +15,7 @@
 	
 	<properties>
 		<build.osgi.import.before.defaults>
-			javax.persistence
+			javax.persistence;version=${persistence-range-version}
 		</build.osgi.import.before.defaults>
 		<build.osgi.export.pkg>com.garethahealy.databaseplayground.database.repositories.*</build.osgi.export.pkg>
 		<build.osgi.export.service />
@@ -23,6 +23,7 @@
 	</properties>
 	
 	<dependencies>
+		<!-- Has dependancy on below, due to the model -->
 		<dependency>
 			<groupId>com.garethahealy</groupId>
 			<artifactId>database-openjpa</artifactId>
