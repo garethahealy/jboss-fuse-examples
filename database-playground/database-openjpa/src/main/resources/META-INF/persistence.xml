@@ -16,6 +16,14 @@
             <property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=True, PrettyPrint=true"/>
             <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
             <property name="openjpa.jdbc.TransactionIsolation" value="repeatable-read"/>
+
+            <!--  Enable caches and cache statistics -->
+            <property name="openjpa.DataCache" value="true(EnableStatistics=true)"/>
+            <property name="openjpa.QueryCache" value="true(EnableStatistics=true)"/>
+            <property name="openjpa.jdbc.QuerySQLCache" value="true(EnableStatistics=true)"/>
+
+            <!--  Enable jmx provider and instruments for Data, Query, and QuerySQL caches -->
+            <property name="openjpa.Instrumentation" value="jmx(Instrument='DataCache,QueryCache,QuerySQLCache')"/>
         </properties>
     </persistence-unit>
 </persistence>
