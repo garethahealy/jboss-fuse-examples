@@ -20,3 +20,7 @@ target/
 # General #
 tmp/
 *.tmp
+
+# AMQ Performance Testing #
+JmsConsumer_*.xml
+JmsProducer_*.xml
