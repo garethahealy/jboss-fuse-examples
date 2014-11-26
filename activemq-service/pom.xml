@@ -20,4 +20,14 @@
         <build.osgi.activator/>
     </properties>
 
+    <build>
+        <!-- mvn activemq-perf:consumer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin -->
+        <!-- mvn activemq-perf:producer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.activemq.tooling</groupId>
+                <artifactId>activemq-perf-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

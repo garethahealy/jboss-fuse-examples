@@ -207,6 +207,12 @@
                     <artifactId>openjpa-maven-plugin</artifactId>
                     <version>${openjpa-version}</version>
                 </plugin>
+                <plugin>
+                    <!-- http://activemq.apache.org/activemq-performance-module-users-manual.html -->
+                    <groupId>org.apache.activemq.tooling</groupId>
+                    <artifactId>activemq-perf-maven-plugin</artifactId>
+                    <version>${activemq-version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
