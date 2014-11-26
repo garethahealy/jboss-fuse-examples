@@ -13,7 +13,7 @@
             <cm:property name="database.user" value="gareth"/>
             <cm:property name="database.password" value="healy"/>
             <cm:property name="database.initialSize" value="4"/>
-            <cm:property name="database.maxActive" value="32"/>
+            <cm:property name="database.maxTotal" value="32"/>
             <cm:property name="database.minIdle" value="4"/>
             <cm:property name="database.maxIdle" value="16"/>
             <cm:property name="database.testOnBorrow" value="false"/>
@@ -40,7 +40,7 @@
         <property name="xaDataSourceInstance" ref="mysqlXADataSource"/>
         <property name="transactionManager" ref="transactionManager"/>
         <property name="initialSize" value="${database.initialSize}"/>
-        <property name="maxTotal" value="${database.maxActive}"/>
+        <property name="maxTotal" value="${database.maxTotal}"/>
         <property name="minIdle" value="${database.minIdle}"/>
         <property name="maxIdle" value="${database.maxIdle}"/>
         <property name="testOnBorrow" value="${database.testOnBorrow}"/>
