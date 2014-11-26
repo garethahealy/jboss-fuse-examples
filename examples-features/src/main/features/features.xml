@@ -27,9 +27,10 @@
         <feature version="${jpa-feature-version}">jpa</feature>
         <feature version="${jndi-feature-version}">jndi</feature>
         <feature version="${transaction-feature-version}">transaction</feature>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/${commons-dbcp-version}</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib-version}</bundle>
+        <bundle>mvn:org.apache.commons/commons-pool2/${commons-pool2-version}</bundle>
+        <bundle>mvn:org.apache.commons/commons-dbcp2/${commons-dbcp2-version}</bundle>
         <bundle>mvn:mysql/mysql-connector-java/${mysql-connector-version}</bundle>
-        <bundle>mvn:commons-pool/commons-pool/${commons-pool-version}</bundle>
     </feature>
 
     <feature name="${project.groupId}-openjpa-dependencies" version="${project.version}" resolver="(obr)">

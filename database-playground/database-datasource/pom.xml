@@ -15,7 +15,7 @@
 
     <properties>
         <build.osgi.import.before.defaults>
-            org.apache.commons.dbcp.managed;version=${dbcp-range-version},
+            org.apache.commons.dbcp2.managed;version=${dbcp-range-version},
             com.mysql.jdbc.jdbc2.optional;version=${mysql-connector-version}
         </build.osgi.import.before.defaults>
         <build.osgi.export.pkg>com.garethahealy.databaseplayground.database.datasource.*</build.osgi.export.pkg>
@@ -25,8 +25,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

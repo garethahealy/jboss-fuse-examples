@@ -16,7 +16,7 @@
             <cm:property name="database.maxActive" value="32"/>
             <cm:property name="database.minIdle" value="4"/>
             <cm:property name="database.maxIdle" value="16"/>
-            <cm:property name="database.testOnBorrow" value="true"/>
+            <cm:property name="database.testOnBorrow" value="false"/>
             <cm:property name="database.validationQuery" value="SELECT 1 FROM DUAL"/>
         </cm:default-properties>
     </cm:property-placeholder>
@@ -35,12 +35,12 @@
         <property name="password" value="${database.password}"/>
     </bean>
 
-    <bean id="mysqlBasicManagedDataSource" class="org.apache.commons.dbcp.managed.BasicManagedDataSource"
+    <bean id="mysqlBasicManagedDataSource" class="org.apache.commons.dbcp2.managed.BasicManagedDataSource"
           destroy-method="close">
         <property name="xaDataSourceInstance" ref="mysqlXADataSource"/>
         <property name="transactionManager" ref="transactionManager"/>
         <property name="initialSize" value="${database.initialSize}"/>
-        <property name="maxActive" value="${database.maxActive}"/>
+        <property name="maxTotal" value="${database.maxActive}"/>
         <property name="minIdle" value="${database.minIdle}"/>
         <property name="maxIdle" value="${database.maxIdle}"/>
         <property name="testOnBorrow" value="${database.testOnBorrow}"/>
