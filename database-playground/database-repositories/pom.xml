@@ -33,6 +33,18 @@
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_2.0_spec</artifactId>
 		</dependency>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.apache.aries.jpa</groupId>
+			<artifactId>org.apache.aries.jpa.blueprint.aries</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.aries.transaction</groupId>
+			<artifactId>org.apache.aries.transaction.blueprint</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>
