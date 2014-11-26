@@ -23,8 +23,19 @@ public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
                 PlatformTransactionManager platformTransactionManager = Mockito.mock(PlatformTransactionManager.class);
                 EntityManagerFactory entityManagerFactory = Mockito.mock(EntityManagerFactory.class);
 
+                provideMockMethods(platformTransactionManager);
+                provideMockMethods(entityManagerFactory);
+
                 services.put(PlatformTransactionManager.class.getCanonicalName(), asService(platformTransactionManager, null));
                 services.put(EntityManagerFactory.class.getCanonicalName(), asService(entityManagerFactory, "osgi.unit.name", "playground-persistence"));
+        }
+
+        protected void provideMockMethods(EntityManagerFactory emf) {
+
+        }
+
+        protected void provideMockMethods(PlatformTransactionManager ptm) {
+
         }
 }
 

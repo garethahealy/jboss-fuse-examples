@@ -71,6 +71,7 @@
         <transaction-feature-version>1.0.1.${redhat-version}</transaction-feature-version>
         <hibernate-core-version>4.2.9.Final</hibernate-core-version>
         <aries-jpa-blueprint-version>1.0.1.${redhat-version}</aries-jpa-blueprint-version>
+        <aries-transaction-blueprint-version>1.0.1.${redhat-version}</aries-transaction-blueprint-version>
 
         <!-- Ranges for versions -->
         <persistence-range-version>"[1.1,2)"</persistence-range-version>
@@ -406,6 +407,12 @@
                 <groupId>org.apache.aries.jpa</groupId>
                 <artifactId>org.apache.aries.jpa.blueprint.aries</artifactId>
                 <version>${aries-jpa-blueprint-version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.aries.transaction</groupId>
+                <artifactId>org.apache.aries.transaction.blueprint</artifactId>
+                <version>${aries-transaction-blueprint-version}</version>
                 <scope>test</scope>
             </dependency>
 
