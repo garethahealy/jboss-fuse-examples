@@ -32,7 +32,7 @@ public class RetryableAmqProducer extends DefaultAmqProducer {
                         try {
                                 amqConnection = super.createConnection();
                         } catch (JMSException ex) {
-                                LOG.error("Exception creating connection from connection factory {} to {} because {}. Attenpting retry {} of {}",
+                                LOG.error("Exception creating connection from connection factory {} to {} because {}. Attempting retry {} of {}",
                                           connectionFactory.getClass().getName(), amqBrokerConfiguration.getBrokerURL(), ex.getMessage(), count, retryAmount);
 
                                 if (count == retryAmount) {
@@ -61,7 +61,7 @@ public class RetryableAmqProducer extends DefaultAmqProducer {
                                 try {
                                         amqSession = super.createSession(amqConnection, isTransacted, acknowledgeMode);
                                 } catch (JMSException ex) {
-                                        LOG.error("Exception creating session for connection {} because {}. Attenpting retry {} of {}", amqConnection, ex.getMessage(),  count, retryAmount);
+                                        LOG.error("Exception creating session for connection {} because {}. Attempting retry {} of {}", amqConnection, ex.getMessage(),  count, retryAmount);
 
                                         if (count == retryAmount) {
                                                 //Last retry, so bubble exception upwards
