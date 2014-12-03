@@ -3,11 +3,13 @@ package com.garethahealy.activemq.client.poc.producers;
 import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
+import javax.jms.Session;
 
 public class RetryableAmqProducer extends DefaultAmqProducer {
 
@@ -25,15 +27,15 @@ public class RetryableAmqProducer extends DefaultAmqProducer {
                 Connection amqConnection = null;
 
                 int count = 1;
-                int connectionRetryAmount = retryConfiguration.getConnectionRetryAmount();
+                int retryAmount = retryConfiguration.getConnectionRetryAmount();
                 while (amqConnection == null) {
                         try {
                                 amqConnection = super.createConnection();
                         } catch (JMSException ex) {
                                 LOG.error("Exception creating connection from connection factory {} to {} because {}. Attenpting retry {} of {}",
-                                          connectionFactory.getClass().getName(), amqBrokerConfiguration.getBrokerURL(), ex, count, connectionRetryAmount);
+                                          connectionFactory.getClass().getName(), amqBrokerConfiguration.getBrokerURL(), ex.getMessage(), count, retryAmount);
 
-                                if (count == connectionRetryAmount) {
+                                if (count == retryAmount) {
                                         //Last retry, so bubble exception upwards
                                         throw ex;
                                 }
@@ -41,11 +43,40 @@ public class RetryableAmqProducer extends DefaultAmqProducer {
 
                         count++;
 
-                        if (count > connectionRetryAmount) {
+                        if (count > retryAmount) {
                                 break;
                         }
                 }
 
                 return amqConnection;
+        }
+
+        @Override
+        protected Session createSession(Connection amqConnection, boolean isTransacted, int acknowledgeMode) throws JMSException {
+                Session amqSession = null;
+                if (amqConnection != null) {
+                        int count = 1;
+                        int retryAmount = retryConfiguration.getConnectionRetryAmount();
+                        while (amqSession == null) {
+                                try {
+                                        amqSession = super.createSession(amqConnection, isTransacted, acknowledgeMode);
+                                } catch (JMSException ex) {
+                                        LOG.error("Exception creating session for connection {} because {}. Attenpting retry {} of {}", amqConnection, ex.getMessage(),  count, retryAmount);
+
+                                        if (count == retryAmount) {
+                                                //Last retry, so bubble exception upwards
+                                                throw ex;
+                                        }
+                                }
+
+                                count++;
+
+                                if (count > retryAmount) {
+                                        break;
+                                }
+                        }
+                }
+
+                return amqSession;
         }
 }

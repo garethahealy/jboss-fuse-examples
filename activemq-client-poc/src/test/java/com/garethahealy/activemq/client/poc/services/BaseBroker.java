@@ -24,8 +24,10 @@ public abstract class BaseBroker {
         }
 
         protected void stopBroker() throws Exception {
-                broker.stop();
-                broker.waitUntilStopped();
-                broker = null;
+                if (broker != null) {
+                        broker.stop();
+                        broker.waitUntilStopped();
+                        broker = null;
+                }
         }
 }

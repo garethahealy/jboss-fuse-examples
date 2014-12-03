@@ -2,6 +2,7 @@ package com.garethahealy.activemq.client.poc.producers;
 
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ public class JsonAmqProducer extends DefaultAmqProducer {
                 try {
                         amqMessage = amqSession.createTextMessage(body[0].toString() + body[1].toString());
                 } catch (JMSException ex) {
-                        LOG.error("Exception creating message {} for session {} because {}", body, amqSession, ex);
+                        LOG.error("Exception creating message {} for session {} because {}", body, amqSession, ExceptionUtils.getStackTrace(ex));
                 }
 
                 return amqMessage;

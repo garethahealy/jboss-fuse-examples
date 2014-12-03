@@ -1,9 +1,9 @@
 package com.garethahealy.activemq.client.poc.services;
 
-import com.garethahealy.activemq.client.poc.callbacks.CreateConnectionCallback;
+import com.garethahealy.activemq.client.poc.callbacks.DefaultCallbackHandler;
 import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
-import com.garethahealy.activemq.client.poc.mocked.producers.MockedSlowRetryableAmqProducer;
+import com.garethahealy.activemq.client.poc.mocked.producers.CallbackableRetryableAmqProducer;
 import com.garethahealy.activemq.client.poc.producers.Producer;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.resolvers.PooledAmqConnectionFactoryResolver;
@@ -12,16 +12,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MessageServiceConnectionFailuresTests11 extends BaseBroker {
+public class MessageServiceBrokerDownAfterSessionCreatedTest extends BaseBroker {
 
-        private Producer getRetryableAmqProducer() {
+        private Producer getRetryableAmqProducerWithDownBroker() {
                 RetryConfiguration retryConfiguration = new RetryConfiguration();
                 AmqBrokerConfiguration amqBrokerConfiguration = new AmqBrokerConfiguration();
                 ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(amqBrokerConfiguration);
 
-                CreateConnectionCallback createConnectionCallback = new CreateConnectionCallback() {
+
+                DefaultCallbackHandler defaultCallbackHandler = new DefaultCallbackHandler() {
                         @Override
-                        public void onConnect() {
+                        public void createSession() {
                                 try {
                                         stopBroker();
                                 }catch (Exception ex) {
@@ -29,7 +30,7 @@ public class MessageServiceConnectionFailuresTests11 extends BaseBroker {
                         }
                 };
 
-                return new MockedSlowRetryableAmqProducer(createConnectionCallback, retryConfiguration, amqBrokerConfiguration, connectionFactoryResolver);
+                return new CallbackableRetryableAmqProducer(defaultCallbackHandler, retryConfiguration, amqBrokerConfiguration, connectionFactoryResolver);
         }
 
         @Before
@@ -43,12 +44,12 @@ public class MessageServiceConnectionFailuresTests11 extends BaseBroker {
         }
 
         @Test
-        public void canSend() {
-                Producer producer = getRetryableAmqProducer();
+        public void handlesDownBroker() {
+                Producer producer = getRetryableAmqProducerWithDownBroker();
 
                 MessageService messageService = new MessageService(producer);
                 boolean hasSent = messageService.sendMessagesToQueue("gareth", "healy");
 
-                Assert.assertTrue("hasSent", hasSent);
+                Assert.assertFalse("hasSent", hasSent);
         }
 }

@@ -20,7 +20,7 @@ public class MessageServiceNoBrokerTest {
         }
 
         @Test
-        public void canSend() {
+        public void handlesBrokerRunning() {
                 Producer producer = getRetryableAmqProducer();
 
                 MessageService messageService = new MessageService(producer);

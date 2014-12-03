@@ -2,6 +2,7 @@ package com.garethahealy.activemq.client.poc.producers;
 
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,7 @@ public abstract class BaseAmqProducer implements Producer {
                 } catch (JMSException ex) {
                         hasNotThrownException = false;
 
-                        LOG.error("Exception producing message {} because {}", body, ex);
+                        LOG.error("Exception producing message {} because {}", body, ExceptionUtils.getStackTrace(ex));
                 }
 
                 //Cleanup
@@ -91,7 +92,7 @@ public abstract class BaseAmqProducer implements Producer {
                                 amqSession.close();
                                 amqSession = null;
                         } catch (JMSException ex) {
-                                LOG.error("Exception closing session {} because {}", amqSession, ex);
+                                LOG.error("Exception closing session {} because {}", amqSession, ExceptionUtils.getStackTrace(ex));
                         }
 
                 }
@@ -105,7 +106,7 @@ public abstract class BaseAmqProducer implements Producer {
                                 amqConnection.close();
                                 amqConnection = null;
                         } catch (JMSException ex) {
-                                LOG.error("Exception closing connection {} because {}", amqConnection, ex);
+                                LOG.error("Exception closing connection {} because {}", amqConnection, ExceptionUtils.getStackTrace(ex));
                         }
 
                 }
@@ -119,7 +120,7 @@ public abstract class BaseAmqProducer implements Producer {
                                 amqProducer.close();
                                 amqProducer = null;
                         } catch (JMSException ex) {
-                                LOG.error("Exception closing producer {} because {}", amqProducer, ex);
+                                LOG.error("Exception closing producer {} because {}", amqProducer, ExceptionUtils.getStackTrace(ex));
                         }
                 }
 
