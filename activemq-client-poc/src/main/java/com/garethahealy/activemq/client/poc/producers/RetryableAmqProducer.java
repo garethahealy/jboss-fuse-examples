@@ -21,7 +21,7 @@ public class RetryableAmqProducer extends DefaultAmqProducer {
         }
 
         @Override
-        protected Connection createConnection() {
+        protected Connection createConnection() throws JMSException {
                 Connection amqConnection = null;
 
                 int count = 1;
@@ -32,6 +32,11 @@ public class RetryableAmqProducer extends DefaultAmqProducer {
                         } catch (JMSException ex) {
                                 LOG.error("Exception creating connection from connection factory {} to {} because {}. Attenpting retry {} of {}",
                                           connectionFactory.getClass().getName(), amqBrokerConfiguration.getBrokerURL(), ex, count, connectionRetryAmount);
+
+                                if (count == connectionRetryAmount) {
+                                        //Last retry, so bubble exception upwards
+                                        throw ex;
+                                }
                         }
 
                         count++;
