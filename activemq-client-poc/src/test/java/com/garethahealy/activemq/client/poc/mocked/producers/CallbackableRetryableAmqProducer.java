@@ -8,10 +8,7 @@ import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.Session;
+import javax.jms.*;
 
 public class CallbackableRetryableAmqProducer extends RetryableAmqProducer {
 
@@ -50,5 +47,21 @@ public class CallbackableRetryableAmqProducer extends RetryableAmqProducer {
 
                 defaultCallbackHandler.createQueue();
                 return queue;
+        }
+
+        @Override
+        protected MessageProducer createProducer(Session amqSession, Queue amqQueue) throws JMSException {
+                MessageProducer messageProducer = super.createProducer(amqSession, amqQueue);
+
+                defaultCallbackHandler.createProducer();
+                return messageProducer;
+        }
+
+        @Override
+        protected Message createMessage(Session amqSession, Object[] body) throws JMSException {
+                Message message = super.createMessage(amqSession, body);
+
+                defaultCallbackHandler.createMessage();
+                return message;
         }
 }

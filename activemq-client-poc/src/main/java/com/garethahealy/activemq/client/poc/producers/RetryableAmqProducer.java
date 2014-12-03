@@ -7,9 +7,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.Session;
+import javax.jms.*;
 
 public class RetryableAmqProducer extends DefaultAmqProducer {
 
@@ -78,5 +76,20 @@ public class RetryableAmqProducer extends DefaultAmqProducer {
                 }
 
                 return amqSession;
+        }
+
+        @Override
+        protected Queue createQueue(Session amqSession, String queueName) throws JMSException {
+                return super.createQueue(amqSession, queueName);
+        }
+
+        @Override
+        protected MessageProducer createProducer(Session amqSession, Queue amqQueue) throws JMSException {
+                return super.createProducer(amqSession, amqQueue);
+        }
+
+        @Override
+        protected Message createMessage(Session amqSession, Object[] body) throws JMSException {
+                return super.createMessage(amqSession, body);
         }
 }
