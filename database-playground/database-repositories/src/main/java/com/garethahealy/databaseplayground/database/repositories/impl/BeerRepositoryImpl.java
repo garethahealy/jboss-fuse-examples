@@ -5,6 +5,7 @@ import com.garethahealy.databaseplayground.database.model.repositories.BeerRepos
 
 import javax.management.Query;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Queue;
@@ -13,10 +14,13 @@ public class BeerRepositoryImpl implements BeerRepository {
 
         private EntityManager entityManager;
 
-        public void setEntityManager(EntityManager entityManager) {
-                this.entityManager = entityManager;
-        }
+        //public void setEntityManager(EntityManager entityManager) {
+        //        this.entityManager = entityManager;
+       /// }
 
+        public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+               this.entityManager = entityManagerFactory.createEntityManager();
+        }
 
         @Override
         public List<Beer> getBeers() {

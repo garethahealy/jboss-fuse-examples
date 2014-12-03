@@ -33,7 +33,8 @@ public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 
         private Dictionary getEntityManagerFactoryDictionary() {
                 Dictionary entityManagerFactoryDictionary = new Hashtable();
-                entityManagerFactoryDictionary.put("org.apache.aries.jpa.proxy.factory", true);
+               // entityManagerFactoryDictionary.put("org.apache.aries.jpa.proxy.factory", true);
+                //entityManagerFactoryDictionary.put("org.apache.aries.jpa.proxy.factory", "*");
                 entityManagerFactoryDictionary.put("osgi.unit.name", "playground-persistence");
 
                 return entityManagerFactoryDictionary;

@@ -8,7 +8,7 @@
 
     <cm:property-placeholder persistent-id="com.garethahealy.activemq.service" update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="activemq.url" value="discovery:(fabric:default)?jms.prefetchPolicy.all=100"/>
+            <cm:property name="activemq.url" value="discovery:(fabric:default)?jms.prefetchPolicy.all=1"/>
             <cm:property name="activemq.username" value="admin"/>
             <cm:property name="activemq.password" value="admin"/>
             <cm:property name="activemq.maxConnections" value="16"/>

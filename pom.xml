@@ -18,6 +18,7 @@
         <module>fabric8-profiles</module>
         <module>examples-features</module>
         <module>examples-parent</module>
+        <module>activemq-client-poc</module>
         <module>activemq-service</module>
         <module>camel-activemq-transacted</module>
         <module>threading-playground</module>
