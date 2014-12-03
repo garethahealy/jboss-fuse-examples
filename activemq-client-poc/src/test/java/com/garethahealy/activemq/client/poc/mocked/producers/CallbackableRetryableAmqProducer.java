@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
+import javax.jms.Queue;
 import javax.jms.Session;
 
 public class CallbackableRetryableAmqProducer extends RetryableAmqProducer {
@@ -41,5 +42,13 @@ public class CallbackableRetryableAmqProducer extends RetryableAmqProducer {
 
                 defaultCallbackHandler.createSession();
                 return session;
+        }
+
+        @Override
+        protected Queue createQueue(Session amqSession, String queueName) throws JMSException {
+                Queue queue = super.createQueue(amqSession, queueName);
+
+                defaultCallbackHandler.createQueue();
+                return queue;
         }
 }

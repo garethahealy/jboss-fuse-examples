@@ -9,4 +9,16 @@ public class DefaultCallbackHandler {
         public void createSession() {
 
         }
+
+        public void createQueue() {
+
+        }
+
+        public void createProducer() {
+
+        }
+
+        public void createMessage() {
+
+        }
 }

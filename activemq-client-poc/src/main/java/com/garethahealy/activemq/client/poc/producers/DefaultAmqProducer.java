@@ -24,7 +24,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
                         amqConnection = super.createConnection();
                 } catch (JMSException ex) {
                         LOG.error("Exception creating connection from connection factory {} to {} because {}", connectionFactory.getClass().getName(),
-                                  amqBrokerConfiguration.getBrokerURL(), ExceptionUtils.getStackTrace(ex));
+                                  amqBrokerConfiguration.getBrokerURL(), ex.getMessage());
 
                         throw ex;
                 }
@@ -39,7 +39,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
                         try {
                                 amqSession = super.createSession(amqConnection, isTransacted, acknowledgeMode);
                         } catch (JMSException ex) {
-                                LOG.error("Exception creating session for connection {} because {}", amqConnection, ExceptionUtils.getStackTrace(ex));
+                                LOG.error("Exception creating session for connection {} because {}", amqConnection, ex.getMessage());
 
                                 throw ex;
                         }
@@ -55,7 +55,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
                         try {
                                 amqQueue = super.createQueue(amqSession, queueName);
                         } catch (JMSException ex) {
-                                LOG.error("Exception creating queue {} for session because {}", queueName, amqSession, ExceptionUtils.getStackTrace(ex));
+                                LOG.error("Exception creating queue {} for session because {}", queueName, amqSession, ex.getMessage());
 
                                 throw ex;
                         }
@@ -71,7 +71,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
                         try {
                                 amqProducer = super.createProducer(amqSession, amqQueue);
                         } catch (JMSException ex) {
-                                LOG.error("Exception creating producer for session {} on queue {} because {}", amqSession, amqQueue, ExceptionUtils.getStackTrace(ex));
+                                LOG.error("Exception creating producer for session {} on queue {} because {}", amqSession, amqQueue, ex.getMessage());
 
                                 throw ex;
                         }
@@ -87,7 +87,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
                         try {
                                 amqMessage = super.createMessage(amqSession, body);
                         } catch (JMSException ex) {
-                                LOG.error("Exception creating message {} for session {} because {}", body, amqSession, ExceptionUtils.getStackTrace(ex));
+                                LOG.error("Exception creating message {} for session {} because {}", body, amqSession, ex.getMessage());
 
                                 throw ex;
                         }
@@ -102,7 +102,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
                         try {
                                 super.send(amqProducer, amqMessage);
                         } catch (JMSException ex) {
-                                LOG.error("Exception sending message {} to producer {} because {}", amqMessage, amqProducer, ExceptionUtils.getStackTrace(ex).toString());
+                                LOG.error("Exception sending message {} to producer {} because {}", amqMessage, amqProducer, ex.getMessage().toString());
 
                                 throw ex;
                         }
