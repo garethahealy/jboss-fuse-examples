@@ -1,35 +1,37 @@
-package com.garethahealy.activemq.client.poc.services;
+package com.garethahealy.activemq.client.poc.producers.retryable;
 
 import com.garethahealy.activemq.client.poc.callbacks.DefaultCallbackHandler;
-import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
 import com.garethahealy.activemq.client.poc.mocked.producers.CallbackableRetryableAmqProducer;
+import com.garethahealy.activemq.client.poc.producers.BaseBroker;
 import com.garethahealy.activemq.client.poc.producers.Producer;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.resolvers.PooledAmqConnectionFactoryResolver;
+import com.garethahealy.activemq.client.poc.services.MessageService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MessageServiceBrokerDownAfterConnectionCreatedTest extends BaseBroker {
+public class MessageServiceBrokerDownAfterSessionCreatedTest extends BaseBroker {
 
         private Producer getRetryableAmqProducerWithDownBroker() {
                 RetryConfiguration retryConfiguration = new RetryConfiguration();
-                AmqBrokerConfiguration amqBrokerConfiguration = new AmqBrokerConfiguration();
-                ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(amqBrokerConfiguration);
+                BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
+                ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
 
                 DefaultCallbackHandler defaultCallbackHandler = new DefaultCallbackHandler() {
                         @Override
-                        public void createConnection() {
+                        public void createSession() {
                                 try {
                                         stopBroker();
-                                }catch (Exception ex) {
+                                } catch (Exception ex) {
                                 }
                         }
                 };
 
-                return new CallbackableRetryableAmqProducer(defaultCallbackHandler, retryConfiguration, amqBrokerConfiguration, connectionFactoryResolver);
+                return new CallbackableRetryableAmqProducer(defaultCallbackHandler, retryConfiguration, brokerConfiguration, connectionFactoryResolver);
         }
 
         @Before

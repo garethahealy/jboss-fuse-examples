@@ -1,7 +1,7 @@
 package com.garethahealy.activemq.client.poc.mocked.producers;
 
 import com.garethahealy.activemq.client.poc.callbacks.DefaultCallbackHandler;
-import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
 import com.garethahealy.activemq.client.poc.producers.RetryableAmqProducer;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
@@ -16,11 +16,9 @@ public class CallbackableRetryableAmqProducer extends RetryableAmqProducer {
 
         private DefaultCallbackHandler defaultCallbackHandler;
 
-        public CallbackableRetryableAmqProducer(DefaultCallbackHandler defaultCallbackHandler,
-                                                RetryConfiguration retryConfiguration, AmqBrokerConfiguration amqBrokerConfiguration,
+        public CallbackableRetryableAmqProducer(DefaultCallbackHandler defaultCallbackHandler, RetryConfiguration retryConfiguration, BrokerConfiguration brokerConfiguration,
                                                 ConnectionFactoryResolver connectionFactoryResolver) {
-
-                super(retryConfiguration, amqBrokerConfiguration, connectionFactoryResolver);
+                super(retryConfiguration, brokerConfiguration, connectionFactoryResolver);
 
                 this.defaultCallbackHandler = defaultCallbackHandler;
         }

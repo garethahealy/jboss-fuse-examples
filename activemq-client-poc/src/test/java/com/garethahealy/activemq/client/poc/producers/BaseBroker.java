@@ -1,4 +1,4 @@
-package com.garethahealy.activemq.client.poc.services;
+package com.garethahealy.activemq.client.poc.producers;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.TransportConnector;

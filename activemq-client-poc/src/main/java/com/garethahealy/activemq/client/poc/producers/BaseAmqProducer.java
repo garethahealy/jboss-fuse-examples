@@ -1,7 +1,9 @@
 package com.garethahealy.activemq.client.poc.producers;
 
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
+import com.garethahealy.activemq.client.poc.errorstrategys.AmqErrorStrategy;
+import com.garethahealy.activemq.client.poc.errorstrategys.DefaultErrorStrategy;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
-import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +14,19 @@ public abstract class BaseAmqProducer implements Producer {
 
         private static final Logger LOG = LoggerFactory.getLogger(BaseAmqProducer.class);
 
-        private boolean isTransacted = false;
         private ConnectionFactoryResolver connectionFactoryResolver;
-        protected AmqBrokerConfiguration amqBrokerConfiguration;
+        private AmqErrorStrategy amqErrorStrategy;
+        protected BrokerConfiguration brokerConfiguration;
         protected ConnectionFactory connectionFactory;
 
-        public BaseAmqProducer(AmqBrokerConfiguration amqBrokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver) {
-                this.amqBrokerConfiguration = amqBrokerConfiguration;
+        public BaseAmqProducer(BrokerConfiguration brokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver) {
+                this(brokerConfiguration, connectionFactoryResolver, new DefaultErrorStrategy());
+        }
+
+        public BaseAmqProducer(BrokerConfiguration brokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver, AmqErrorStrategy amqErrorStrategy) {
+                this.brokerConfiguration = brokerConfiguration;
                 this.connectionFactoryResolver = connectionFactoryResolver;
+                this.amqErrorStrategy = amqErrorStrategy;
         }
 
         private void init() {
@@ -39,7 +46,7 @@ public abstract class BaseAmqProducer implements Producer {
                 try {
                         //Get a connection and session from the factory
                         amqConnection = createConnection();
-                        amqSession = createSession(amqConnection, isTransacted, Session.AUTO_ACKNOWLEDGE);
+                        amqSession = createSession(amqConnection, brokerConfiguration.isTransacted(), brokerConfiguration.getAcknowledgeMode());
 
                         //Create the queue and wrap the body as an object so we can send it
                         Queue amqQueue = createQueue(amqSession, queueName);
@@ -52,6 +59,8 @@ public abstract class BaseAmqProducer implements Producer {
                         hasNotThrownException = false;
 
                         LOG.error("Exception producing message {} because {}", body, ExceptionUtils.getStackTrace(ex));
+
+                        amqErrorStrategy.handle(ex, body);
                 }
 
                 //Cleanup
@@ -63,7 +72,7 @@ public abstract class BaseAmqProducer implements Producer {
         }
 
         protected Connection createConnection() throws JMSException {
-                return connectionFactory.createConnection(amqBrokerConfiguration.getUsername(), amqBrokerConfiguration.getPassword());
+                return connectionFactory.createConnection(brokerConfiguration.getUsername(), brokerConfiguration.getPassword());
         }
 
         protected Session createSession(Connection amqConnection, boolean isTransacted, int acknowledgeMode) throws JMSException {

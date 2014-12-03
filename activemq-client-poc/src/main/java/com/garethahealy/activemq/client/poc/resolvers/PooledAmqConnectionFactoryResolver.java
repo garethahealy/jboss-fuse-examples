@@ -1,6 +1,6 @@
 package com.garethahealy.activemq.client.poc.resolvers;
 
-import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.jms.pool.PooledConnectionFactory;
 
@@ -8,23 +8,23 @@ import javax.jms.ConnectionFactory;
 
 public class PooledAmqConnectionFactoryResolver implements ConnectionFactoryResolver {
 
-        private AmqBrokerConfiguration amqBrokerConfiguration;
+        private BrokerConfiguration brokerConfiguration;
         private PooledConnectionFactory pooledConnectionFactory;
 
-        public PooledAmqConnectionFactoryResolver(AmqBrokerConfiguration amqBrokerConfiguration) {
-                this.amqBrokerConfiguration = amqBrokerConfiguration;
+        public PooledAmqConnectionFactoryResolver(BrokerConfiguration brokerConfiguration) {
+                this.brokerConfiguration = brokerConfiguration;
         }
 
         private void init() {
                 ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
-                activeMQConnectionFactory.setBrokerURL(amqBrokerConfiguration.getBrokerURL());
-                activeMQConnectionFactory.setUserName(amqBrokerConfiguration.getUsername());
-                activeMQConnectionFactory.setPassword(amqBrokerConfiguration.getPassword());
+                activeMQConnectionFactory.setBrokerURL(brokerConfiguration.getBrokerURL());
+                activeMQConnectionFactory.setUserName(brokerConfiguration.getUsername());
+                activeMQConnectionFactory.setPassword(brokerConfiguration.getPassword());
 
                 pooledConnectionFactory = new PooledConnectionFactory();
                 pooledConnectionFactory.setConnectionFactory(activeMQConnectionFactory);
-                pooledConnectionFactory.setMaxConnections(amqBrokerConfiguration.getMaxConnections());
-                pooledConnectionFactory.setMaximumActiveSessionPerConnection(amqBrokerConfiguration.getMaximumActiveSessionPerConnection());
+                pooledConnectionFactory.setMaxConnections(brokerConfiguration.getMaxConnections());
+                pooledConnectionFactory.setMaximumActiveSessionPerConnection(brokerConfiguration.getMaximumActiveSessionPerConnection());
         }
 
         public ConnectionFactory start() {

@@ -1,8 +1,7 @@
 package com.garethahealy.activemq.client.poc.producers;
 
-import com.garethahealy.activemq.client.poc.config.AmqBrokerConfiguration;
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +11,8 @@ public class DefaultAmqProducer extends BaseAmqProducer {
 
         private static final Logger LOG = LoggerFactory.getLogger(DefaultAmqProducer.class);
 
-        public DefaultAmqProducer(AmqBrokerConfiguration amqBrokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver) {
-                super(amqBrokerConfiguration, connectionFactoryResolver);
+        public DefaultAmqProducer(BrokerConfiguration brokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver) {
+                super(brokerConfiguration, connectionFactoryResolver);
         }
 
         @Override
@@ -24,7 +23,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
                         amqConnection = super.createConnection();
                 } catch (JMSException ex) {
                         LOG.error("Exception creating connection from connection factory {} to {} because {}", connectionFactory.getClass().getName(),
-                                  amqBrokerConfiguration.getBrokerURL(), ex.getMessage());
+                                  brokerConfiguration.getBrokerURL(), ex.getMessage());
 
                         throw ex;
                 }
