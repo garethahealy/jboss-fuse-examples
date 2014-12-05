@@ -1,9 +1,8 @@
-package com.garethahealy.activemq.client.poc.mocked.producers;
+package com.garethahealy.activemq.client.poc.producers;
 
 import com.garethahealy.activemq.client.poc.callbacks.DefaultCallbackHandler;
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
-import com.garethahealy.activemq.client.poc.producers.RetryableAmqProducer;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

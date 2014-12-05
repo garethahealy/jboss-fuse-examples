@@ -1,7 +1,5 @@
-package com.garethahealy.activemq.client.poc.producers.errorstrategys;
+package com.garethahealy.activemq.client.poc.errorstrategys;
 
-import com.garethahealy.activemq.client.poc.errorstrategys.AmqErrorStrategy;
-import com.garethahealy.activemq.client.poc.errorstrategys.BodyToFileErrorStrategy;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.junit.Assert;
@@ -15,7 +13,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.concurrent.*;
 
 public class BodyToFileErrorStrategyTest {

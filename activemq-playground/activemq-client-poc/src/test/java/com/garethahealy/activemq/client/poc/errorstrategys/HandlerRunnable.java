@@ -1,6 +1,4 @@
-package com.garethahealy.activemq.client.poc.producers.errorstrategys;
-
-import com.garethahealy.activemq.client.poc.errorstrategys.AmqErrorStrategy;
+package com.garethahealy.activemq.client.poc.errorstrategys;
 
 import java.io.IOException;
 

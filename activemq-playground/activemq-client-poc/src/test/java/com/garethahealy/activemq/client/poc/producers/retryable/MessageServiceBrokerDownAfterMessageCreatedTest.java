@@ -3,7 +3,7 @@ package com.garethahealy.activemq.client.poc.producers.retryable;
 import com.garethahealy.activemq.client.poc.callbacks.DefaultCallbackHandler;
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
-import com.garethahealy.activemq.client.poc.mocked.producers.CallbackableRetryableAmqProducer;
+import com.garethahealy.activemq.client.poc.producers.CallbackableRetryableAmqProducer;
 import com.garethahealy.activemq.client.poc.producers.BaseBroker;
 import com.garethahealy.activemq.client.poc.producers.Producer;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
