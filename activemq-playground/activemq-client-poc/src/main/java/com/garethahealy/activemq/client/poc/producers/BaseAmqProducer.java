@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
+import java.io.IOException;
 
 public abstract class BaseAmqProducer implements Producer {
 
@@ -60,7 +61,11 @@ public abstract class BaseAmqProducer implements Producer {
 
                         LOG.error("Exception producing message {} because {}", body, ExceptionUtils.getStackTrace(ex));
 
-                        amqErrorStrategy.handle(ex, body);
+                        try {
+                                amqErrorStrategy.handle(ex, queueName, body);
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
                 }
 
                 //Cleanup
