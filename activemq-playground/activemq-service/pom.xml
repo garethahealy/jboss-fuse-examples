@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.garethahealy</groupId>
-        <artifactId>examples-parent</artifactId>
+        <artifactId>activemq-playground</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../examples-parent</relativePath>
+        <relativePath>../</relativePath>
     </parent>
     <artifactId>activemq-service</artifactId>
     <packaging>bundle</packaging>

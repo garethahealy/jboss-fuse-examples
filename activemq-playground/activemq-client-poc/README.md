@@ -4,4 +4,4 @@ PoC to see how best to handle connecting to ActiveMQ via a pure java implementat
 
 Note
 ===================
-If you can use Camel, then do so!
+If you can use Camel, then dont use this!
