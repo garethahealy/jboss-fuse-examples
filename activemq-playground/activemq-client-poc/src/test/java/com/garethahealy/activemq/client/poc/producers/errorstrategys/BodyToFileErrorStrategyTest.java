@@ -101,4 +101,35 @@ public class BodyToFileErrorStrategyTest {
                         Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
                 }
         }
+
+        @Test
+        public void canHandleMultipleThreadsOnDifferenceQueue() throws MalformedURLException {
+                String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandleMultipleThreadsOnDifferenceQueue";
+                final AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+
+                ExecutorService executor = Executors.newCachedThreadPool();
+                Future one = executor.submit(new HandlerRunnable(strategy, "Test", "gareth", "healy"));
+                Future two = executor.submit(new HandlerRunnable(strategy, "TestAnother", "healy", "gareth"));
+
+                try {
+                        one.get(10, TimeUnit.SECONDS);
+                        two.get(10, TimeUnit.SECONDS);
+                } catch (InterruptedException ex) {
+                        Assert.assertTrue("InterruptedException", false);
+                } catch (ExecutionException ex) {
+                        Assert.assertTrue("ExecutionException", false);
+                } catch (TimeoutException ex) {
+                        Assert.assertTrue("TimeoutException", false);
+                }
+
+                Collection<File> generatedFiles = getGeneratedFiles(pathToPersistenceStore);
+                Assert.assertNotNull(generatedFiles);
+                Assert.assertEquals(2, generatedFiles.size());
+
+                for (File current : generatedFiles) {
+                        BigInteger fileSize = FileUtils.sizeOfAsBigInteger(current);
+
+                        Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
+                }
+        }
 }
