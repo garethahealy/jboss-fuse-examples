@@ -19,6 +19,8 @@
  */
 package com.garethahealy.activemq.client.poc.errorstrategys;
 
+import javax.jms.JMSException;
+
 public class HandlerRunnable implements Runnable {
 
     private AmqErrorStrategy strategy;
@@ -35,7 +37,7 @@ public class HandlerRunnable implements Runnable {
 
     public void run() {
         for (int i = 0; i < 1000; i++) {
-            strategy.handle(null, queueName, new Object[] {firstname, surname + i});
+            strategy.handle(new JMSException("Because"), queueName, new Object[] {firstname, surname + i});
         }
     }
 }

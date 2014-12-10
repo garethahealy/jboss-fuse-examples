@@ -24,15 +24,19 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import javax.jms.JMSException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -55,11 +59,23 @@ public class BodyToFileErrorStrategyTest {
         return files;
     }
 
+    private List<String[]> readFile(File file) throws IOException {
+        List<String[]> lines = new ArrayList<String[]>();
+
+        List<String> linesInFile = FileUtils.readLines(file, Charset.forName("UTF8"));
+        for (String line : linesInFile) {
+            String[] lineSplit = line.split(",");
+            lines.add(lineSplit);
+        }
+
+        return lines;
+    }
+
     @Test
     public void canHandle() throws IOException {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandle";
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
-        strategy.handle(null, "Test", new Object[] {"gareth", "healy"});
+        strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy"});
 
         Collection<File> generatedFiles = getGeneratedFiles(pathToPersistenceStore);
         Assert.assertNotNull(generatedFiles);
@@ -67,8 +83,14 @@ public class BodyToFileErrorStrategyTest {
 
         for (File current : generatedFiles) {
             BigInteger fileSize = FileUtils.sizeOfAsBigInteger(current);
+            List<String[]> lines = readFile(current);
 
             Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
+            Assert.assertEquals(1, lines.size());
+
+            for (String[] currentLine : lines) {
+                Assert.assertArrayEquals(new String[] {"gareth", "healy"}, currentLine);
+            }
         }
     }
 
@@ -78,7 +100,7 @@ public class BodyToFileErrorStrategyTest {
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         for (int i = 0; i < 1000; i++) {
-            strategy.handle(null, "Test", new Object[] {"gareth", "healy" + i});
+            strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy" + i});
         }
 
         Collection<File> generatedFiles = getGeneratedFiles(pathToPersistenceStore);
@@ -87,15 +109,24 @@ public class BodyToFileErrorStrategyTest {
 
         for (File current : generatedFiles) {
             BigInteger fileSize = FileUtils.sizeOfAsBigInteger(current);
+            List<String[]> lines = readFile(current);
 
             Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
+            Assert.assertEquals(1000, lines.size());
+
+            int j = 0;
+            for (String[] currentLine : lines) {
+                Assert.assertArrayEquals(new String[] {"gareth", "healy" + j}, currentLine);
+
+                j++;
+            }
         }
     }
 
     @Test
-    public void canHandleMultipleThreadsOnSameQueue() throws MalformedURLException {
+    public void canHandleMultipleThreadsOnSameQueue() throws IOException {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandleMultipleThreads";
-        final AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         ExecutorService executor = Executors.newCachedThreadPool();
         Future one = executor.submit(new HandlerRunnable(strategy, "Test", "gareth", "healy"));
@@ -118,15 +149,21 @@ public class BodyToFileErrorStrategyTest {
 
         for (File current : generatedFiles) {
             BigInteger fileSize = FileUtils.sizeOfAsBigInteger(current);
+            List<String[]> lines = readFile(current);
 
             Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
+            Assert.assertEquals(2000, lines.size());
+
+            for (String[] currentLine : lines) {
+                //Assert.assertArrayEquals(new String[] {"gareth", "healy"}, currentLine);
+            }
         }
     }
 
     @Test
-    public void canHandleMultipleThreadsOnDifferenceQueue() throws MalformedURLException {
+    public void canHandleMultipleThreadsOnDifferenceQueue() throws IOException {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandleMultipleThreadsOnDifferenceQueue";
-        final AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         ExecutorService executor = Executors.newCachedThreadPool();
         Future one = executor.submit(new HandlerRunnable(strategy, "Test", "gareth", "healy"));
@@ -149,8 +186,14 @@ public class BodyToFileErrorStrategyTest {
 
         for (File current : generatedFiles) {
             BigInteger fileSize = FileUtils.sizeOfAsBigInteger(current);
+            List<String[]> lines = readFile(current);
 
             Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
+            Assert.assertEquals(1000, lines.size());
+
+            for (String[] currentLine : lines) {
+                //Assert.assertArrayEquals(new String[] {"gareth", "healy"}, currentLine);
+            }
         }
     }
 }
