@@ -79,6 +79,9 @@
         <hibernate-core-version>4.2.9.Final</hibernate-core-version>
         <aries-jpa-blueprint-version>1.0.1.${redhat-version}</aries-jpa-blueprint-version>
         <aries-transaction-blueprint-version>1.0.1.${redhat-version}</aries-transaction-blueprint-version>
+        <commons-lang3-version>3.3.2</commons-lang3-version>
+        <commons-io-version>2.4</commons-io-version>
+        <joda-time-version>2.5</joda-time-version>
 
         <!-- Ranges for versions -->
         <persistence-range-version>"[1.1,2)"</persistence-range-version>
@@ -453,6 +456,26 @@
                 <artifactId>org.apache.aries.transaction.blueprint</artifactId>
                 <version>${aries-transaction-blueprint-version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <!-- Commons -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3-version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time-version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- Testing: Used to resolve blueprint namespaces -->
