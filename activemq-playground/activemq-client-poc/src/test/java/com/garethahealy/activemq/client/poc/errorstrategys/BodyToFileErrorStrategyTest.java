@@ -154,6 +154,7 @@ public class BodyToFileErrorStrategyTest {
             Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
             Assert.assertEquals(2000, lines.size());
 
+            //TODO: Sort lines and split list into 2 so we can compare
             for (String[] currentLine : lines) {
                 //Assert.assertArrayEquals(new String[] {"gareth", "healy"}, currentLine);
             }
@@ -191,8 +192,16 @@ public class BodyToFileErrorStrategyTest {
             Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
             Assert.assertEquals(1000, lines.size());
 
+            String fileName = current.getName();
+            boolean isFirstFile = fileName.startsWith("Test_");
+            String firsname = isFirstFile ? "gareth" : "healy";
+            String surname = isFirstFile ? "healy" : "gareth";
+
+            int j = 0;
             for (String[] currentLine : lines) {
-                //Assert.assertArrayEquals(new String[] {"gareth", "healy"}, currentLine);
+                Assert.assertArrayEquals(new String[] {firsname, surname + j}, currentLine);
+
+                j++;
             }
         }
     }
