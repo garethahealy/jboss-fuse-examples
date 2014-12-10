@@ -116,7 +116,7 @@ public class DefaultAmqProducer extends BaseAmqProducer {
             try {
                 super.send(amqProducer, amqMessage);
             } catch (JMSException ex) {
-                LOG.error("Exception sending message {} to producer {} because {}", amqMessage, amqProducer, ex.getMessage().toString());
+                LOG.error("Exception sending message {} to producer {} because {}", amqMessage, amqProducer, ex.getMessage());
             }
         }
     }
