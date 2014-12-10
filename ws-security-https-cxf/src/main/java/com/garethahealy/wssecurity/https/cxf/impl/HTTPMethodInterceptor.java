@@ -33,14 +33,13 @@ import org.apache.cxf.transport.http.AbstractHTTPDestination;
 
 public class HTTPMethodInterceptor extends AbstractSoapInterceptor {
 
-    private static final Map<String, Boolean> httpMethods;
-
+    private static final Map<String, Boolean> HTTP_METHODS;
     static {
         Map<String, Boolean> httpMap = new HashMap<String, Boolean>();
         httpMap.put("PUT", false);
         httpMap.put("GET", true);
 
-        httpMethods = Collections.unmodifiableMap(httpMap);
+        HTTP_METHODS = Collections.unmodifiableMap(httpMap);
     }
 
     public HTTPMethodInterceptor() {
@@ -51,7 +50,7 @@ public class HTTPMethodInterceptor extends AbstractSoapInterceptor {
     public void handleMessage(SoapMessage message) throws Fault {
         HttpServletRequest request = (HttpServletRequest)message.get(AbstractHTTPDestination.HTTP_REQUEST);
         if (request != null) {
-            if (!httpMethods.get(request.getMethod())) {
+            if (!HTTP_METHODS.get(request.getMethod())) {
                 throw new Fault(new IllegalArgumentException("Invalid HTTPMethod of " + request.getMethod()));
             }
         }

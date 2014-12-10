@@ -47,7 +47,7 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
 
     private static final Logger LOG = LoggerFactory.getLogger(BodyToFileErrorStrategy.class);
 
-    private Charset UTF8 = Charset.forName("UTF8");
+    private Charset utf8Charset = Charset.forName("UTF8");
     private String pathToPersistenceStore;
 
     public BodyToFileErrorStrategy(String pathToPersistenceStore) {
@@ -75,7 +75,7 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     }
 
     private void writeLinesToFile(File backupFile, Collection<String> lines) throws IOException {
-        FileUtils.writeLines(backupFile, UTF8.name(), lines, null, true);
+        FileUtils.writeLines(backupFile, utf8Charset.name(), lines, null, true);
     }
 
     private URL getFullPathAndFileName(String queueName) {

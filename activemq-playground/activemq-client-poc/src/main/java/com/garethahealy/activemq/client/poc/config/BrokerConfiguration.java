@@ -21,6 +21,8 @@ package com.garethahealy.activemq.client.poc.config;
 
 import javax.jms.Session;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class BrokerConfiguration {
 
     private String brokerURL;
@@ -76,15 +78,15 @@ public class BrokerConfiguration {
 
     @Override
     public String toString() {
-        return "com.garethahealy.activemq.client.poc.config.BrokerConfiguration{"
-               + "brokerURL='" + brokerURL + '\'' +
-               ", username='" + username + '\'' +
-               ", password='" + password + '\'' +
-               ", maxConnections=" + maxConnections +
-               ", maximumActiveSessionPerConnection=" + maximumActiveSessionPerConnection +
-               ", isTransacted=" + isTransacted +
-               ", acknowledgeMode=" + acknowledgeMode +
-               ", transacted=" + isTransacted() +
-               '}';
+        return new ToStringBuilder(this)
+            .append("brokerURL", brokerURL)
+            .append("username", username)
+            .append("password", password)
+            .append("maxConnections", maxConnections)
+            .append("maximumActiveSessionPerConnection", maximumActiveSessionPerConnection)
+            .append("isTransacted", isTransacted)
+            .append("acknowledgeMode", acknowledgeMode)
+            .append("transacted", isTransacted())
+            .toString();
     }
 }

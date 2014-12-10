@@ -28,7 +28,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
 public class CachedResolver<T> implements Resolver<T> {
 
-    private Map<String, T> cached = null;
+    private Map<String, T> cached;
     private WsEndpointConfiguration<?> config;
     private JaxWsProxyFactoryBean factory;
 

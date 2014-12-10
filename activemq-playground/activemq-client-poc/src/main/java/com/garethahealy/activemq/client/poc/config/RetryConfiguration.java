@@ -19,6 +19,8 @@
  */
 package com.garethahealy.activemq.client.poc.config;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class RetryConfiguration {
 
     private int createConnectionRetryCount;
@@ -68,13 +70,13 @@ public class RetryConfiguration {
 
     @Override
     public String toString() {
-        return "com.garethahealy.activemq.client.poc.config.RetryConfiguration{" +
-               "createConnectionRetryCount=" + createConnectionRetryCount +
-               ", createSessionRetryCount=" + createSessionRetryCount +
-               ", createQueueRetryCount=" + createQueueRetryCount +
-               ", createProducerRetryCount=" + createProducerRetryCount +
-               ", createMessageRetryCount=" + createMessageRetryCount +
-               ", sendRetryCount=" + sendRetryCount +
-               '}';
+        return new ToStringBuilder(this)
+            .append("createConnectionRetryCount", createConnectionRetryCount)
+            .append("createSessionRetryCount", createSessionRetryCount)
+            .append("createQueueRetryCount", createQueueRetryCount)
+            .append("createProducerRetryCount", createProducerRetryCount)
+            .append("createMessageRetryCount", createMessageRetryCount)
+            .append("sendRetryCount", sendRetryCount)
+            .toString();
     }
 }

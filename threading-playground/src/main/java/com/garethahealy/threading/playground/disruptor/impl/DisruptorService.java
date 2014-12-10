@@ -40,7 +40,7 @@ public class DisruptorService<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DisruptorService.class);
 
-    private final int SHUTDOWN_TIMEOUT = 1;
+    private final int shutdownTimeout = 1;
 
     private Disruptor<Exchange> disruptor;
     private int bufferSize;
@@ -138,7 +138,7 @@ public class DisruptorService<T> {
         }
 
         try {
-            disruptor.shutdown(SHUTDOWN_TIMEOUT, TimeUnit.MINUTES);
+            disruptor.shutdown(shutdownTimeout, TimeUnit.MINUTES);
         } catch (TimeoutException ex) {
             LOG.error(ex.getMessage());
         }

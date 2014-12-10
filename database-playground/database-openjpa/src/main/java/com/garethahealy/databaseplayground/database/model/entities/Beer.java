@@ -30,6 +30,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 @Entity
 @Table(name = "beers")
 @NamedQueries(@NamedQuery(name = Beer.SELECT_ALL_QUERY, query = "SELECT b FROM Beer b"))
@@ -71,9 +73,9 @@ public class Beer implements Serializable {
 
     @Override
     public String toString() {
-        return "com.garethahealy.databaseplayground.database.model.entities.Beer{" +
-               "id=" + getId() +
-               ", name='" + getName() + '\'' +
-               '}';
+        return new ToStringBuilder(this)
+            .append("id", getId())
+            .append("name", getName())
+            .toString();
     }
 }
