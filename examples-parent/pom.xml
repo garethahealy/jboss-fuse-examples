@@ -250,7 +250,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <configuration>
-                    <onlyAnalyze>com.garethahealy.*</onlyAnalyze>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
@@ -273,8 +272,8 @@
                         <configuration>
                             <configLocation>../building-tools/camel-checkstyle.xml</configLocation>
                             <consoleOutput>true</consoleOutput>
-                            <failOnViolation>false</failOnViolation>
-                            <failsOnError>false</failsOnError>
+                            <failOnViolation>true</failOnViolation>
+                            <failsOnError>true</failsOnError>
                             <suppressionsLocation>../building-tools/camel-checkstyle-suppressions.xml</suppressionsLocation>
                             <encoding>UTF-8</encoding>
                             <sourceDirectory>${basedir}/src</sourceDirectory>
