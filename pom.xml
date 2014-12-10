@@ -14,6 +14,14 @@
         <url>https://github.com/garethahealy</url>
     </organization>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <modules>
         <module>fabric8-profiles</module>
         <module>examples-features</module>
@@ -91,7 +99,7 @@
         <maven-source-plugin-version>2.1.1</maven-source-plugin-version>
         <maven-antrun-plugin-version>1.2</maven-antrun-plugin-version>
         <maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>
-        <maven-surefire-plugin-version>2.16</maven-surefire-plugin-version>
+        <maven-surefire-plugin-version>2.18</maven-surefire-plugin-version>
         <depends-maven-plugin-version>1.2</depends-maven-plugin-version>
         <properties-maven-plugin-version>1.0-alpha-2</properties-maven-plugin-version>
         <ant-contrib-version>1.0b3</ant-contrib-version>
@@ -101,10 +109,20 @@
         <build-helper-maven-plugin-version>1.7</build-helper-maven-plugin-version>
         <fabric8-maven-plugin-version>1.1.0.CR5</fabric8-maven-plugin-version>
         <exec-maven-plugin-version>1.3.2</exec-maven-plugin-version>
+        <findbugs-maven-plugin-version>3.0.0</findbugs-maven-plugin-version>
+        <maven-checkstyle-plugin-version>2.13</maven-checkstyle-plugin-version>
+        <ekstazi-core-version>4.3.1</ekstazi-core-version>
+        <ekstazi-m2-path>${user.home}/.m2/repository/org/ekstazi/org.ekstazi.core/${ekstazi-core-version}/org.ekstazi.core-${ekstazi-core-version}</ekstazi-m2-path>
+        <license-maven-plugin-version>1.8</license-maven-plugin-version>
 
         <!-- Plugin dependancy versions -->
         <jaxb-version>2.1.13</jaxb-version>
         <jaxb-api-version>2.1</jaxb-api-version>
+
+        <!-- license -->
+        <license.licenseName>apache_v2</license.licenseName>
+        <license.inceptionYear>2013</license.inceptionYear>
+        <license.addJavaLicenseAfterPackage>false</license.addJavaLicenseAfterPackage>
     </properties>
 
     <!-- Build plugins -->
@@ -136,7 +154,12 @@
                     <version>${build-helper-maven-plugin-version}</version>
                 </plugin>
                 <plugin>
-                    <!-- http://maven.apache.org/surefire/maven-surefire-report-plugin -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <!-- http://maven.apache.org/surefire/maven-surefire-plugin -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-report-plugin</artifactId>
                     <version>${maven-surefire-plugin-version}</version>
@@ -214,6 +237,23 @@
                     <groupId>org.apache.activemq.tooling</groupId>
                     <artifactId>activemq-perf-maven-plugin</artifactId>
                     <version>${activemq-version}</version>
+                </plugin>
+                <plugin>
+                    <!-- http://mojo.codehaus.org/findbugs-maven-plugin-3.0.0/ -->
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>${findbugs-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <!-- http://maven.apache.org/plugins/maven-checkstyle-plugin/index.html -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${license-maven-plugin-version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
