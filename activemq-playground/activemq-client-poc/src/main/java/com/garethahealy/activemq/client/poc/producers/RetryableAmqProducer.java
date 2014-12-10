@@ -49,7 +49,7 @@ public class RetryableAmqProducer extends BaseAmqProducer {
 
             @Override
             public void log(JMSException ex, int count, int retryAmount, Object... arguments) {
-                LOG.error("Exception creating connection from connection factory {} to {} because {}. Attempting retry {} of {}. ",
+                LOG.error("Exception creating connection from connection factory {} to {} because {}. Attempting retry {} of {}",
                           getLoggingArguments(ex, count, retryAmount, arguments));
             }
         };
@@ -58,150 +58,88 @@ public class RetryableAmqProducer extends BaseAmqProducer {
     }
 
     @Override
-    protected Session createSession(Connection amqConnection, boolean isTransacted, int acknowledgeMode) throws JMSException {
-        Session amqSession = null;
-        if (amqConnection != null) {
-            int count = 1;
-            int retryAmount = retryConfiguration.getCreateSessionRetryCount();
-            while (amqSession == null) {
-                try {
-                    amqSession = super.createSession(amqConnection, isTransacted, acknowledgeMode);
-                } catch (JMSException ex) {
-                    LOG.error("Exception creating session for connection {} because {}. Attempting retry {} of {}", amqConnection, ex.getMessage(), count,
-                              retryAmount);
-
-                    if (count >= retryAmount) {
-                        //Last retry, so bubble exception upwards
-                        throw ex;
-                    }
-                }
-
-                count++;
-
-                if (count > retryAmount) {
-                    break;
-                }
+    protected Session createSession(final Connection amqConnection, final boolean isTransacted, final int acknowledgeMode) throws JMSException {
+        RetryLoopCallback callback = new RetryLoopCallback() {
+            @Override
+            public Session runAndGetResult() throws JMSException {
+                return RetryableAmqProducer.super.createSession(amqConnection, isTransacted, acknowledgeMode);
             }
-        }
 
-        return amqSession;
+            @Override
+            public void log(JMSException ex, int count, int retryAmount, Object... arguments) {
+                LOG.error("Exception creating session for connection {} because {}. Attempting retry {} of {}", getLoggingArguments(ex, count, retryAmount, arguments));
+            }
+        };
+
+        return retryWhileResultIsNull(retryConfiguration.getCreateSessionRetryCount(), callback, amqConnection);
     }
 
     @Override
-    protected Queue createQueue(Session amqSession, String queueName) throws JMSException {
-        Queue amqQueue = null;
-        if (amqSession != null) {
-            int count = 1;
-            int retryAmount = retryConfiguration.getCreateQueueRetryCount();
-            while (amqQueue == null) {
-                try {
-                    amqQueue = super.createQueue(amqSession, queueName);
-                } catch (JMSException ex) {
-                    LOG.error("Exception creating queue {} for session because {}. Attempting retry {} of {}", queueName, amqSession, ex.getMessage(), count,
-                              retryAmount);
-
-                    if (count >= retryAmount) {
-                        //Last retry, so bubble exception upwards
-                        throw ex;
-                    }
-                }
-
-                count++;
-
-                if (count > retryAmount) {
-                    break;
-                }
+    protected Queue createQueue(final Session amqSession, final String queueName) throws JMSException {
+        RetryLoopCallback callback = new RetryLoopCallback() {
+            @Override
+            public Queue runAndGetResult() throws JMSException {
+                return RetryableAmqProducer.super.createQueue(amqSession, queueName);
             }
-        }
 
-        return amqQueue;
+            @Override
+            public void log(JMSException ex, int count, int retryAmount, Object... arguments) {
+                LOG.error("Exception creating queue {} for session because {}. Attempting retry {} of {}", getLoggingArguments(ex, count, retryAmount, arguments));
+            }
+        };
+
+        return retryWhileResultIsNull(retryConfiguration.getCreateQueueRetryCount(), callback, queueName, amqSession);
     }
 
     @Override
-    protected MessageProducer createProducer(Session amqSession, Queue amqQueue) throws JMSException {
-        MessageProducer amqProducer = null;
-        if (amqSession != null) {
-            int count = 1;
-            int retryAmount = retryConfiguration.getCreateProducerRetryCount();
-            while (amqProducer == null) {
-                try {
-                    amqProducer = super.createProducer(amqSession, amqQueue);
-                } catch (JMSException ex) {
-                    LOG.error("Exception creating producer for session {} on queue {} because {}. Attempting retry {} of {}", amqSession, amqQueue,
-                              ex.getMessage(), count, retryAmount);
-
-                    if (count >= retryAmount) {
-                        //Last retry, so bubble exception upwards
-                        throw ex;
-                    }
-                }
-
-                count++;
-
-                if (count > retryAmount) {
-                    break;
-                }
+    protected MessageProducer createProducer(final Session amqSession, final Queue amqQueue) throws JMSException {
+        RetryLoopCallback callback = new RetryLoopCallback() {
+            @Override
+            public MessageProducer runAndGetResult() throws JMSException {
+                return RetryableAmqProducer.super.createProducer(amqSession, amqQueue);
             }
-        }
 
-        return amqProducer;
+            @Override
+            public void log(JMSException ex, int count, int retryAmount, Object... arguments) {
+                LOG.error("Exception creating producer for session {} on queue {} because {}. Attempting retry {} of {}", getLoggingArguments(ex, count, retryAmount, arguments));
+            }
+        };
+
+        return retryWhileResultIsNull(retryConfiguration.getCreateProducerRetryCount(), callback, amqSession, amqQueue);
     }
 
     @Override
-    protected Message createMessage(Session amqSession, Object[] body) throws JMSException {
-        Message amqMessage = null;
-        if (amqSession != null) {
-            int count = 1;
-            int retryAmount = retryConfiguration.getCreateMessageRetryCount();
-            while (amqMessage == null) {
-                try {
-                    amqMessage = super.createMessage(amqSession, body);
-                } catch (JMSException ex) {
-                    LOG.error("Exception creating message {} for session {} because {}. Attempting retry {} of {}", body, amqSession, ex.getMessage(), count,
-                              retryAmount);
-
-                    if (count >= retryAmount) {
-                        //Last retry, so bubble exception upwards
-                        throw ex;
-                    }
-                }
-
-                count++;
-
-                if (count > retryAmount) {
-                    break;
-                }
+    protected Message createMessage(final Session amqSession, final Object[] body) throws JMSException {
+        RetryLoopCallback callback = new RetryLoopCallback() {
+            @Override
+            public Message runAndGetResult() throws JMSException {
+                return RetryableAmqProducer.super.createMessage(amqSession, body);
             }
-        }
 
-        return amqMessage;
+            @Override
+            public void log(JMSException ex, int count, int retryAmount, Object... arguments) {
+                LOG.error("Exception creating message {} for session {} because {}. Attempting retry {} of {}", getLoggingArguments(ex, count, retryAmount, arguments));
+            }
+        };
+
+        return retryWhileResultIsNull(retryConfiguration.getCreateMessageRetryCount(), callback, body, amqSession);
     }
 
     @Override
-    protected void send(MessageProducer amqProducer, Message amqMessage) throws JMSException {
-        if (amqProducer != null) {
-            int count = 1;
-            int retryAmount = retryConfiguration.getSendRetryCount();
-            while (count <= retryAmount) {
-                try {
-                    super.send(amqProducer, amqMessage);
-                } catch (JMSException ex) {
-                    LOG.error("Exception sending message {} to producer {} because {}. Attempting retry {} of {}", amqMessage, amqProducer,
-                              ex.getMessage().toString(), count, retryAmount);
-
-                    if (count >= retryAmount) {
-                        //Last retry, so bubble exception upwards
-                        throw ex;
-                    }
-                }
-
-                count++;
-
-                if (count > retryAmount) {
-                    break;
-                }
+    protected void send(final MessageProducer amqProducer, final Message amqMessage) throws JMSException {
+        RetryLoopCallback callback = new RetryLoopCallback() {
+            @Override
+            public void run() throws JMSException {
+                RetryableAmqProducer.super.send(amqProducer, amqMessage);
             }
-        }
+
+            @Override
+            public void log(JMSException ex, int count, int retryAmount, Object... arguments) {
+                LOG.error("Exception sending message {} to producer {} because {}. Attempting retry {} of {}", getLoggingArguments(ex, count, retryAmount, arguments));
+            }
+        };
+
+        retryWhileCountLessThan(retryConfiguration.getSendRetryCount(), callback, amqMessage, amqProducer);
     }
 
     private <T> T retryWhileResultIsNull(int retryCount, RetryLoopCallback callback, Object... logging) throws JMSException {
@@ -227,5 +165,27 @@ public class RetryableAmqProducer extends BaseAmqProducer {
         }
 
         return result;
+    }
+
+    private void retryWhileCountLessThan(int retryCount, RetryLoopCallback callback, Object... logging) throws JMSException {
+        int count = 1;
+        while (count <= retryCount) {
+            try {
+                callback.run();
+            } catch (JMSException ex) {
+                callback.log(ex, count, retryCount, logging);
+
+                if (count >= retryCount) {
+                    //Last retry, so bubble exception upwards
+                    throw ex;
+                }
+            }
+
+            count++;
+
+            if (count > retryCount) {
+                break;
+            }
+        }
     }
 }

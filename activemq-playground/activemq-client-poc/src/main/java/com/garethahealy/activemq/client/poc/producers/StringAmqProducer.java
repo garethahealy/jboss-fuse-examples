@@ -38,14 +38,14 @@ public class StringAmqProducer extends DefaultAmqProducer {
     }
 
     @Override
-    protected Message createMessage(Session amqSession, Object[] body) throws JMSException {
+    protected Message createMessage(Session amqSession, Object[] body) {
         Message amqMessage = null;
-        try {
-            amqMessage = amqSession.createTextMessage(body[0].toString() + body[1].toString());
-        } catch (JMSException ex) {
-            LOG.error("Exception creating message {} for session {} because {}", body, amqSession, ExceptionUtils.getStackTrace(ex));
-
-            throw ex;
+        if (amqSession != null) {
+            try {
+                amqMessage = amqSession.createTextMessage(body[0].toString() + body[1].toString());
+            } catch (JMSException ex) {
+                LOG.error("Exception creating message {} for session {} because {}", body, amqSession, ExceptionUtils.getStackTrace(ex));
+            }
         }
 
         return amqMessage;
