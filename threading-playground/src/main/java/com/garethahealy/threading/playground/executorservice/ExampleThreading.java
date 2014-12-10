@@ -19,18 +19,18 @@
  */
 package com.garethahealy.threading.playground.executorservice;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.processor.DefaultExchangeFormatter;
 import org.apache.camel.spi.ExecutorServiceManager;
 import org.apache.camel.util.MessageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 public class ExampleThreading {
 

@@ -19,11 +19,12 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.resolvers;
 
-import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
+
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
 public class CachedResolver<T> implements Resolver<T> {
 

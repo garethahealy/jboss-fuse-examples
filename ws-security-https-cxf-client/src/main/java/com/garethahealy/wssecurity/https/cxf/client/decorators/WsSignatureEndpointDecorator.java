@@ -19,12 +19,13 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.decorators;
 
-import com.garethahealy.wssecurity.https.cxf.client.config.WSCryptoProperties;
-import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
-import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.garethahealy.wssecurity.https.cxf.client.config.WSCryptoProperties;
+import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
+
+import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 
 public class WsSignatureEndpointDecorator extends LoggingWsEndpointDecorator {
 

@@ -19,15 +19,16 @@
  */
 package com.garethahealy.activemq.client.poc.producers;
 
-import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
-import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
+import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StringAmqProducer extends DefaultAmqProducer {
 

@@ -19,15 +19,16 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.services;
 
+import javax.xml.ws.WebServiceException;
+import javax.xml.ws.soap.SOAPFaultException;
+
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
 import com.garethahealy.helloworld.HelloWorldResponse;
 import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
+
 import org.junit.Assert;
 import org.junit.Test;
-
-import javax.xml.ws.WebServiceException;
-import javax.xml.ws.soap.SOAPFaultException;
 
 public class WsHelloWorldServiceTest {
 

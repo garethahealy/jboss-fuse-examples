@@ -19,14 +19,20 @@
  */
 package com.garethahealy.activemq.client.poc.producers;
 
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
+
 import com.garethahealy.activemq.client.poc.callbacks.RetryLoopCallback;
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.jms.*;
 
 public class RetryableAmqProducer extends BaseAmqProducer {
 

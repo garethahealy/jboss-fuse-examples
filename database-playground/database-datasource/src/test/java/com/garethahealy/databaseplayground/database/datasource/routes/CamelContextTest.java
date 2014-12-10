@@ -19,6 +19,11 @@
  */
 package com.garethahealy.databaseplayground.database.datasource.routes;
 
+import java.util.Dictionary;
+import java.util.Map;
+
+import javax.transaction.TransactionManager;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
@@ -26,10 +31,6 @@ import org.apache.camel.util.KeyValueHolder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import javax.transaction.TransactionManager;
-import java.util.Dictionary;
-import java.util.Map;
 
 public class CamelContextTest extends CamelBlueprintTestSupport {
 

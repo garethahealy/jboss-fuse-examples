@@ -19,10 +19,11 @@
  */
 package com.garethahealy.activemq.client.poc.callbacks;
 
-import javax.jms.JMSException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.jms.JMSException;
 
 public class RetryLoopCallback {
 

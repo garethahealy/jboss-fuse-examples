@@ -19,15 +19,22 @@
  */
 package com.garethahealy.activemq.client.poc.producers;
 
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
+
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.errorstrategys.AmqErrorStrategy;
 import com.garethahealy.activemq.client.poc.errorstrategys.DefaultErrorStrategy;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.jms.*;
 
 public abstract class BaseAmqProducer implements Producer {
 

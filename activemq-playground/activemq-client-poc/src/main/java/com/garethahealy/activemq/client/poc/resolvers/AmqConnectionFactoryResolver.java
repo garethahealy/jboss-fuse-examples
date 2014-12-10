@@ -19,10 +19,11 @@
  */
 package com.garethahealy.activemq.client.poc.resolvers;
 
-import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
-import org.apache.activemq.ActiveMQConnectionFactory;
-
 import javax.jms.ConnectionFactory;
+
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class AmqConnectionFactoryResolver implements ConnectionFactoryResolver {
 

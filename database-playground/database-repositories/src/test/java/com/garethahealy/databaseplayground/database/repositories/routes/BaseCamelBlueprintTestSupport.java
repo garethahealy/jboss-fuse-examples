@@ -19,15 +19,16 @@
  */
 package com.garethahealy.databaseplayground.database.repositories.routes;
 
-import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
-import org.apache.camel.util.KeyValueHolder;
-import org.mockito.Mockito;
-
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.TransactionManager;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
+
+import javax.persistence.EntityManagerFactory;
+import javax.transaction.TransactionManager;
+
+import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
+import org.apache.camel.util.KeyValueHolder;
+import org.mockito.Mockito;
 
 public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 

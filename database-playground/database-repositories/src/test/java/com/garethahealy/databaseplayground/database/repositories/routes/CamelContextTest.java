@@ -19,12 +19,12 @@
  */
 package com.garethahealy.databaseplayground.database.repositories.routes;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 public class CamelContextTest extends BaseCamelBlueprintTestSupport {
 

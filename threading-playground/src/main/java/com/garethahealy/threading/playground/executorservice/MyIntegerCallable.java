@@ -19,10 +19,10 @@
  */
 package com.garethahealy.threading.playground.executorservice;
 
+import java.util.concurrent.Callable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.Callable;
 
 public class MyIntegerCallable implements Callable<Integer> {
 

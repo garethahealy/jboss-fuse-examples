@@ -35,12 +35,13 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.config;
 
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.UnsupportedCallbackException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.UnsupportedCallbackException;
 
 /**
  * Callback handler to handle passwords

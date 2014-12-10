@@ -19,6 +19,11 @@
  */
 package com.garethahealy.threading.playground.disruptor.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import com.garethahealy.threading.playground.disruptor.ExchangeEventConsumer;
 import com.garethahealy.threading.playground.disruptor.ExchangeEventProducer;
 import com.lmax.disruptor.EventFactory;
@@ -26,14 +31,10 @@ import com.lmax.disruptor.TimeoutException;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+
 import org.apache.camel.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class DisruptorService<T> {
 

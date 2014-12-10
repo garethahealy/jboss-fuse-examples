@@ -19,6 +19,8 @@
  */
 package com.garethahealy.activemq.client.poc.producers.performance;
 
+import java.util.concurrent.TimeUnit;
+
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.producers.BaseBroker;
 import com.garethahealy.activemq.client.poc.producers.DefaultAmqProducer;
@@ -27,14 +29,13 @@ import com.garethahealy.activemq.client.poc.resolvers.AmqConnectionFactoryResolv
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.resolvers.PooledAmqConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.services.MessageService;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.TimeUnit;
 
 public class MessageServiceComparisonTest extends BaseBroker {
 

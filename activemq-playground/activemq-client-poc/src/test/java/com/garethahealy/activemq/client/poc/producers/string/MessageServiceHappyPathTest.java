@@ -26,6 +26,7 @@ import com.garethahealy.activemq.client.poc.producers.StringAmqProducer;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.resolvers.PooledAmqConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.services.MessageService;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

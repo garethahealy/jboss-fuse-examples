@@ -19,10 +19,10 @@
  */
 package com.garethahealy.activemq.client.poc.producers;
 
+import java.net.URI;
+
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.TransportConnector;
-
-import java.net.URI;
 
 public abstract class BaseBroker {
 

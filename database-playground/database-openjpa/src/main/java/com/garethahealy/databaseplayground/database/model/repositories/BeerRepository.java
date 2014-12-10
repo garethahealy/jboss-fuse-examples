@@ -19,10 +19,11 @@
  */
 package com.garethahealy.databaseplayground.database.model.repositories;
 
-import com.garethahealy.databaseplayground.database.model.entities.Beer;
+import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
-import java.util.List;
+
+import com.garethahealy.databaseplayground.database.model.entities.Beer;
 
 public interface BeerRepository {
 

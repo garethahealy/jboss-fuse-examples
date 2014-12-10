@@ -19,13 +19,14 @@
  */
 package com.garethahealy.camel.activemq.transacted.routes;
 
+import java.util.Dictionary;
+import java.util.Map;
+
+import javax.jms.ConnectionFactory;
+
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.apache.camel.util.KeyValueHolder;
 import org.mockito.Mockito;
-
-import javax.jms.ConnectionFactory;
-import java.util.Dictionary;
-import java.util.Map;
 
 public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 

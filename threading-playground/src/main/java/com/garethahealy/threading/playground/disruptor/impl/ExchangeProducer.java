@@ -19,12 +19,13 @@
  */
 package com.garethahealy.threading.playground.disruptor.impl;
 
+import java.nio.ByteBuffer;
+
 import com.garethahealy.threading.playground.disruptor.ExchangeEventProducer;
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
-import org.apache.camel.Exchange;
 
-import java.nio.ByteBuffer;
+import org.apache.camel.Exchange;
 
 public class ExchangeProducer implements ExchangeEventProducer<ByteBuffer> {
 

@@ -19,15 +19,16 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.decorators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
+
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.message.Message;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoggingWsEndpointDecorator extends JaxWsProxyFactoryBean {
 
