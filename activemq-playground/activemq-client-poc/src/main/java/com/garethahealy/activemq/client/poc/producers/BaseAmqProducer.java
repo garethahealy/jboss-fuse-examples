@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 public abstract class BaseAmqProducer implements Producer {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseAmqProducer.class);
+
     protected BrokerConfiguration brokerConfiguration;
     protected ConnectionFactory connectionFactory;
     private ConnectionFactoryResolver connectionFactoryResolver;
@@ -83,10 +84,7 @@ public abstract class BaseAmqProducer implements Producer {
         } catch (JMSException ex) {
             hasNotThrownException = false;
 
-            LOG.error("Exception producing message {} because {}", body, ExceptionUtils.getStackTrace(ex));
-
             amqErrorStrategy.handle(ex, queueName, body);
-
         }
 
         //Cleanup
@@ -129,7 +127,6 @@ public abstract class BaseAmqProducer implements Producer {
             } catch (JMSException ex) {
                 LOG.error("Exception closing session {} because {}", amqSession, ExceptionUtils.getStackTrace(ex));
             }
-
         }
 
         return amqSession == null;
@@ -143,7 +140,6 @@ public abstract class BaseAmqProducer implements Producer {
             } catch (JMSException ex) {
                 LOG.error("Exception closing connection {} because {}", amqConnection, ExceptionUtils.getStackTrace(ex));
             }
-
         }
 
         return amqConnection == null;

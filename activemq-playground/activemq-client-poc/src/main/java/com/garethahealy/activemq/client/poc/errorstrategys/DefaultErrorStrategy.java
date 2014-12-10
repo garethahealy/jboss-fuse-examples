@@ -19,10 +19,16 @@
  */
 package com.garethahealy.activemq.client.poc.errorstrategys;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DefaultErrorStrategy implements AmqErrorStrategy {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultErrorStrategy.class);
 
     @Override
     public void handle(Throwable ex, String queueName, Object[] body) {
-        //NOOP
+        LOG.error("Exception producing message {} to queue:{} because {}", body, queueName, ExceptionUtils.getStackTrace(ex));
     }
 }
