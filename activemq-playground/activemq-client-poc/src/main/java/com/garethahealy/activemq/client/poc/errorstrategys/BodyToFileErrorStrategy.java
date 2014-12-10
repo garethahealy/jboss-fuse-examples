@@ -56,39 +56,34 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
 
     @Override
     public synchronized void handle(Throwable ex, String queueName, Object[] body) {
-        URL backupUrl = getFullPathAndFileName(queueName);
-        File backupFile = FileUtils.toFile(backupUrl);
+        LOG.error("Exception producing message {} to queue:{} because {}", body, queueName, ExceptionUtils.getStackTrace(ex));
 
         Collection<String> lines = new ArrayList<String>();
         lines.add(String.format("%s,%s", body[0], body[1]));
 
         try {
+            URL backupUrl = getFullPathAndFileName(queueName);
+            File backupFile = FileUtils.toFile(backupUrl);
+
+            LOG.warn("Attempting to write body {} to {}", body, backupUrl.toExternalForm());
+
             //Touch file so we know it exists and have permissions
             FileUtils.touch(backupFile);
 
             //Write to disk
             writeLinesToFile(backupFile, lines);
         } catch (IOException caughtex) {
-            LOG.error("Exception handling body to persistence store {} because {}", backupUrl.toString(), ExceptionUtils.getStackTrace(caughtex));
+            LOG.error("Exception handling body to persistence store for queue:{} because {}", queueName, ExceptionUtils.getStackTrace(caughtex));
         }
-
     }
 
     private void writeLinesToFile(File backupFile, Collection<String> lines) throws IOException {
         FileUtils.writeLines(backupFile, utf8Charset.name(), lines, null, true);
     }
 
-    private URL getFullPathAndFileName(String queueName) {
+    private URL getFullPathAndFileName(String queueName) throws MalformedURLException {
         String fileUri = String.format("file:%s/%s", pathToPersistenceStore, getFileName(queueName));
-        URL url = null;
-
-        try {
-            url = new URL(FilenameUtils.separatorsToSystem(fileUri));
-        } catch (MalformedURLException ex) {
-            LOG.error("Exception getting full path for {} because {}", fileUri, ExceptionUtils.getStackTrace(ex));
-        }
-
-        return url;
+        return new URL(FilenameUtils.separatorsToSystem(fileUri));
     }
 
     private String getFileName(String queueName) {
