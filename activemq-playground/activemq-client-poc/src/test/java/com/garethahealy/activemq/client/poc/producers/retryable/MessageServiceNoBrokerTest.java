@@ -40,7 +40,7 @@ public class MessageServiceNoBrokerTest {
     }
 
     @Test
-    public void handlesBrokerRunning() {
+    public void handlesBrokerNotRunning() {
         Producer producer = getRetryableAmqProducer();
 
         MessageService messageService = new MessageService(producer);

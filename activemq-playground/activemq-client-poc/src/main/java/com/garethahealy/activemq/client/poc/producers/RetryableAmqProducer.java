@@ -19,6 +19,7 @@
  */
 package com.garethahealy.activemq.client.poc.producers;
 
+import com.garethahealy.activemq.client.poc.callbacks.RetryLoopCallback;
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
@@ -40,31 +41,20 @@ public class RetryableAmqProducer extends BaseAmqProducer {
 
     @Override
     protected Connection createConnection() throws JMSException {
-        Connection amqConnection = null;
-
-        int count = 1;
-        int retryAmount = retryConfiguration.getCreateConnectionRetryCount();
-        while (amqConnection == null) {
-            try {
-                amqConnection = super.createConnection();
-            } catch (JMSException ex) {
-                LOG.error("Exception creating connection from connection factory {} to {} because {}. Attempting retry {} of {}",
-                          connectionFactory.getClass().getName(), brokerConfiguration.getBrokerURL(), ex.getMessage(), count, retryAmount);
-
-                if (count >= retryAmount) {
-                    //Last retry, so bubble exception upwards
-                    throw ex;
-                }
+        RetryLoopCallback callback = new RetryLoopCallback() {
+            @Override
+            public Connection runAndGetResult() throws JMSException {
+                return RetryableAmqProducer.super.createConnection();
             }
 
-            count++;
-
-            if (count > retryAmount) {
-                break;
+            @Override
+            public void log(JMSException ex, int count, int retryAmount, Object... arguments) {
+                LOG.error("Exception creating connection from connection factory {} to {} because {}. Attempting retry {} of {}. ",
+                          getLoggingArguments(ex, count, retryAmount, arguments));
             }
-        }
+        };
 
-        return amqConnection;
+        return retryWhileResultIsNull(retryConfiguration.getCreateConnectionRetryCount(), callback, connectionFactory.getClass().getName(), brokerConfiguration.getBrokerURL());
     }
 
     @Override
@@ -214,5 +204,28 @@ public class RetryableAmqProducer extends BaseAmqProducer {
         }
     }
 
-    //todo: maybe make a generic retry block of code?
+    private <T> T retryWhileResultIsNull(int retryCount, RetryLoopCallback callback, Object... logging) throws JMSException {
+        T result = null;
+        int count = 1;
+        while (result == null) {
+            try {
+                result = callback.runAndGetResult();
+            } catch (JMSException ex) {
+                callback.log(ex, count, retryCount, logging);
+
+                if (count >= retryCount) {
+                    //Last retry, so bubble exception upwards
+                    throw ex;
+                }
+            }
+
+            count++;
+
+            if (count > retryCount) {
+                break;
+            }
+        }
+
+        return result;
+    }
 }
