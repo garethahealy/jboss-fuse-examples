@@ -1,5 +1,4 @@
 1. ActiveMQ and Camel using transacted connections
-2. OpenJPA
 3. Camel-Bindy
 4. Camel-Aggregator
 5. Camel-Splitter

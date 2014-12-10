@@ -19,49 +19,49 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 	 * 		 http://cxf.apache.org/faq.html#FAQ-HowcanIaddsoapheaderstotherequest/response?
 	 */
 
-        @Override
-        public boolean handleMessage(SOAPMessageContext context) {
+    @Override
+    public boolean handleMessage(SOAPMessageContext context) {
 
-                try {
-                        SOAPMessage message = context.getMessage();
-                        SOAPEnvelope envelope = message.getSOAPPart().getEnvelope();
-                        SOAPHeader header = envelope.getHeader();
+        try {
+            SOAPMessage message = context.getMessage();
+            SOAPEnvelope envelope = message.getSOAPPart().getEnvelope();
+            SOAPHeader header = envelope.getHeader();
 
-                        SOAPFactory factory = SOAPFactory.newInstance();
+            SOAPFactory factory = SOAPFactory.newInstance();
 
-                        SOAPElement myheader = factory.createElement("MyHeader");
-                        SOAPElement name = factory.createElement("MyName");
-                        name.addTextNode("Gareth");
+            SOAPElement myheader = factory.createElement("MyHeader");
+            SOAPElement name = factory.createElement("MyName");
+            name.addTextNode("Gareth");
 
-                        myheader.addChildElement(name);
-                        header.addChildElement(myheader);
+            myheader.addChildElement(name);
+            header.addChildElement(myheader);
 
-                        message.saveChanges();
+            message.saveChanges();
 
-                        message.writeTo(System.out);
-                } catch (SOAPException | IOException e) {
-                        e.printStackTrace();
-                }
-
-                return true;
+            message.writeTo(System.out);
+        } catch (SOAPException | IOException e) {
+            e.printStackTrace();
         }
 
-        @Override
-        public boolean handleFault(SOAPMessageContext context) {
-                // TODO Auto-generated method stub
-                return true;
-        }
+        return true;
+    }
 
-        @Override
-        public void close(MessageContext context) {
-                // TODO Auto-generated method stub
+    @Override
+    public boolean handleFault(SOAPMessageContext context) {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-        }
+    @Override
+    public void close(MessageContext context) {
+        // TODO Auto-generated method stub
 
-        @Override
-        public Set<QName> getHeaders() {
-                // TODO Auto-generated method stub
-                return new TreeSet<QName>();
-        }
+    }
+
+    @Override
+    public Set<QName> getHeaders() {
+        // TODO Auto-generated method stub
+        return new TreeSet<QName>();
+    }
 
 }

@@ -28,53 +28,53 @@ import java.util.Map;
  */
 public class UTPasswordCallback implements CallbackHandler {
 
-        private Map<String, String> passwords = new HashMap<String, String>();
+    private Map<String, String> passwords = new HashMap<String, String>();
 
-        public UTPasswordCallback() {
-                passwords.put("user.gareth", "healy");
-                passwords.put("clientx509v1", "storepassword");
+    public UTPasswordCallback() {
+        passwords.put("user.gareth", "healy");
+        passwords.put("clientx509v1", "storepassword");
+    }
+
+    /**
+     * Here, we attempt to get the password from the private alias/passwords map.
+     */
+    public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+
+        String user = "";
+
+        for (Callback callback : callbacks) {
+            String pass = passwords.get(getIdentifier(callback));
+            if (pass != null) {
+                setPassword(callback, pass);
+                return;
+            }
+
         }
 
-        /**
-         * Here, we attempt to get the password from the private alias/passwords map.
-         */
-        public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+        // Password not found
+        throw new IOException("Password does not exist for the user : " + user);
+    }
 
-                String user = "";
-
-                for (Callback callback : callbacks) {
-                        String pass = passwords.get(getIdentifier(callback));
-                        if (pass != null) {
-                                setPassword(callback, pass);
-                                return;
-                        }
-
-                }
-
-                // Password not found
-                throw new IOException("Password does not exist for the user : " + user);
+    private void setPassword(Callback callback, String pass) {
+        try {
+            callback.getClass().getMethod("setPassword", String.class).invoke(callback, pass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
 
-        private void setPassword(Callback callback, String pass) {
-                try {
-                        callback.getClass().getMethod("setPassword", String.class).invoke(callback, pass);
-                } catch (Exception e) {
-                        throw new RuntimeException(e);
-                }
+    private String getIdentifier(Callback cb) {
+        try {
+            return (String)cb.getClass().getMethod("getIdentifier").invoke(cb);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
 
-        private String getIdentifier(Callback cb) {
-                try {
-                        return (String)cb.getClass().getMethod("getIdentifier").invoke(cb);
-                } catch (Exception e) {
-                        throw new RuntimeException(e);
-                }
-        }
-
-        /**
-         * Add an alias/password pair to the callback mechanism.
-         */
-        public void setAliasPassword(String alias, String password) {
-                passwords.put(alias, password);
-        }
+    /**
+     * Add an alias/password pair to the callback mechanism.
+     */
+    public void setAliasPassword(String alias, String password) {
+        passwords.put(alias, password);
+    }
 }

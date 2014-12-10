@@ -7,14 +7,14 @@ import org.apache.camel.impl.DefaultExchange;
 
 public class ExchangeFactory implements EventFactory<Exchange> {
 
-        private CamelContext camelContext;
+    private CamelContext camelContext;
 
-        public ExchangeFactory(CamelContext camelContext) {
-                this.camelContext = camelContext;
-        }
+    public ExchangeFactory(CamelContext camelContext) {
+        this.camelContext = camelContext;
+    }
 
-        @Override
-        public Exchange newInstance() {
-                return new DefaultExchange(camelContext);
-        }
+    @Override
+    public Exchange newInstance() {
+        return new DefaultExchange(camelContext);
+    }
 }

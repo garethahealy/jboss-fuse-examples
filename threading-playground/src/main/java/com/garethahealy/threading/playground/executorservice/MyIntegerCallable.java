@@ -7,17 +7,17 @@ import java.util.concurrent.Callable;
 
 public class MyIntegerCallable implements Callable<Integer> {
 
-        private static final Logger LOG = LoggerFactory.getLogger(MyIntegerCallable.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MyIntegerCallable.class);
 
-        private Integer current;
+    private Integer current;
 
-        public MyIntegerCallable(Integer current) {
-                this.current = current;
-        }
+    public MyIntegerCallable(Integer current) {
+        this.current = current;
+    }
 
-        @Override
-        public Integer call() throws Exception {
-                LOG.info("Running...." + current);
-                return current;
-        }
+    @Override
+    public Integer call() throws Exception {
+        LOG.info("Running...." + current);
+        return current;
+    }
 }

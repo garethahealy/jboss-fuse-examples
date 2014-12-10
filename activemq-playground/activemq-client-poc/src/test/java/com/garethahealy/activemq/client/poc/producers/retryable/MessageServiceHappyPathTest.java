@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * activemq-client-poc
+ * %%
+ * Copyright (C) 2013 - 2014 Gareth Healy
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package com.garethahealy.activemq.client.poc.producers.retryable;
 
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
@@ -15,31 +34,31 @@ import org.junit.Test;
 
 public class MessageServiceHappyPathTest extends BaseBroker {
 
-        private Producer getRetryableAmqProducer() {
-                RetryConfiguration retryConfiguration = new RetryConfiguration();
-                BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
-                ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
+    private Producer getRetryableAmqProducer() {
+        RetryConfiguration retryConfiguration = new RetryConfiguration();
+        BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
+        ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
 
-                return new RetryableAmqProducer(retryConfiguration, brokerConfiguration, connectionFactoryResolver);
-        }
+        return new RetryableAmqProducer(retryConfiguration, brokerConfiguration, connectionFactoryResolver);
+    }
 
-        @Before
-        public void startBroker() throws Exception {
-                super.startBroker();
-        }
+    @Before
+    public void startBroker() throws Exception {
+        super.startBroker();
+    }
 
-        @After
-        public void stopBroker() throws Exception {
-                super.stopBroker();
-        }
+    @After
+    public void stopBroker() throws Exception {
+        super.stopBroker();
+    }
 
-        @Test
-        public void canSend() {
-                Producer producer = getRetryableAmqProducer();
+    @Test
+    public void canSend() {
+        Producer producer = getRetryableAmqProducer();
 
-                MessageService messageService = new MessageService(producer);
-                boolean hasSent = messageService.sendMessagesToQueue("gareth", "healy");
+        MessageService messageService = new MessageService(producer);
+        boolean hasSent = messageService.sendMessagesToQueue("gareth", "healy");
 
-                Assert.assertTrue("hasSent", hasSent);
-        }
+        Assert.assertTrue("hasSent", hasSent);
+    }
 }

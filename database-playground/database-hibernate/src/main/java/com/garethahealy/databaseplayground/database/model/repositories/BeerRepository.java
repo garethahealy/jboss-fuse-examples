@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BeerRepository {
 
-        void setEntityManager(EntityManager entityManager);
+    void setEntityManager(EntityManager entityManager);
 
-        List<Beer> getBeers();
+    List<Beer> getBeers();
 }

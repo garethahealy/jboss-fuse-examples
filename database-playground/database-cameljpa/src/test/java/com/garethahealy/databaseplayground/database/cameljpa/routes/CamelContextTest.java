@@ -9,13 +9,13 @@ import javax.persistence.EntityManagerFactory;
 
 public class CamelContextTest extends BaseCamelBlueprintTestSupport {
 
-        @Override
-        protected void provideMockMethods(EntityManagerFactory emf) {
-                Mockito.when(emf.createEntityManager()).thenReturn(Mockito.mock(EntityManager.class));
-        }
+    @Override
+    protected void provideMockMethods(EntityManagerFactory emf) {
+        Mockito.when(emf.createEntityManager()).thenReturn(Mockito.mock(EntityManager.class));
+    }
 
-        @Test
-        public void camelContextIsNotNull() {
-                Assert.assertNotNull(context);
-        }
+    @Test
+    public void camelContextIsNotNull() {
+        Assert.assertNotNull(context);
+    }
 }

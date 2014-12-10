@@ -8,26 +8,26 @@ import java.util.concurrent.Executors;
 
 public class DisruptorActivator implements BundleActivator {
 
-        @Override
-        public void start(BundleContext context) throws Exception {
-                DisruptorService<ByteBuffer> service = new DisruptorService<ByteBuffer>();
-                service.setBufferSize(1024);
-                service.setExecutorService(Executors.newCachedThreadPool());
-                //service.setFactory(new LongEventFactory());
-                service.registerConsumer(new ExchangeConsumer());
-                service.init();
+    @Override
+    public void start(BundleContext context) throws Exception {
+        DisruptorService<ByteBuffer> service = new DisruptorService<ByteBuffer>();
+        service.setBufferSize(1024);
+        service.setExecutorService(Executors.newCachedThreadPool());
+        //service.setFactory(new LongEventFactory());
+        service.registerConsumer(new ExchangeConsumer());
+        service.init();
 
-                service.start();
+        service.start();
 
-                context.registerService(DisruptorService.class.getCanonicalName(), service, null);
+        context.registerService(DisruptorService.class.getCanonicalName(), service, null);
 
-                //service.setFactory(new ExchangeFactory(null)); //CamelContext
-                //service.registerProducer(new ExchangeProducer());
-        }
+        //service.setFactory(new ExchangeFactory(null)); //CamelContext
+        //service.registerProducer(new ExchangeProducer());
+    }
 
-        @Override
-        public void stop(BundleContext context) throws Exception {
-                //disruptor.shutdown(10, TimeUnit.SECONDS);
-        }
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        //disruptor.shutdown(10, TimeUnit.SECONDS);
+    }
 
 }

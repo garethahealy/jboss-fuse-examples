@@ -5,9 +5,9 @@ import org.apache.camel.Exchange;
 
 public interface ExchangeEventProducer<T> {
 
-        void setRingBuffer(final RingBuffer<Exchange> ringBuffer);
+    void setRingBuffer(final RingBuffer<Exchange> ringBuffer);
 
-        void onData(T body);
+    void onData(T body);
 
-        void stop();
+    void stop();
 }

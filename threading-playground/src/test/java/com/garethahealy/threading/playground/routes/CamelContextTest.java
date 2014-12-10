@@ -5,8 +5,8 @@ import org.junit.Test;
 
 public class CamelContextTest extends BaseCamelBlueprintTestSupport {
 
-        @Test
-        public void camelContextIsNotNull() {
-                Assert.assertNotNull(context);
-        }
+    @Test
+    public void camelContextIsNotNull() {
+        Assert.assertNotNull(context);
+    }
 }

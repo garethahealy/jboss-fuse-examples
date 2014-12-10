@@ -4,7 +4,7 @@ import com.lmax.disruptor.TimeoutException;
 
 public class LongEventMain {
 
-        public void doWork() throws TimeoutException {
+    public void doWork() throws TimeoutException {
 //		// Executor that will be used to construct new threads for consumers
 //		Executor executor = Executors.newCachedThreadPool();
 //
@@ -34,7 +34,7 @@ public class LongEventMain {
 //			producer.onData(bb);
 //		}
 //		
-                //disruptor.shutdown(10, TimeUnit.SECONDS);
+        //disruptor.shutdown(10, TimeUnit.SECONDS);
 
-        }
+    }
 }

@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * activemq-client-poc
+ * %%
+ * Copyright (C) 2013 - 2014 Gareth Healy
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package com.garethahealy.activemq.client.poc.producers;
 
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
@@ -9,135 +28,130 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
-import java.io.IOException;
 
 public abstract class BaseAmqProducer implements Producer {
 
-        private static final Logger LOG = LoggerFactory.getLogger(BaseAmqProducer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseAmqProducer.class);
+    protected BrokerConfiguration brokerConfiguration;
+    protected ConnectionFactory connectionFactory;
+    private ConnectionFactoryResolver connectionFactoryResolver;
+    private AmqErrorStrategy amqErrorStrategy;
 
-        private ConnectionFactoryResolver connectionFactoryResolver;
-        private AmqErrorStrategy amqErrorStrategy;
-        protected BrokerConfiguration brokerConfiguration;
-        protected ConnectionFactory connectionFactory;
+    public BaseAmqProducer(BrokerConfiguration brokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver) {
+        this(brokerConfiguration, connectionFactoryResolver, new DefaultErrorStrategy());
+    }
 
-        public BaseAmqProducer(BrokerConfiguration brokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver) {
-                this(brokerConfiguration, connectionFactoryResolver, new DefaultErrorStrategy());
+    public BaseAmqProducer(BrokerConfiguration brokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver, AmqErrorStrategy amqErrorStrategy) {
+        this.brokerConfiguration = brokerConfiguration;
+        this.connectionFactoryResolver = connectionFactoryResolver;
+        this.amqErrorStrategy = amqErrorStrategy;
+    }
+
+    private void init() {
+        connectionFactory = connectionFactoryResolver.start();
+    }
+
+    public boolean produce(String queueName, Object[] body) {
+        if (connectionFactory == null) {
+            init();
         }
 
-        public BaseAmqProducer(BrokerConfiguration brokerConfiguration, ConnectionFactoryResolver connectionFactoryResolver, AmqErrorStrategy amqErrorStrategy) {
-                this.brokerConfiguration = brokerConfiguration;
-                this.connectionFactoryResolver = connectionFactoryResolver;
-                this.amqErrorStrategy = amqErrorStrategy;
+        Session amqSession = null;
+        Connection amqConnection = null;
+        MessageProducer amqProducer = null;
+
+        boolean hasNotThrownException = true;
+        try {
+            //Get a connection and session from the factory
+            amqConnection = createConnection();
+            amqSession = createSession(amqConnection, brokerConfiguration.isTransacted(), brokerConfiguration.getAcknowledgeMode());
+
+            //Create the queue and wrap the body as an object so we can send it
+            Queue amqQueue = createQueue(amqSession, queueName);
+            amqProducer = createProducer(amqSession, amqQueue);
+            Message amqMessage = createMessage(amqSession, body);
+
+            //Send the object
+            send(amqProducer, amqMessage);
+        } catch (JMSException ex) {
+            hasNotThrownException = false;
+
+            LOG.error("Exception producing message {} because {}", body, ExceptionUtils.getStackTrace(ex));
+
+            amqErrorStrategy.handle(ex, queueName, body);
+
         }
 
-        private void init() {
-                connectionFactory = connectionFactoryResolver.start();
+        //Cleanup
+        safeCloseSession(amqSession);
+        safeCloseConnection(amqConnection);
+        safeCloseMessageProducer(amqProducer);
+
+        return hasNotThrownException;
+    }
+
+    protected Connection createConnection() throws JMSException {
+        return connectionFactory.createConnection(brokerConfiguration.getUsername(), brokerConfiguration.getPassword());
+    }
+
+    protected Session createSession(Connection amqConnection, boolean isTransacted, int acknowledgeMode) throws JMSException {
+        return amqConnection.createSession(isTransacted, acknowledgeMode);
+    }
+
+    protected Queue createQueue(Session amqSession, String queueName) throws JMSException {
+        return amqSession.createQueue(queueName);
+    }
+
+    protected MessageProducer createProducer(Session amqSession, Queue amqQueue) throws JMSException {
+        return amqSession.createProducer(amqQueue);
+    }
+
+    protected Message createMessage(Session amqSession, Object[] body) throws JMSException {
+        return amqSession.createObjectMessage(body);
+    }
+
+    protected void send(MessageProducer amqProducer, Message amqMessage) throws JMSException {
+        amqProducer.send(amqMessage);
+    }
+
+    private boolean safeCloseSession(Session amqSession) {
+        if (amqSession != null) {
+            try {
+                amqSession.close();
+                amqSession = null;
+            } catch (JMSException ex) {
+                LOG.error("Exception closing session {} because {}", amqSession, ExceptionUtils.getStackTrace(ex));
+            }
+
         }
 
-        public boolean produce(String queueName, Object[] body) {
-                if (connectionFactory == null) {
-                        init();
-                }
+        return amqSession == null;
+    }
 
-                Session amqSession = null;
-                Connection amqConnection = null;
-                MessageProducer amqProducer = null;
+    private boolean safeCloseConnection(Connection amqConnection) {
+        if (amqConnection != null) {
+            try {
+                amqConnection.close();
+                amqConnection = null;
+            } catch (JMSException ex) {
+                LOG.error("Exception closing connection {} because {}", amqConnection, ExceptionUtils.getStackTrace(ex));
+            }
 
-                boolean hasNotThrownException = true;
-                try {
-                        //Get a connection and session from the factory
-                        amqConnection = createConnection();
-                        amqSession = createSession(amqConnection, brokerConfiguration.isTransacted(), brokerConfiguration.getAcknowledgeMode());
-
-                        //Create the queue and wrap the body as an object so we can send it
-                        Queue amqQueue = createQueue(amqSession, queueName);
-                        amqProducer = createProducer(amqSession, amqQueue);
-                        Message amqMessage = createMessage(amqSession, body);
-
-                        //Send the object
-                        send(amqProducer, amqMessage);
-                } catch (JMSException ex) {
-                        hasNotThrownException = false;
-
-                        LOG.error("Exception producing message {} because {}", body, ExceptionUtils.getStackTrace(ex));
-
-                        try {
-                                amqErrorStrategy.handle(ex, queueName, body);
-                        } catch (IOException e) {
-                                e.printStackTrace();
-                        }
-                }
-
-                //Cleanup
-                safeCloseSession(amqSession);
-                safeCloseConnection(amqConnection);
-                safeCloseMessageProducer(amqProducer);
-
-                return hasNotThrownException;
         }
 
-        protected Connection createConnection() throws JMSException {
-                return connectionFactory.createConnection(brokerConfiguration.getUsername(), brokerConfiguration.getPassword());
+        return amqConnection == null;
+    }
+
+    private boolean safeCloseMessageProducer(MessageProducer amqProducer) {
+        if (amqProducer != null) {
+            try {
+                amqProducer.close();
+                amqProducer = null;
+            } catch (JMSException ex) {
+                LOG.error("Exception closing producer {} because {}", amqProducer, ExceptionUtils.getStackTrace(ex));
+            }
         }
 
-        protected Session createSession(Connection amqConnection, boolean isTransacted, int acknowledgeMode) throws JMSException {
-                return amqConnection.createSession(isTransacted, acknowledgeMode);
-        }
-
-        protected Queue createQueue(Session amqSession, String queueName) throws JMSException {
-                return amqSession.createQueue(queueName);
-        }
-
-        protected MessageProducer createProducer(Session amqSession, Queue amqQueue) throws JMSException {
-                return amqSession.createProducer(amqQueue);
-        }
-
-        protected Message createMessage(Session amqSession, Object[] body) throws JMSException {
-                return amqSession.createObjectMessage(body);
-        }
-
-        protected void send(MessageProducer amqProducer, Message amqMessage) throws JMSException {
-                amqProducer.send(amqMessage);
-        }
-
-        private boolean safeCloseSession(Session amqSession) {
-                if (amqSession != null) {
-                        try {
-                                amqSession.close();
-                                amqSession = null;
-                        } catch (JMSException ex) {
-                                LOG.error("Exception closing session {} because {}", amqSession, ExceptionUtils.getStackTrace(ex));
-                        }
-
-                }
-
-                return amqSession == null;
-        }
-
-        private boolean safeCloseConnection(Connection amqConnection) {
-                if (amqConnection != null) {
-                        try {
-                                amqConnection.close();
-                                amqConnection = null;
-                        } catch (JMSException ex) {
-                                LOG.error("Exception closing connection {} because {}", amqConnection, ExceptionUtils.getStackTrace(ex));
-                        }
-
-                }
-
-                return amqConnection == null;
-        }
-
-        private boolean safeCloseMessageProducer(MessageProducer amqProducer) {
-                if (amqProducer != null) {
-                        try {
-                                amqProducer.close();
-                                amqProducer = null;
-                        } catch (JMSException ex) {
-                                LOG.error("Exception closing producer {} because {}", amqProducer, ExceptionUtils.getStackTrace(ex));
-                        }
-                }
-
-                return amqProducer == null;
-        }
+        return amqProducer == null;
+    }
 }

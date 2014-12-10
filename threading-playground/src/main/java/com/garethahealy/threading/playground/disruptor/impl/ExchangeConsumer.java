@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 
 public class ExchangeConsumer implements ExchangeEventConsumer {
 
-        private static final Logger LOG = LoggerFactory.getLogger(ExampleThreading.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleThreading.class);
 
-        public void onEvent(Exchange event, long sequence, boolean endOfBatch) {
-                LOG.info("Event: " + event);
-        }
+    public void onEvent(Exchange event, long sequence, boolean endOfBatch) {
+        LOG.info("Event: " + event);
+    }
 }

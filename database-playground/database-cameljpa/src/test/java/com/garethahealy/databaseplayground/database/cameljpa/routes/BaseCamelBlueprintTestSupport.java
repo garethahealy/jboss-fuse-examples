@@ -6,36 +6,35 @@ import org.mockito.Mockito;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 import java.util.Dictionary;
 import java.util.Map;
 
 public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 
-        @Override
-        protected String getBlueprintDescriptor() {
-                return "OSGI-INF/blueprint/database-cameljpa-context.xml";
-        }
+    @Override
+    protected String getBlueprintDescriptor() {
+        return "OSGI-INF/blueprint/database-cameljpa-context.xml";
+    }
 
-        @SuppressWarnings("rawtypes")
-        @Override
-        protected void addServicesOnStartup(Map<String, KeyValueHolder<Object, Dictionary>> services) {
-                PlatformTransactionManager platformTransactionManager = Mockito.mock(PlatformTransactionManager.class);
-                EntityManagerFactory entityManagerFactory = Mockito.mock(EntityManagerFactory.class);
+    @SuppressWarnings("rawtypes")
+    @Override
+    protected void addServicesOnStartup(Map<String, KeyValueHolder<Object, Dictionary>> services) {
+        PlatformTransactionManager platformTransactionManager = Mockito.mock(PlatformTransactionManager.class);
+        EntityManagerFactory entityManagerFactory = Mockito.mock(EntityManagerFactory.class);
 
-                provideMockMethods(platformTransactionManager);
-                provideMockMethods(entityManagerFactory);
+        provideMockMethods(platformTransactionManager);
+        provideMockMethods(entityManagerFactory);
 
-                services.put(PlatformTransactionManager.class.getCanonicalName(), asService(platformTransactionManager, null));
-                services.put(EntityManagerFactory.class.getCanonicalName(), asService(entityManagerFactory, "osgi.unit.name", "playground-persistence"));
-        }
+        services.put(PlatformTransactionManager.class.getCanonicalName(), asService(platformTransactionManager, null));
+        services.put(EntityManagerFactory.class.getCanonicalName(), asService(entityManagerFactory, "osgi.unit.name", "playground-persistence"));
+    }
 
-        protected void provideMockMethods(EntityManagerFactory emf) {
+    protected void provideMockMethods(EntityManagerFactory emf) {
 
-        }
+    }
 
-        protected void provideMockMethods(PlatformTransactionManager ptm) {
+    protected void provideMockMethods(PlatformTransactionManager ptm) {
 
-        }
+    }
 }
 

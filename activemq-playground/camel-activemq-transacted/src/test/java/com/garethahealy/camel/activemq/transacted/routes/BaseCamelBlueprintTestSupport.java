@@ -10,16 +10,16 @@ import java.util.Map;
 
 public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 
-        @Override
-        protected String getBlueprintDescriptor() {
-                return "OSGI-INF/blueprint/camel-activemq-transacted-context.xml";
-        }
+    @Override
+    protected String getBlueprintDescriptor() {
+        return "OSGI-INF/blueprint/camel-activemq-transacted-context.xml";
+    }
 
-        @SuppressWarnings("rawtypes")
-        @Override
-        protected void addServicesOnStartup(Map<String, KeyValueHolder<Object, Dictionary>> services) {
-                ConnectionFactory amqPooledConnectionFactory = Mockito.mock(ConnectionFactory.class);
+    @SuppressWarnings("rawtypes")
+    @Override
+    protected void addServicesOnStartup(Map<String, KeyValueHolder<Object, Dictionary>> services) {
+        ConnectionFactory amqPooledConnectionFactory = Mockito.mock(ConnectionFactory.class);
 
-                services.put(ConnectionFactory.class.getCanonicalName(), asService(amqPooledConnectionFactory, null));
-        }
+        services.put(ConnectionFactory.class.getCanonicalName(), asService(amqPooledConnectionFactory, null));
+    }
 }

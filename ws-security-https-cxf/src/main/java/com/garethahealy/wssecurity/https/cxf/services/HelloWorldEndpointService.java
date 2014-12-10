@@ -9,16 +9,16 @@ import org.slf4j.LoggerFactory;
 
 public class HelloWorldEndpointService implements HelloWorldEndpoint {
 
-        private static final Logger LOG = LoggerFactory.getLogger(HelloWorldEndpointService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HelloWorldEndpointService.class);
 
-        private HelloWorldResponseBuilder builder;
+    private HelloWorldResponseBuilder builder;
 
-        public HelloWorldEndpointService(HelloWorldResponseBuilder builder) {
-                this.builder = builder;
-        }
+    public HelloWorldEndpointService(HelloWorldResponseBuilder builder) {
+        this.builder = builder;
+    }
 
-        public HelloWorldResponse sayHello(HelloWorldRequest body) {
-                LOG.info("HelloWorldEndpointService received");
-                return builder.getResponse(body);
-        }
+    public HelloWorldResponse sayHello(HelloWorldRequest body) {
+        LOG.info("HelloWorldEndpointService received");
+        return builder.getResponse(body);
+    }
 }

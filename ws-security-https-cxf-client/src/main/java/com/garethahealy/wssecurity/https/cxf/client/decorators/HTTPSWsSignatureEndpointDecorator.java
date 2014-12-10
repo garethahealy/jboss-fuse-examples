@@ -13,7 +13,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -23,66 +22,102 @@ import java.security.cert.CertificateException;
 
 public class HTTPSWsSignatureEndpointDecorator extends WsSignatureEndpointDecorator {
 
-        private static final Logger LOG = LoggerFactory.getLogger(HTTPSWsSignatureEndpointDecorator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HTTPSWsSignatureEndpointDecorator.class);
 
-        public HTTPSWsSignatureEndpointDecorator(WsEndpointConfiguration<?> config) {
-                super(config);
+    public HTTPSWsSignatureEndpointDecorator(WsEndpointConfiguration<?> config) {
+        super(config);
+    }
+
+    @Override
+    public synchronized Object create() {
+        Object port = super.create();
+
+        Client client = ClientProxy.getClient(port);
+        configureSSLOnTheClient(client);
+
+        return port;
+    }
+
+    public void configureSSLOnTheClient(Client client) {
+        //NOTE: The below order matters!
+        HTTPConduit httpConduit = (HTTPConduit)client.getConduit();
+
+        KeyStore keyStore = getInstanceOfKeyStore();
+
+        loadKeyStore(keyStore, config.getKeystorePath(), config.getKeystorePassword());
+
+        KeyManagerFactory keyFactory = getInstanceOfKeyManagerFactory(keyStore, config.getKeyManagerPassword());
+
+        loadKeyStore(keyStore, config.getTruststorePath(), config.getTruststorePassword());
+
+        TrustManagerFactory trustFactory = getInstanceOfTrustManagerFactory(keyStore);
+
+        FiltersType filter = new FiltersType();
+        filter.getInclude().add(".*_WITH_3DES_.*");
+        filter.getInclude().add(".*_WITH_DES_.*");
+        filter.getInclude().add(".*_WITH_NULL_.*");
+        filter.getExclude().add(".*_DH_anon_.*");
+
+        TLSClientParameters tlsParams = new TLSClientParameters();
+        tlsParams.setDisableCNCheck(true);
+        tlsParams.setTrustManagers(trustFactory.getTrustManagers());
+        tlsParams.setKeyManagers(keyFactory.getKeyManagers());
+        tlsParams.setCipherSuitesFilter(filter);
+
+        httpConduit.setTlsClientParameters(tlsParams);
+    }
+
+    private KeyStore getInstanceOfKeyStore() {
+        KeyStore keyStore = null;
+        try {
+            keyStore = KeyStore.getInstance("JKS");
+        } catch (KeyStoreException kse) {
+            LOG.error("Security configuration failed with the following: " + kse.getCause());
         }
 
-        @Override
-        public synchronized Object create() {
-                Object port = super.create();
+        return keyStore;
+    }
 
-                Client client = ClientProxy.getClient(port);
-                configureSSLOnTheClient(client);
+    private void loadKeyStore(KeyStore keyStore, String path, String storePassword) {
+        File pathFile = new File(path);
+        try (FileInputStream stream = new FileInputStream(pathFile)) {
+            keyStore.load(stream, storePassword.toCharArray());
+        } catch (IOException nsa) {
+            LOG.error("Security configuration failed with the following: " + nsa.getCause());
+        } catch (CertificateException fnfe) {
+            LOG.error("Security configuration failed with the following: " + fnfe.getCause());
+        } catch (NoSuchAlgorithmException fnfe) {
+            LOG.error("Security configuration failed with the following: " + fnfe.getCause());
+        }
+    }
 
-                return port;
+    private KeyManagerFactory getInstanceOfKeyManagerFactory(KeyStore keyStore, String keyManagerPassword) {
+        KeyManagerFactory keyFactory = null;
+        try {
+            keyFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            keyFactory.init(keyStore, keyManagerPassword.toCharArray());
+        } catch (NoSuchAlgorithmException fnfe) {
+            LOG.error("Security configuration failed with the following: " + fnfe.getCause());
+        } catch (KeyStoreException kse) {
+            LOG.error("Security configuration failed with the following: " + kse.getCause());
+        } catch (UnrecoverableKeyException uke) {
+            LOG.error("Security configuration failed with the following: " + uke.getCause());
         }
 
-        public void configureSSLOnTheClient(Client client) {
-                HTTPConduit httpConduit = (HTTPConduit)client.getConduit();
+        return keyFactory;
+    }
 
-                try {
-                        KeyStore keyStore = KeyStore.getInstance("JKS");
-
-                        //NOTE: The below order matters!
-                        File keyStoreClient = new File(config.getKeystorePath());
-                        keyStore.load(new FileInputStream(keyStoreClient), config.getKeystorePassword().toCharArray());
-
-                        KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-                        keyFactory.init(keyStore, config.getKeyManagerPassword().toCharArray());
-
-                        File truststoreClient = new File(config.getTruststorePath());
-                        keyStore.load(new FileInputStream(truststoreClient), config.getTruststorePassword().toCharArray());
-
-                        TrustManagerFactory trustFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-                        trustFactory.init(keyStore);
-
-                        FiltersType filter = new FiltersType();
-                        filter.getInclude().add(".*_WITH_3DES_.*");
-                        filter.getInclude().add(".*_WITH_DES_.*");
-                        filter.getInclude().add(".*_WITH_NULL_.*");
-                        filter.getExclude().add(".*_DH_anon_.*");
-
-                        TLSClientParameters tlsParams = new TLSClientParameters();
-                        tlsParams.setDisableCNCheck(true);
-                        tlsParams.setTrustManagers(trustFactory.getTrustManagers());
-                        tlsParams.setKeyManagers(keyFactory.getKeyManagers());
-                        tlsParams.setCipherSuitesFilter(filter);
-
-                        httpConduit.setTlsClientParameters(tlsParams);
-                } catch (KeyStoreException kse) {
-                        LOG.error("Security configuration failed with the following: " + kse.getCause());
-                } catch (NoSuchAlgorithmException nsa) {
-                        LOG.error("Security configuration failed with the following: " + nsa.getCause());
-                } catch (FileNotFoundException fnfe) {
-                        LOG.error("Security configuration failed with the following: " + fnfe.getCause());
-                } catch (UnrecoverableKeyException uke) {
-                        LOG.error("Security configuration failed with the following: " + uke.getCause());
-                } catch (CertificateException ce) {
-                        LOG.error("Security configuration failed with the following: " + ce.getCause());
-                } catch (IOException ioe) {
-                        LOG.error("Security configuration failed with the following: " + ioe.getCause());
-                }
+    private TrustManagerFactory getInstanceOfTrustManagerFactory(KeyStore keyStore) {
+        TrustManagerFactory trustFactory = null;
+        try {
+            trustFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustFactory.init(keyStore);
+        } catch (NoSuchAlgorithmException fnfe) {
+            LOG.error("Security configuration failed with the following: " + fnfe.getCause());
+        } catch (KeyStoreException kse) {
+            LOG.error("Security configuration failed with the following: " + kse.getCause());
         }
+
+        return trustFactory;
+    }
 }
