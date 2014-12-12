@@ -21,9 +21,20 @@ package com.garethahealy.activemq.client.poc.errorstrategys;
 
 import java.util.List;
 
-public interface AmqErrorStrategy {
+import org.junit.Assert;
+import org.junit.Test;
 
-    <T> List<T> getBackedupLines(String queueName);
+public class BodyToFileErrorStrategyGetBackedupTest {
 
-    void handle(Throwable ex, String queueName, Object[] body);
+    private String rootDirectory = "/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/activemq-playground/activemq-client-poc/target";
+
+    @Test
+    public void getBackedupLinesWithNoFiles() {
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandle";
+        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        List<String[]> answer =  strategy.getBackedupLines("NoFile");
+
+        Assert.assertNotNull(answer);
+        Assert.assertEquals(0, answer.size());
+    }
 }

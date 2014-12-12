@@ -26,9 +26,12 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -43,10 +46,14 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     //      2. Writes are not batched, possible performance issue with high throughput.
     //      3. File is not rotated on size, only via date.
     //      4. File is written as a simple CSV
+    //      5. Locking tactic is aggressive in that it lasts for longer periods that is probably needed, but is simpler
     //      5. No code to read in the files to re-process
 
-    private static final Logger LOG = LoggerFactory.getLogger(BodyToFileErrorStrategy.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(BodyToFileErrorStrategy.class);
+    private static final String HIDDEN_DIRECTORY = ".complete";
+
+    private final ReentrantLock lock = new ReentrantLock();
     private Charset utf8Charset = Charset.forName("UTF8");
     private String pathToPersistenceStore;
 
@@ -54,14 +61,39 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
         this.pathToPersistenceStore = pathToPersistenceStore;
     }
 
+    public List<String[]> getBackedupLines(String queueName) {
+        //TODO: put a lock around this and the handle, so we can read/write safely
+        //      also rename files once read in
+
+        List<String[]> answer = new ArrayList<String[]>();
+        try {
+            lock.lock();
+
+            Collection<File> backupFiles = getListOfBackupFiles(queueName);
+            for (File current : backupFiles) {
+                answer.addAll(readFile(current));
+
+                moveFileToHiddenDirectory(current);
+            }
+        } catch (IOException ex) {
+            LOG.error("Exception getting backed up lines for queue:{} because {}", queueName, ExceptionUtils.getStackTrace(ex));
+        } finally {
+            lock.unlock();
+        }
+
+        return answer;
+    }
+
     @Override
-    public synchronized void handle(Throwable ex, String queueName, Object[] body) {
+    public void handle(Throwable ex, String queueName, Object[] body) {
         LOG.error("Exception producing message {} to queue:{} because {}", body, queueName, ExceptionUtils.getStackTrace(ex));
 
         Collection<String> lines = new ArrayList<String>();
         lines.add(String.format("%s,%s", body[0], body[1]));
 
         try {
+            lock.lock();
+
             URL backupUrl = getFullPathAndFileName(queueName);
             File backupFile = FileUtils.toFile(backupUrl);
 
@@ -74,6 +106,8 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
             writeLinesToFile(backupFile, lines);
         } catch (IOException caughtex) {
             LOG.error("Exception handling body to persistence store for queue:{} because {}", queueName, ExceptionUtils.getStackTrace(caughtex));
+        }  finally {
+            lock.unlock();
         }
     }
 
@@ -91,5 +125,34 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
         String date = now.toString(ISODateTimeFormat.date());
 
         return String.format("%s_%s.csv", queueName, date);
+    }
+
+    private Collection<File> getListOfBackupFiles(String queueName) throws IOException {
+        File directory = FileUtils.toFile(new URL("file:" + pathToPersistenceStore));
+        return FileUtils.listFiles(directory, FileFilterUtils.prefixFileFilter(queueName), null);
+    }
+
+    private List<String[]> readFile(File file) throws IOException {
+        List<String[]> lines = new ArrayList<String[]>();
+
+        List<String> linesInFile = FileUtils.readLines(file, Charset.forName("UTF8"));
+        for (String line : linesInFile) {
+            String[] lineSplit = line.split(",");
+            lines.add(lineSplit);
+        }
+
+        return lines;
+    }
+
+    private void moveFileToHiddenDirectory(File source) throws IOException {
+        File backup = FileUtils.toFile(getHiddenDirectoryPathForFile(source));
+        FileUtils.moveFile(source, backup);
+    }
+
+    private URL getHiddenDirectoryPathForFile(File source) throws MalformedURLException {
+        String path = FilenameUtils.getFullPath(source.getAbsolutePath());
+        String fileName = FilenameUtils.getName(source.getAbsolutePath());
+
+        return new URL(String.format("%s%s%s%s", path, HIDDEN_DIRECTORY, File.separatorChar, fileName));
     }
 }
