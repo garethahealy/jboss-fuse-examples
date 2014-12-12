@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.garethahealy</groupId>
+        <artifactId>activemq-playground</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+    </parent>
+    <artifactId>activemq-perf</artifactId>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
+    <build>
+        <!-- mvn activemq-perf:consumer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin -->
+        <!-- mvn activemq-perf:producer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.activemq.tooling</groupId>
+                <artifactId>activemq-perf-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
