@@ -43,7 +43,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class BodyToFileErrorStrategyTest {
+public class BodyToFileErrorStrategyCanHandleTest {
 
     private String rootDirectory = "/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/activemq-playground/activemq-client-poc/target";
 
@@ -155,7 +155,7 @@ public class BodyToFileErrorStrategyTest {
             Assert.assertEquals(2000, lines.size());
 
             List<List<String[]>> linesSplit = splitLinesIntoTwo(lines);
-            
+
             Assert.assertEquals(2, linesSplit.size());
             Assert.assertEquals(1000, linesSplit.get(0).size());
             Assert.assertEquals(1000, linesSplit.get(1).size());
