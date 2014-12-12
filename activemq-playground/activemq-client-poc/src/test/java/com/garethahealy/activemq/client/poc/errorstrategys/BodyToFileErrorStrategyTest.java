@@ -155,10 +155,7 @@ public class BodyToFileErrorStrategyTest {
             Assert.assertEquals(2000, lines.size());
 
             List<List<String[]>> linesSplit = splitLinesIntoTwo(lines);
-
-            System.out.println("1 " + linesSplit.get(0).size());
-            System.out.println("2 " + linesSplit.get(1).size());
-
+            
             Assert.assertEquals(2, linesSplit.size());
             Assert.assertEquals(1000, linesSplit.get(0).size());
             Assert.assertEquals(1000, linesSplit.get(1).size());
