@@ -133,8 +133,8 @@ public class BodyToFileErrorStrategyTest {
         Future two = executor.submit(new HandlerRunnable(strategy, "Test", "healy", "gareth"));
 
         try {
-            one.get(10, TimeUnit.SECONDS);
-            two.get(10, TimeUnit.SECONDS);
+            one.get(5, TimeUnit.SECONDS);
+            two.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
             Assert.assertTrue("InterruptedException", false);
         } catch (ExecutionException ex) {
@@ -154,11 +154,45 @@ public class BodyToFileErrorStrategyTest {
             Assert.assertTrue(fileSize.compareTo(BigInteger.ZERO) > 0);
             Assert.assertEquals(2000, lines.size());
 
-            //TODO: Sort lines and split list into 2 so we can compare
-            for (String[] currentLine : lines) {
-                //Assert.assertArrayEquals(new String[] {"gareth", "healy"}, currentLine);
+            List<List<String[]>> linesSplit = splitLinesIntoTwo(lines);
+
+            System.out.println("1 " + linesSplit.get(0).size());
+            System.out.println("2 " + linesSplit.get(1).size());
+
+            Assert.assertEquals(2, linesSplit.size());
+            Assert.assertEquals(1000, linesSplit.get(0).size());
+            Assert.assertEquals(1000, linesSplit.get(1).size());
+
+            int j = 0;
+            for (String[] currentLine : linesSplit.get(0)) {
+                Assert.assertArrayEquals(new String[] {"gareth", "healy" + j}, currentLine);
+
+                j++;
+            }
+
+            j = 0;
+            for (String[] currentLine : linesSplit.get(1)) {
+                Assert.assertArrayEquals(new String[] {"healy", "gareth" + j}, currentLine);
+
+                j++;
             }
         }
+    }
+
+    private List<List<String[]>> splitLinesIntoTwo(List<String[]> lines) {
+        List<String[]> fileOne = new ArrayList<String[]>();
+        List<String[]> fileTwo = new ArrayList<String[]>();
+
+        for (String[] currentLine : lines) {
+            boolean isFirstFile = currentLine[0].startsWith("gareth");
+            boolean added = isFirstFile ? fileOne.add(currentLine) : fileTwo.add(currentLine);
+        }
+
+        List<List<String[]>> answer = new ArrayList<List<String[]>>();
+        answer.add(fileOne);
+        answer.add(fileTwo);
+
+        return answer;
     }
 
     @Test
