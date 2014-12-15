@@ -19,10 +19,13 @@
  */
 package com.garethahealy.activemq.client.poc.errorstrategys;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.jms.JMSException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,20 +34,30 @@ public class BodyToFileErrorStrategyGetBackedupTest {
     private String rootDirectory = System.getProperty("user.dir") + "/target";
 
     @Test
-    public void getBackedupLinesWithNoDirectoryExists() {
-        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/doesntExist";
+    public void getBackedupLinesWithNoDirectoryExists() throws IOException {
+        //Make sure the directory doesnt exist
+        FileUtils.deleteDirectory(FileUtils.toFile(new URL("file:" + rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithNoDirectoryExists")));
+
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithNoDirectoryExists";
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
-        List<String[]> answer =  strategy.getBackedupLines("NoFile");
+        List<String[]> answer = strategy.getBackedupLines("NoFile");
 
         Assert.assertNotNull(answer);
         Assert.assertEquals(0, answer.size());
     }
 
     @Test
-    public void getBackedupLinesWithNoFiles() {
-        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLines";
+    public void getBackedupLinesWithNoFiles() throws IOException {
+        try {
+            //Make sure the directory is empty
+            FileUtils.cleanDirectory(FileUtils.toFile(new URL("file:" + rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithNoFiles")));
+        } catch (IllegalArgumentException ex) {
+            //ignore
+        }
+
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithNoFiles";
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
-        List<String[]> answer =  strategy.getBackedupLines("NoFile");
+        List<String[]> answer = strategy.getBackedupLines("NoFile");
 
         Assert.assertNotNull(answer);
         Assert.assertEquals(0, answer.size());
@@ -52,11 +65,11 @@ public class BodyToFileErrorStrategyGetBackedupTest {
 
     @Test
     public void getBackedupLinesWith1FileAnd1Line() {
-        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLines1File";
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWith1FileAnd1Line";
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy"});
-        List<String[]> answer =  strategy.getBackedupLines("Test");
+        List<String[]> answer = strategy.getBackedupLines("Test");
 
         Assert.assertNotNull(answer);
         Assert.assertEquals(1, answer.size());
@@ -65,14 +78,14 @@ public class BodyToFileErrorStrategyGetBackedupTest {
 
     @Test
     public void getBackedupLinesWithMultpleFilesAnd1Line() {
-        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesMultpleFile";
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithMultpleFilesAnd1Line";
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy"});
         strategy.handle(new JMSException("Because"), "TestAnother", new Object[] {"healy", "gareth"});
 
-        List<String[]> answerOne =  strategy.getBackedupLines("Test");
-        List<String[]> answerTwo =  strategy.getBackedupLines("TestAnother");
+        List<String[]> answerOne = strategy.getBackedupLines("Test");
+        List<String[]> answerTwo = strategy.getBackedupLines("TestAnother");
 
         Assert.assertNotNull(answerOne);
         Assert.assertEquals(1, answerOne.size());
@@ -85,7 +98,27 @@ public class BodyToFileErrorStrategyGetBackedupTest {
 
     @Test
     public void getBackedupLinesWithMultpleFilesAndMultipleLines() {
-        Assert.assertTrue(true);
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithMultpleFilesAnd1Line";
+        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+
+        for (int i = 0; i < 10; i++) {
+            strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy" + i});
+            strategy.handle(new JMSException("Because"), "TestAnother", new Object[] {"healy", "gareth" + i});
+        }
+
+        List<String[]> answerOne = strategy.getBackedupLines("Test");
+        List<String[]> answerTwo = strategy.getBackedupLines("TestAnother");
+
+        Assert.assertNotNull(answerOne);
+        Assert.assertEquals(10, answerOne.size());
+
+        Assert.assertNotNull(answerTwo);
+        Assert.assertEquals(10, answerTwo.size());
+
+        for (int i = 0; i < 10; i++) {
+            Assert.assertArrayEquals(new Object[] {"gareth", "healy" + i}, answerOne.get(i));
+            Assert.assertArrayEquals(new Object[] {"healy", "gareth" + i}, answerTwo.get(i));
+        }
     }
 
     @Test

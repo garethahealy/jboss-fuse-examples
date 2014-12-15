@@ -125,7 +125,7 @@ public class BodyToFileErrorStrategyCanHandleTest {
 
     @Test
     public void canHandleMultipleThreadsOnSameQueue() throws IOException {
-        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandleMultipleThreads";
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandleMultipleThreadsOnSameQueue";
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         ExecutorService executor = Executors.newCachedThreadPool();
