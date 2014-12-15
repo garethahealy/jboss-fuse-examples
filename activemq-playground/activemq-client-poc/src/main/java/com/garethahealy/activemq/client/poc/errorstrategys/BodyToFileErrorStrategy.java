@@ -31,7 +31,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -48,7 +50,6 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     //      4. File is written as a simple CSV
     //      5. Locking tactic is aggressive in that it lasts for longer periods that is probably needed, but is simpler
     //      5. No code to read in the files to re-process
-
 
     private static final Logger LOG = LoggerFactory.getLogger(BodyToFileErrorStrategy.class);
     private static final String HIDDEN_DIRECTORY = ".complete";
@@ -70,6 +71,9 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
             lock.lock();
 
             Collection<File> backupFiles = getListOfBackupFiles(queueName);
+
+            LOG.debug("Found {} backup files", backupFiles.size());
+
             for (File current : backupFiles) {
                 answer.addAll(readFile(current));
 
@@ -106,7 +110,7 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
             writeLinesToFile(backupFile, lines);
         } catch (IOException caughtex) {
             LOG.error("Exception handling body to persistence store for queue:{} because {}", queueName, ExceptionUtils.getStackTrace(caughtex));
-        }  finally {
+        } finally {
             lock.unlock();
         }
     }
@@ -117,6 +121,9 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
 
     private URL getFullPathAndFileName(String queueName) throws MalformedURLException {
         String fileUri = String.format("file:%s/%s", pathToPersistenceStore, getFileName(queueName));
+
+        LOG.debug("Got backup file as {}", fileUri);
+
         return new URL(FilenameUtils.separatorsToSystem(fileUri));
     }
 
@@ -128,8 +135,24 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     }
 
     private Collection<File> getListOfBackupFiles(String queueName) throws IOException {
-        File directory = FileUtils.toFile(new URL("file:" + pathToPersistenceStore));
-        return FileUtils.listFiles(directory, FileFilterUtils.prefixFileFilter(queueName), null);
+        checkBackupDirectory();
+
+        String fileUri = String.format("file:%s", pathToPersistenceStore);
+        File directory = FileUtils.toFile(new URL(FilenameUtils.separatorsToSystem(fileUri)));
+        IOFileFilter filter = FileFilterUtils.prefixFileFilter(String.format("%s_", queueName), IOCase.INSENSITIVE);
+
+        LOG.debug("Looking for backup files in {} using filter {}", fileUri, filter);
+
+        return FileUtils.listFiles(directory, filter, null);
+    }
+
+    private void checkBackupDirectory() throws IOException {
+        String fileUri = String.format("file:%s%s.amq", pathToPersistenceStore, File.separatorChar);
+        File tempFile = FileUtils.toFile(new URL(FilenameUtils.separatorsToSystem(fileUri)));
+
+        LOG.debug("About to touch {}", fileUri);
+
+        FileUtils.touch(tempFile);
     }
 
     private List<String[]> readFile(File file) throws IOException {
@@ -152,7 +175,10 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     private URL getHiddenDirectoryPathForFile(File source) throws MalformedURLException {
         String path = FilenameUtils.getFullPath(source.getAbsolutePath());
         String fileName = FilenameUtils.getName(source.getAbsolutePath());
+        String fileUri = String.format("file:%s%s%s%s", path, HIDDEN_DIRECTORY, File.separatorChar, fileName);
 
-        return new URL(String.format("%s%s%s%s", path, HIDDEN_DIRECTORY, File.separatorChar, fileName));
+        LOG.debug("Got hidden directory as {}", fileUri);
+
+        return new URL(FilenameUtils.separatorsToSystem(fileUri));
     }
 }
