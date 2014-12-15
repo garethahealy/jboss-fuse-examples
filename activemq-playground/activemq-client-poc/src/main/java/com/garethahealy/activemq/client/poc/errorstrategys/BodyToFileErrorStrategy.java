@@ -49,7 +49,7 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     //      2. Writes are not batched, possible performance issue with high throughput.
     //      3. File is not rotated on size, only via date.
     //      4. File is written as a simple CSV
-    //      5. Locking tactic is aggressive in that it lasts for longer periods that is probably needed, but is simpler
+    //      5. Locking tactic is aggressive in that it lasts for longer periods than is probably needed, but is simpler
 
     private static final Logger LOG = LoggerFactory.getLogger(BodyToFileErrorStrategy.class);
     private static final String HIDDEN_DIRECTORY = ".complete";
