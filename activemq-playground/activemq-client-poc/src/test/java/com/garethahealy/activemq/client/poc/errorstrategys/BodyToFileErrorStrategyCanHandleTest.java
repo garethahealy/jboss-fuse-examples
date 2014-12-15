@@ -45,7 +45,7 @@ import org.junit.Test;
 
 public class BodyToFileErrorStrategyCanHandleTest {
 
-    private String rootDirectory = "/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/activemq-playground/activemq-client-poc/target";
+    private String rootDirectory = System.getProperty("user.dir") + "/target";
 
     private Collection<File> getGeneratedFiles(String pathToPersistenceStore) throws MalformedURLException {
         File directory = FileUtils.toFile(new URL("file:" + pathToPersistenceStore));

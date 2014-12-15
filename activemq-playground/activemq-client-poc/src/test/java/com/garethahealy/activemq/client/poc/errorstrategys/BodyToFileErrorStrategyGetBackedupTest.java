@@ -26,7 +26,7 @@ import org.junit.Test;
 
 public class BodyToFileErrorStrategyGetBackedupTest {
 
-    private String rootDirectory = "/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/activemq-playground/activemq-client-poc/target";
+    private String rootDirectory = System.getProperty("user.dir") + "/target";
 
     @Test
     public void getBackedupLinesWithNoFiles() {
