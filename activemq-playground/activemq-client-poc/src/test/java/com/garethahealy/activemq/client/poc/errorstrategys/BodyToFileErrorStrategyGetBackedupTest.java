@@ -23,10 +23,20 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.jms.JMSException;
+
+import com.garethahealy.activemq.client.poc.threadables.GetBackedupLinesCallable;
+import com.garethahealy.activemq.client.poc.threadables.HandleRunnable;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -147,7 +157,41 @@ public class BodyToFileErrorStrategyGetBackedupTest {
     }
 
     @Test
-    public void getBackedupLinesWithThreadsReadingAndWritting() {
-        Assert.assertTrue(true);
+    public void getBackedupLinesWithThreadsReadingAndWritting() throws InterruptedException, ExecutionException, TimeoutException {
+        //The idea of this test is to check that if we have more than 1 thread reading
+        // - thus splitting a write into multiple files - that we then get the correct number of lines
+        // i.e.: we write 1000, so we should over time read 1000
+
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithThreadsReadingAndWritting";
+        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+
+        List<GetBackedupLinesCallable<List<String[]>>> callables = new ArrayList<GetBackedupLinesCallable<List<String[]>>>();
+        for (int i = 0; i < 10; i++) {
+            callables.add(new GetBackedupLinesCallable<List<String[]>>(strategy, "Test", i));
+        }
+
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        //Create a handler, which will write 1000 lines
+        Future handleResult = executor.submit(new HandleRunnable(strategy, "Test", "gareth", "healy"));
+
+        //Create multiple readers
+        List<Future<List<String[]>>> getResults = executor.invokeAll(callables);
+
+        List<String[]> totalLines = new ArrayList<String[]>();
+        for (Future<List<String[]>> current : getResults) {
+            totalLines.addAll(current.get(5, TimeUnit.SECONDS));
+        }
+
+        handleResult.get(5, TimeUnit.SECONDS);
+
+        Assert.assertEquals(1000, totalLines.size());
+
+        int j = 0;
+        for (String[] currentLine : totalLines) {
+            Assert.assertArrayEquals(new String[] {"gareth", "healy" + j}, currentLine);
+
+            j++;
+        }
     }
 }

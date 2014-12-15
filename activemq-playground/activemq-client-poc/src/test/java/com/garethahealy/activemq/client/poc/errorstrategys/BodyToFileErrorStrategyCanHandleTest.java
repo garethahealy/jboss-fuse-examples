@@ -27,7 +27,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -37,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import javax.jms.JMSException;
+
+import com.garethahealy.activemq.client.poc.threadables.HandleRunnable;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -122,8 +123,8 @@ public class BodyToFileErrorStrategyCanHandleTest {
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         ExecutorService executor = Executors.newCachedThreadPool();
-        Future one = executor.submit(new HandlerRunnable(strategy, "Test", "gareth", "healy"));
-        Future two = executor.submit(new HandlerRunnable(strategy, "Test", "healy", "gareth"));
+        Future one = executor.submit(new HandleRunnable(strategy, "Test", "gareth", "healy"));
+        Future two = executor.submit(new HandleRunnable(strategy, "Test", "healy", "gareth"));
 
         try {
             one.get(5, TimeUnit.SECONDS);
@@ -191,12 +192,12 @@ public class BodyToFileErrorStrategyCanHandleTest {
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         ExecutorService executor = Executors.newCachedThreadPool();
-        Future one = executor.submit(new HandlerRunnable(strategy, "Test", "gareth", "healy"));
-        Future two = executor.submit(new HandlerRunnable(strategy, "TestAnother", "healy", "gareth"));
+        Future one = executor.submit(new HandleRunnable(strategy, "Test", "gareth", "healy"));
+        Future two = executor.submit(new HandleRunnable(strategy, "TestAnother", "healy", "gareth"));
 
         try {
-            one.get(10, TimeUnit.SECONDS);
-            two.get(10, TimeUnit.SECONDS);
+            one.get(5, TimeUnit.SECONDS);
+            two.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
             Assert.assertTrue("InterruptedException", false);
         } catch (ExecutionException ex) {

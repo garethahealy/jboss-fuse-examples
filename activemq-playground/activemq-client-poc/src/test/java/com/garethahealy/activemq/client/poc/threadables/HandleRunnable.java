@@ -17,18 +17,20 @@
  * limitations under the License.
  * #L%
  */
-package com.garethahealy.activemq.client.poc.errorstrategys;
+package com.garethahealy.activemq.client.poc.threadables;
 
 import javax.jms.JMSException;
 
-public class HandlerRunnable implements Runnable {
+import com.garethahealy.activemq.client.poc.errorstrategys.AmqErrorStrategy;
+
+public class HandleRunnable implements Runnable {
 
     private AmqErrorStrategy strategy;
     private String queueName;
     private String firstname;
     private String surname;
 
-    public HandlerRunnable(AmqErrorStrategy strategy, String queueName, String firstname, String surname) {
+    public HandleRunnable(AmqErrorStrategy strategy, String queueName, String firstname, String surname) {
         this.strategy = strategy;
         this.queueName = queueName;
         this.firstname = firstname;
