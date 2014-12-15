@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
@@ -49,7 +50,6 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     //      3. File is not rotated on size, only via date.
     //      4. File is written as a simple CSV
     //      5. Locking tactic is aggressive in that it lasts for longer periods that is probably needed, but is simpler
-    //      5. No code to read in the files to re-process
 
     private static final Logger LOG = LoggerFactory.getLogger(BodyToFileErrorStrategy.class);
     private static final String HIDDEN_DIRECTORY = ".complete";
@@ -57,15 +57,13 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     private final ReentrantLock lock = new ReentrantLock();
     private Charset utf8Charset = Charset.forName("UTF8");
     private String pathToPersistenceStore;
+    private int maxFileExistRetrys = Integer.MAX_VALUE / 2;
 
     public BodyToFileErrorStrategy(String pathToPersistenceStore) {
         this.pathToPersistenceStore = pathToPersistenceStore;
     }
 
     public List<String[]> getBackedupLines(String queueName) {
-        //TODO: put a lock around this and the handle, so we can read/write safely
-        //      also rename files once read in
-
         List<String[]> answer = new ArrayList<String[]>();
         try {
             lock.lock();
@@ -168,14 +166,32 @@ public class BodyToFileErrorStrategy implements AmqErrorStrategy {
     }
 
     private void moveFileToHiddenDirectory(File source) throws IOException {
-        File backup = FileUtils.toFile(getHiddenDirectoryPathForFile(source));
-        FileUtils.moveFile(source, backup);
+        boolean exists = true;
+
+        int i = 0;
+        while (exists) {
+            File backup = FileUtils.toFile(getHiddenDirectoryPathForFile(source, String.valueOf(i)));
+
+            try {
+                FileUtils.moveFile(source, backup);
+                exists = false;
+            } catch (FileExistsException ex) {
+                LOG.error("Exception moving file to hidden folder because {}. Retrying...", ex.getMessage());
+                exists = true;
+            }
+
+            i++;
+
+            if (i > maxFileExistRetrys) {
+                throw new IOException(String.format("moveFileToHiddenDirectory has hit %s for %s" + maxFileExistRetrys, source.getName()));
+            }
+        }
     }
 
-    private URL getHiddenDirectoryPathForFile(File source) throws MalformedURLException {
+    private URL getHiddenDirectoryPathForFile(File source, String retry) throws MalformedURLException {
         String path = FilenameUtils.getFullPath(source.getAbsolutePath());
         String fileName = FilenameUtils.getName(source.getAbsolutePath());
-        String fileUri = String.format("file:%s%s%s%s", path, HIDDEN_DIRECTORY, File.separatorChar, fileName);
+        String fileUri = String.format("file:%s%s%s%s%s", path, HIDDEN_DIRECTORY, File.separatorChar, retry, fileName);
 
         LOG.debug("Got hidden directory as {}", fileUri);
 
