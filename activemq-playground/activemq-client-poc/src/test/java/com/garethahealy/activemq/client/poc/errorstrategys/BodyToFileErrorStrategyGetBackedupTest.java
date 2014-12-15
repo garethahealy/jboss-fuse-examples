@@ -19,13 +19,17 @@
  */
 package com.garethahealy.activemq.client.poc.errorstrategys;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 import javax.jms.JMSException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -98,7 +102,7 @@ public class BodyToFileErrorStrategyGetBackedupTest {
 
     @Test
     public void getBackedupLinesWithMultpleFilesAndMultipleLines() {
-        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithMultpleFilesAnd1Line";
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithMultpleFilesAndMultipleLines";
         AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         for (int i = 0; i < 10; i++) {
@@ -119,6 +123,27 @@ public class BodyToFileErrorStrategyGetBackedupTest {
             Assert.assertArrayEquals(new Object[] {"gareth", "healy" + i}, answerOne.get(i));
             Assert.assertArrayEquals(new Object[] {"healy", "gareth" + i}, answerTwo.get(i));
         }
+    }
+
+    @Test
+    public void getBackedupLinesMultpleHandlesAndGets() throws MalformedURLException {
+        String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesMultpleHandlesAndGets";
+        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+
+        for (int i = 0; i < 10; i++) {
+            strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy" + i});
+            List<String[]> answer = strategy.getBackedupLines("Test");
+
+            Assert.assertNotNull(answer);
+            Assert.assertEquals(1, answer.size());
+            Assert.assertArrayEquals(new Object[] {"gareth", "healy" + i}, answer.get(0));
+        }
+
+        File directory = FileUtils.toFile(new URL("file:" + pathToPersistenceStore + "/.complete"));
+        Collection<File> files = FileUtils.listFiles(directory, FileFilterUtils.fileFileFilter(), null);
+
+        Assert.assertNotNull(files);
+        Assert.assertEquals(10, files.size());
     }
 
     @Test
