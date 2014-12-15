@@ -49,14 +49,7 @@ public class BodyToFileErrorStrategyCanHandleTest {
 
     private Collection<File> getGeneratedFiles(String pathToPersistenceStore) throws MalformedURLException {
         File directory = FileUtils.toFile(new URL("file:" + pathToPersistenceStore));
-        Iterator<File> iterator = FileUtils.iterateFiles(directory, FileFilterUtils.prefixFileFilter("Test"), null);
-
-        Collection<File> files = new ArrayList<File>();
-        while (iterator.hasNext()) {
-            files.add(iterator.next());
-        }
-
-        return files;
+        return FileUtils.listFiles(directory, FileFilterUtils.prefixFileFilter("Test"), null);
     }
 
     private List<String[]> readFile(File file) throws IOException {
