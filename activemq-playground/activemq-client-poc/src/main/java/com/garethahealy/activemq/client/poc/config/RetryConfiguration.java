@@ -29,19 +29,21 @@ public class RetryConfiguration {
     private int createProducerRetryCount;
     private int createMessageRetryCount;
     private int sendRetryCount;
+    private long sleepBetweenRetryInSeconds;
 
     public RetryConfiguration() {
-        this(5, 5, 5, 5, 5, 5);
+        this(5, 5, 5, 5, 5, 5, 1);
     }
 
     public RetryConfiguration(int createConnectionRetryCount, int createSessionRetryCount, int createQueueRetryCount, int createProducerRetryCount, int createMessageRetryCount,
-                              int sendRetryCount) {
+                              int sendRetryCount, long sleepBetweenRetryInSeconds) {
         this.createConnectionRetryCount = createConnectionRetryCount;
         this.createSessionRetryCount = createSessionRetryCount;
         this.createQueueRetryCount = createQueueRetryCount;
         this.createProducerRetryCount = createProducerRetryCount;
         this.createMessageRetryCount = createMessageRetryCount;
         this.sendRetryCount = sendRetryCount;
+        this.sleepBetweenRetryInSeconds = sleepBetweenRetryInSeconds;
     }
 
     public int getCreateConnectionRetryCount() {
@@ -68,6 +70,10 @@ public class RetryConfiguration {
         return sendRetryCount;
     }
 
+    public long getSleepBetweenRetryInSeconds() {
+        return sleepBetweenRetryInSeconds;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -77,6 +83,7 @@ public class RetryConfiguration {
             .append("createProducerRetryCount", createProducerRetryCount)
             .append("createMessageRetryCount", createMessageRetryCount)
             .append("sendRetryCount", sendRetryCount)
+            .append("sleepBetweenRetryInSeconds", sleepBetweenRetryInSeconds)
             .toString();
     }
 }
