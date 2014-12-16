@@ -67,8 +67,6 @@ public class MessageServiceHappyPathRetryProducerTest extends BaseBroker {
         boolean hasSent = messageService.sendMessagesToQueue("gareth", "healy");
 
         Assert.assertTrue("hasSent", hasSent);
-
-        int count = getMessageCount();
-        Assert.assertEquals(1, count);
+        Assert.assertEquals(1, getMessageCount());
     }
 }

@@ -67,7 +67,7 @@ public abstract class BaseBroker {
         closeConsumer();
 
         connection = connectionFactoryResolver.start().createConnection(brokerConfiguration.getUsername(), brokerConfiguration.getPassword());
-        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        session = connection.createSession(brokerConfiguration.isTransacted(), brokerConfiguration.getAcknowledgeMode());
         Queue queue = session.createQueue(queueName);
         messageConsumer = session.createConsumer(queue);
     }
