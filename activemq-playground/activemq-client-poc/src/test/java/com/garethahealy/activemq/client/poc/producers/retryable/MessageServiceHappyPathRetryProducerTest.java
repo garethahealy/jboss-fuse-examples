@@ -19,6 +19,8 @@
  */
 package com.garethahealy.activemq.client.poc.producers.retryable;
 
+import java.util.List;
+
 import javax.jms.JMSException;
 
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
@@ -33,7 +35,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class MessageServiceHappyPathRetryProducerTest extends BaseBroker {
 
@@ -65,8 +66,13 @@ public class MessageServiceHappyPathRetryProducerTest extends BaseBroker {
 
         MessageService messageService = new MessageService(producer);
         boolean hasSent = messageService.sendMessagesToQueue("gareth", "healy");
+        List<Object[]> messages = getMessagesFromBroker();
 
         Assert.assertTrue("hasSent", hasSent);
-        Assert.assertEquals(1, getMessageCount());
+        Assert.assertEquals(1, messages.size());
+
+        for (Object[] current : messages) {
+            Assert.assertArrayEquals(new Object[] {"gareth", "healy"}, current);
+        }
     }
 }

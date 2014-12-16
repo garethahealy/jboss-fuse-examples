@@ -19,6 +19,7 @@
  */
 package com.garethahealy.activemq.client.poc.producers;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +37,9 @@ import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.TransportConnector;
 import org.apache.activemq.command.ActiveMQMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.activemq.command.ActiveMQObjectMessage;
 
 public abstract class BaseBroker {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BaseBroker.class);
 
     protected BrokerService broker;
     protected ConnectionFactoryResolver connectionFactoryResolver;
@@ -67,29 +65,29 @@ public abstract class BaseBroker {
         closeConsumer();
 
         connection = connectionFactoryResolver.start().createConnection(brokerConfiguration.getUsername(), brokerConfiguration.getPassword());
+        connection.start();
+
         session = connection.createSession(brokerConfiguration.isTransacted(), brokerConfiguration.getAcknowledgeMode());
         Queue queue = session.createQueue(queueName);
         messageConsumer = session.createConsumer(queue);
     }
 
-    protected int getMessageCount() throws JMSException {
-        LOG.error("--------------------- about to read from queue");
-
-        List<Message> messages = new ArrayList<Message>();
+    protected List<Object[]> getMessagesFromBroker() throws JMSException {
+        List<Object[]> messages = new ArrayList<Object[]>();
         Message message = new ActiveMQMessage();
         while (message != null) {
-            LOG.error("--------------------- in loop...");
-
             message = messageConsumer.receive(1000);
             if (message == null) {
                 break;
             }
 
-            messages.add(message);
-            LOG.error("--------------------- found {}", message.toString());
+            Serializable obj = ((ActiveMQObjectMessage)message).getObject();
+            if (obj != null && obj instanceof Object[]) {
+                messages.add((Object[])obj);
+            }
         }
 
-        return messages.size();
+        return messages;
     }
 
     protected void stopBroker() throws Exception {
