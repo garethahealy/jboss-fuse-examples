@@ -106,8 +106,7 @@ public class BareBones {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private Service createService(Class classImpl, String url)
-        throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, MalformedURLException, NoSuchMethodException,
+    private Service createService(Class classImpl, String url) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, MalformedURLException, NoSuchMethodException,
         SecurityException {
         Constructor constr = classImpl.getConstructor(URL.class);
 

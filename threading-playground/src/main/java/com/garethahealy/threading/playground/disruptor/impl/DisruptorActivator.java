@@ -21,6 +21,7 @@ package com.garethahealy.threading.playground.disruptor.impl;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -46,7 +47,8 @@ public class DisruptorActivator implements BundleActivator {
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        //disruptor.shutdown(10, TimeUnit.SECONDS);
+        DisruptorService disruptor = (DisruptorService)context.getServiceReference(DisruptorService.class);
+        disruptor.shutdownGracefully();
     }
 
 }

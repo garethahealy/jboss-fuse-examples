@@ -57,7 +57,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test
-    public void can_get_response_default_signature_cert() {
+    public void canGetResponseDefaultSignatureCert() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -71,7 +71,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test
-    public void can_get_response_another_signature_cert() {
+    public void canGetResponseAnotherSignatureCert() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -91,7 +91,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void call_fails_over_http() {
+    public void callFailsOverHttp() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -108,7 +108,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = SOAPFaultException.class)
-    public void throws_exception_due_to_missing_client_alias() {
+    public void throwsExceptionDueToMissingClientAlias() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -120,7 +120,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throws_exception_due_to_missing_keystore_password() {
+    public void throwsExceptionDueToMissingKeystorePassword() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -132,7 +132,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throws_exception_due_to_missing_truststore_password() {
+    public void throwsExceptionDueToMissingTruststorePassword() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -144,7 +144,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throws_exception_due_to_missing_truststore_file() {
+    public void throwsExceptionDueToMissingTruststoreFile() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -156,7 +156,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throws_exception_due_to_missing_keystore_file() {
+    public void throwsExceptionDueToMissingKeystoreFile() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -168,7 +168,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = SOAPFaultException.class)
-    public void throws_exception_due_to_missing_signature_props() {
+    public void throwsExceptionDueToMissingSignatureProps() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -181,7 +181,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = SOAPFaultException.class)
-    public void throws_exception_due_wrong_signature_cert() {
+    public void throwsExceptionDueToWrongSignatureCert() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -196,7 +196,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throws_exception_due_wrong_https_cert() {
+    public void throwsExceptionDueToWrongHttpsCert() {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 

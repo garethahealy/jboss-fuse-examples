@@ -17,15 +17,14 @@
  * limitations under the License.
  * #L%
  */
-package com.garethahealy.wssecurity.jaas.routes;
+package com.garethahealy.mbeans.expose.routes;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 
-public class CamelContextTest extends BaseCamelBlueprintTestSupport {
+public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 
-    @Test
-    public void camelContextIsNotNull() {
-        Assert.assertNotNull(context);
+    @Override
+    protected String getBlueprintDescriptor() {
+        return "OSGI-INF/blueprint/wssecurity-jaas-context.xml";
     }
 }

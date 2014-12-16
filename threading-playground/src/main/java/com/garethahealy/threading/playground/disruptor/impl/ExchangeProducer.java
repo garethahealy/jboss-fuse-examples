@@ -31,9 +31,10 @@ public class ExchangeProducer implements ExchangeEventProducer<ByteBuffer> {
 
     private static final EventTranslatorOneArg<Exchange, ByteBuffer> TRANSLATOR = new EventTranslatorOneArg<Exchange, ByteBuffer>() {
         public void translateTo(Exchange event, long sequence, ByteBuffer bb) {
-            event.getIn().setBody(bb.getLong(0)); // Fill with data
+            event.getIn().setBody(bb.getLong(0));
         }
     };
+
     private boolean isStopping;
     private RingBuffer<Exchange> ringBuffer;
 
@@ -41,13 +42,16 @@ public class ExchangeProducer implements ExchangeEventProducer<ByteBuffer> {
         this.ringBuffer = ringBuffer;
     }
 
-    @Override
-    public void onData(ByteBuffer bb) {
+    public void onData(ByteBuffer body) throws IllegalStateException {
         if (isStopping) {
             throw new IllegalStateException("isStopping == true");
         }
 
-        ringBuffer.publishEvent(TRANSLATOR, bb);
+        if (ringBuffer == null) {
+            throw new IllegalStateException("ringBuffer == null");
+        }
+
+        ringBuffer.publishEvent(TRANSLATOR, body);
     }
 
     @Override
