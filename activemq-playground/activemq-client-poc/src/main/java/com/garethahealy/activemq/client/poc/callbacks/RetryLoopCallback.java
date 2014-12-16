@@ -25,7 +25,15 @@ import java.util.List;
 
 import javax.jms.JMSException;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class RetryLoopCallback {
+
+    private String runMethodName;
+
+    public RetryLoopCallback(String runMethodName) {
+        this.runMethodName = runMethodName;
+    }
 
     public <T> T runAndGetResult() throws JMSException {
         //NOOP
@@ -47,5 +55,12 @@ public class RetryLoopCallback {
         items.add(retryAmount);
 
         return items.toArray(new Object[items.size()]);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("runMethodName", runMethodName)
+            .toString();
     }
 }

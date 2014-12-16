@@ -19,6 +19,8 @@
  */
 package com.garethahealy.activemq.client.poc.producers;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -47,7 +49,7 @@ public class RetryableAmqProducer extends BaseAmqProducer {
 
     @Override
     protected Connection createConnection() throws JMSException {
-        RetryLoopCallback callback = new RetryLoopCallback() {
+        RetryLoopCallback callback = new RetryLoopCallback("createConnection") {
             @Override
             public Connection runAndGetResult() throws JMSException {
                 return RetryableAmqProducer.super.createConnection();
@@ -60,12 +62,13 @@ public class RetryableAmqProducer extends BaseAmqProducer {
             }
         };
 
-        return retryWhileResultIsNull(retryConfiguration.getCreateConnectionRetryCount(), callback, connectionFactory.getClass().getName(), brokerConfiguration.getBrokerURL());
+        return retryWhileResultIsNull(retryConfiguration.getCreateConnectionRetryCount(), retryConfiguration.getSleepBetweenRetryInSeconds(), callback,
+                                      connectionFactory.getClass().getName(), brokerConfiguration.getBrokerURL());
     }
 
     @Override
     protected Session createSession(final Connection amqConnection, final boolean isTransacted, final int acknowledgeMode) throws JMSException {
-        RetryLoopCallback callback = new RetryLoopCallback() {
+        RetryLoopCallback callback = new RetryLoopCallback("createSession") {
             @Override
             public Session runAndGetResult() throws JMSException {
                 return RetryableAmqProducer.super.createSession(amqConnection, isTransacted, acknowledgeMode);
@@ -77,12 +80,12 @@ public class RetryableAmqProducer extends BaseAmqProducer {
             }
         };
 
-        return retryWhileResultIsNull(retryConfiguration.getCreateSessionRetryCount(), callback, amqConnection);
+        return retryWhileResultIsNull(retryConfiguration.getCreateSessionRetryCount(), retryConfiguration.getSleepBetweenRetryInSeconds(), callback, amqConnection);
     }
 
     @Override
     protected Queue createQueue(final Session amqSession, final String queueName) throws JMSException {
-        RetryLoopCallback callback = new RetryLoopCallback() {
+        RetryLoopCallback callback = new RetryLoopCallback("createQueue") {
             @Override
             public Queue runAndGetResult() throws JMSException {
                 return RetryableAmqProducer.super.createQueue(amqSession, queueName);
@@ -94,12 +97,12 @@ public class RetryableAmqProducer extends BaseAmqProducer {
             }
         };
 
-        return retryWhileResultIsNull(retryConfiguration.getCreateQueueRetryCount(), callback, queueName, amqSession);
+        return retryWhileResultIsNull(retryConfiguration.getCreateQueueRetryCount(), retryConfiguration.getSleepBetweenRetryInSeconds(), callback, queueName, amqSession);
     }
 
     @Override
     protected MessageProducer createProducer(final Session amqSession, final Queue amqQueue) throws JMSException {
-        RetryLoopCallback callback = new RetryLoopCallback() {
+        RetryLoopCallback callback = new RetryLoopCallback("createProducer") {
             @Override
             public MessageProducer runAndGetResult() throws JMSException {
                 return RetryableAmqProducer.super.createProducer(amqSession, amqQueue);
@@ -111,12 +114,12 @@ public class RetryableAmqProducer extends BaseAmqProducer {
             }
         };
 
-        return retryWhileResultIsNull(retryConfiguration.getCreateProducerRetryCount(), callback, amqSession, amqQueue);
+        return retryWhileResultIsNull(retryConfiguration.getCreateProducerRetryCount(), retryConfiguration.getSleepBetweenRetryInSeconds(), callback, amqSession, amqQueue);
     }
 
     @Override
     protected Message createMessage(final Session amqSession, final Object[] body) throws JMSException {
-        RetryLoopCallback callback = new RetryLoopCallback() {
+        RetryLoopCallback callback = new RetryLoopCallback("createMessage") {
             @Override
             public Message runAndGetResult() throws JMSException {
                 return RetryableAmqProducer.super.createMessage(amqSession, body);
@@ -128,12 +131,12 @@ public class RetryableAmqProducer extends BaseAmqProducer {
             }
         };
 
-        return retryWhileResultIsNull(retryConfiguration.getCreateMessageRetryCount(), callback, body, amqSession);
+        return retryWhileResultIsNull(retryConfiguration.getCreateMessageRetryCount(), retryConfiguration.getSleepBetweenRetryInSeconds(), callback, body, amqSession);
     }
 
     @Override
     protected void send(final MessageProducer amqProducer, final Message amqMessage) throws JMSException {
-        RetryLoopCallback callback = new RetryLoopCallback() {
+        RetryLoopCallback callback = new RetryLoopCallback("send") {
             @Override
             public void run() throws JMSException {
                 RetryableAmqProducer.super.send(amqProducer, amqMessage);
@@ -145,13 +148,15 @@ public class RetryableAmqProducer extends BaseAmqProducer {
             }
         };
 
-        retryWhileCountLessThan(retryConfiguration.getSendRetryCount(), callback, amqMessage, amqProducer);
+        retryWhileCountLessThan(retryConfiguration.getSendRetryCount(), retryConfiguration.getSleepBetweenRetryInSeconds(), callback, amqMessage, amqProducer);
     }
 
-    private <T> T retryWhileResultIsNull(int retryCount, RetryLoopCallback callback, Object... logging) throws JMSException {
+    private <T> T retryWhileResultIsNull(int retryCount, long sleepBetweenRetryInSeconds, RetryLoopCallback callback, Object... logging) throws JMSException {
         T result = null;
         int count = 1;
         while (result == null) {
+            LOG.debug("Retrying {} of {} for {}", count, retryCount, callback.toString());
+
             try {
                 result = callback.runAndGetResult();
             } catch (JMSException ex) {
@@ -161,6 +166,8 @@ public class RetryableAmqProducer extends BaseAmqProducer {
                     //Last retry, so bubble exception upwards
                     throw ex;
                 }
+
+                sleep(sleepBetweenRetryInSeconds);
             }
 
             count++;
@@ -173,11 +180,16 @@ public class RetryableAmqProducer extends BaseAmqProducer {
         return result;
     }
 
-    private void retryWhileCountLessThan(int retryCount, RetryLoopCallback callback, Object... logging) throws JMSException {
+    private void retryWhileCountLessThan(int retryCount, long sleepBetweenRetryInSeconds, RetryLoopCallback callback, Object... logging) throws JMSException {
         int count = 1;
         while (count <= retryCount) {
+            LOG.debug("Retrying {} of {} for {}", count, retryCount, callback.toString());
+
             try {
                 callback.run();
+
+                //Its not thrown an exception, so it must of worked
+                break;
             } catch (JMSException ex) {
                 callback.log(ex, count, retryCount, logging);
 
@@ -185,6 +197,8 @@ public class RetryableAmqProducer extends BaseAmqProducer {
                     //Last retry, so bubble exception upwards
                     throw ex;
                 }
+
+                sleep(sleepBetweenRetryInSeconds);
             }
 
             count++;
@@ -192,6 +206,14 @@ public class RetryableAmqProducer extends BaseAmqProducer {
             if (count > retryCount) {
                 break;
             }
+        }
+    }
+
+    private void sleep(long seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException ex) {
+            //ignore
         }
     }
 }
