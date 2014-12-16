@@ -27,6 +27,10 @@
     <repository>mvn:org.apache.karaf.assemblies.features/enterprise/${karaf-version}/xml/features</repository>
     <repository>mvn:io.fabric8/fabric8-karaf/${fabric8-version}/xml/features</repository>
 
+    <feature name="${project.groupId}-commons-dependencies" version="${project.version}" resolver="(obr)">
+        <bundle>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
+    </feature>
+
     <feature name="${project.groupId}-activemq-dependencies" version="${project.version}" resolver="(obr)">
         <feature version="${activemq-version}">activemq-camel</feature>
         <feature version="${fabric8-version}">mq-fabric</feature>
@@ -109,5 +113,10 @@
         <bundle>mvn:${project.groupId}/database-datasource/${project.version}</bundle>
         <bundle>mvn:${project.groupId}/database-repositories/${project.version}</bundle>
         <bundle>mvn:${project.groupId}/database-hibernate/${project.version}</bundle>
+    </feature>
+
+    <feature name="${project.groupId}-mbeans-expose" version="${project.version}" resolver="(obr)">
+        <feature version="${project.version}">${project.groupId}-commons-dependencies</feature>
+        <bundle>mvn:${project.groupId}/mbeans-expose/${project.version}</bundle>
     </feature>
 </features>
