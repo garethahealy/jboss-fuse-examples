@@ -19,12 +19,13 @@
  */
 package com.garethahealy.activemq.client.poc.producers.retryable;
 
+import javax.jms.JMSException;
+
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
 import com.garethahealy.activemq.client.poc.producers.BaseBroker;
 import com.garethahealy.activemq.client.poc.producers.Producer;
 import com.garethahealy.activemq.client.poc.producers.RetryableAmqProducer;
-import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.resolvers.PooledAmqConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.services.MessageService;
 
@@ -32,13 +33,16 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-public class MessageServiceHappyPathTest extends BaseBroker {
+public class MessageServiceHappyPathRetryProducerTest extends BaseBroker {
 
-    private Producer getRetryableAmqProducer() {
+    private Producer getRetryableAmqProducer(String queueName) throws JMSException {
         RetryConfiguration retryConfiguration = new RetryConfiguration();
         BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
-        ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
+        connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
+
+        super.createConsumer(queueName, brokerConfiguration);
 
         return new RetryableAmqProducer(retryConfiguration, brokerConfiguration, connectionFactoryResolver);
     }
@@ -50,16 +54,21 @@ public class MessageServiceHappyPathTest extends BaseBroker {
 
     @After
     public void stopBroker() throws Exception {
+        super.stopConnectionFactoryResolver();
         super.stopBroker();
+        super.closeConsumer();
     }
 
     @Test
-    public void canSend() {
-        Producer producer = getRetryableAmqProducer();
+    public void canSend() throws JMSException {
+        Producer producer = getRetryableAmqProducer("hello");
 
         MessageService messageService = new MessageService(producer);
         boolean hasSent = messageService.sendMessagesToQueue("gareth", "healy");
 
         Assert.assertTrue("hasSent", hasSent);
+
+        int count = getMessageCount();
+        Assert.assertEquals(1, count);
     }
 }
