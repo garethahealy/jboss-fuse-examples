@@ -20,13 +20,35 @@
 package com.garethahealy.activemq.client.poc.producers;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.Queue;
+import javax.jms.Session;
+
+import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
+import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.TransportConnector;
+import org.apache.activemq.command.ActiveMQMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseBroker {
 
+    private static final Logger LOG = LoggerFactory.getLogger(BaseBroker.class);
+
     protected BrokerService broker;
+    protected ConnectionFactoryResolver connectionFactoryResolver;
+
+    private Session session;
+    private Connection connection;
+    private MessageConsumer messageConsumer;
 
     protected void startBroker() throws Exception {
         broker = new BrokerService();
@@ -38,6 +60,36 @@ public abstract class BaseBroker {
 
         broker.start();
         broker.waitUntilStarted();
+        broker.deleteAllMessages();
+    }
+
+    protected void createConsumer(String queueName, BrokerConfiguration brokerConfiguration) throws JMSException {
+        closeConsumer();
+
+        connection = connectionFactoryResolver.start().createConnection(brokerConfiguration.getUsername(), brokerConfiguration.getPassword());
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Queue queue = session.createQueue(queueName);
+        messageConsumer = session.createConsumer(queue);
+    }
+
+    protected int getMessageCount() throws JMSException {
+        LOG.error("--------------------- about to read from queue");
+
+        List<Message> messages = new ArrayList<Message>();
+        Message message = new ActiveMQMessage();
+        while (message != null) {
+            LOG.error("--------------------- in loop...");
+
+            message = messageConsumer.receive(1000);
+            if (message == null) {
+                break;
+            }
+
+            messages.add(message);
+            LOG.error("--------------------- found {}", message.toString());
+        }
+
+        return messages.size();
     }
 
     protected void stopBroker() throws Exception {
@@ -45,6 +97,37 @@ public abstract class BaseBroker {
             broker.stop();
             broker.waitUntilStopped();
             broker = null;
+        }
+    }
+
+    protected void stopConnectionFactoryResolver() {
+        if (connectionFactoryResolver != null) {
+            connectionFactoryResolver.stop();
+            connectionFactoryResolver = null;
+        }
+    }
+
+    protected void stopAnyConnectionFactoryResolver(ConnectionFactoryResolver connectionFactoryResolver) {
+        if (connectionFactoryResolver != null) {
+            connectionFactoryResolver.stop();
+            connectionFactoryResolver = null;
+        }
+    }
+
+    protected void closeConsumer() throws JMSException {
+        if (session != null) {
+            session.close();
+            session = null;
+        }
+
+        if (connection != null) {
+            connection.close();
+            connection = null;
+        }
+
+        if (messageConsumer != null) {
+            messageConsumer.close();
+            messageConsumer = null;
         }
     }
 }
