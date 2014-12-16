@@ -45,6 +45,8 @@ public class PooledAmqConnectionFactoryResolver implements ConnectionFactoryReso
         pooledConnectionFactory.setConnectionFactory(activeMQConnectionFactory);
         pooledConnectionFactory.setMaxConnections(brokerConfiguration.getMaxConnections());
         pooledConnectionFactory.setMaximumActiveSessionPerConnection(brokerConfiguration.getMaximumActiveSessionPerConnection());
+
+        pooledConnectionFactory.initConnectionsPool();
     }
 
     public ConnectionFactory start() {
@@ -52,7 +54,6 @@ public class PooledAmqConnectionFactoryResolver implements ConnectionFactoryReso
             init();
         }
 
-        pooledConnectionFactory.initConnectionsPool();
         return pooledConnectionFactory;
     }
 
