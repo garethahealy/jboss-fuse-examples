@@ -21,23 +21,30 @@ package com.garethahealy.activemq.client.poc.producers.retryable;
 
 import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.config.RetryConfiguration;
+import com.garethahealy.activemq.client.poc.producers.BaseBroker;
 import com.garethahealy.activemq.client.poc.producers.Producer;
 import com.garethahealy.activemq.client.poc.producers.RetryableAmqProducer;
 import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.resolvers.PooledAmqConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.services.MessageService;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class MessageServiceNoBrokerTest {
+public class MessageServiceNoBrokerTest extends BaseBroker {
 
     private Producer getRetryableAmqProducer() {
         RetryConfiguration retryConfiguration = new RetryConfiguration();
         BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
-        ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
+        connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
 
         return new RetryableAmqProducer(retryConfiguration, brokerConfiguration, connectionFactoryResolver);
+    }
+
+    @After
+    public void stopBroker() throws Exception {
+        super.stopConnectionFactoryResolver();
     }
 
     @Test

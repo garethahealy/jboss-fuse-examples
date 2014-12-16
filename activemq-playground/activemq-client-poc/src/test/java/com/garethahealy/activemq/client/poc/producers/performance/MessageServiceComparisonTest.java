@@ -40,19 +40,21 @@ import org.slf4j.LoggerFactory;
 public class MessageServiceComparisonTest extends BaseBroker {
 
     private static final Logger LOG = LoggerFactory.getLogger(MessageServiceComparisonTest.class);
+    private ConnectionFactoryResolver connectionFactoryResolver;
+    private ConnectionFactoryResolver pooledConnectionFactoryResolver;
 
     private Producer getNonPooledAmqProducer() {
         BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
-        ConnectionFactoryResolver connectionFactoryResolver = new AmqConnectionFactoryResolver(brokerConfiguration);
+        connectionFactoryResolver = new AmqConnectionFactoryResolver(brokerConfiguration);
 
         return new DefaultAmqProducer(brokerConfiguration, connectionFactoryResolver);
     }
 
     private Producer getPooledAmqProducer() {
         BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
-        ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
+        pooledConnectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
 
-        return new DefaultAmqProducer(brokerConfiguration, connectionFactoryResolver);
+        return new DefaultAmqProducer(brokerConfiguration, pooledConnectionFactoryResolver);
     }
 
     @Before
@@ -62,6 +64,8 @@ public class MessageServiceComparisonTest extends BaseBroker {
 
     @After
     public void stopBroker() throws Exception {
+        super.stopAnyConnectionFactoryResolver(connectionFactoryResolver);
+        super.stopAnyConnectionFactoryResolver(pooledConnectionFactoryResolver);
         super.stopBroker();
     }
 

@@ -39,7 +39,7 @@ public class MessageServiceBrokerDownAfterSessionCreatedTest extends BaseBroker 
     private Producer getRetryableAmqProducerWithDownBroker() {
         RetryConfiguration retryConfiguration = new RetryConfiguration();
         BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
-        ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
+        connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
 
         DefaultCallbackHandler defaultCallbackHandler = new DefaultCallbackHandler() {
             @Override
@@ -61,6 +61,7 @@ public class MessageServiceBrokerDownAfterSessionCreatedTest extends BaseBroker 
 
     @After
     public void stopBroker() throws Exception {
+        super.stopConnectionFactoryResolver();
         super.stopBroker();
     }
 
