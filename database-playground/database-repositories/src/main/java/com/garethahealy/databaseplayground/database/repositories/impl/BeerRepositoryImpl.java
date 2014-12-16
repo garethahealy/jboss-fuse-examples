@@ -41,7 +41,11 @@ public class BeerRepositoryImpl implements BeerRepository {
     }
 
     @Override
-    public List<Beer> getBeers() {
+    public List<Beer> getBeers() throws IllegalStateException {
+        if (entityManager == null) {
+            throw new IllegalStateException("entityManager == null");
+        }
+
         TypedQuery<Beer> beersQuery = entityManager.createNamedQuery(Beer.SELECT_ALL_QUERY, Beer.class);
         return beersQuery.getResultList();
     }
