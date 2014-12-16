@@ -32,11 +32,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MessageServiceHappyPathTest extends BaseBroker {
+public class MessageServiceHappyPathStringProducerTest extends BaseBroker {
 
     private Producer getStringAmqProducer() {
         BrokerConfiguration brokerConfiguration = new BrokerConfiguration();
-        ConnectionFactoryResolver connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
+        connectionFactoryResolver = new PooledAmqConnectionFactoryResolver(brokerConfiguration);
 
         return new StringAmqProducer(brokerConfiguration, connectionFactoryResolver);
     }
@@ -48,6 +48,7 @@ public class MessageServiceHappyPathTest extends BaseBroker {
 
     @After
     public void stopBroker() throws Exception {
+        super.stopConnectionFactoryResolver();
         super.stopBroker();
     }
 
