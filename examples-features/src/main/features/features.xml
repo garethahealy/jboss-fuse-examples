@@ -117,6 +117,7 @@
 
     <feature name="${project.groupId}-mbeans-expose" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-commons-dependencies</feature>
+        <bundle>mvn:org.apache.aries.jmx/org.apache.aries.jmx.whiteboard/${aries-whiteboard-version}</bundle>
         <bundle>mvn:${project.groupId}/mbeans-expose/${project.version}</bundle>
     </feature>
 </features>

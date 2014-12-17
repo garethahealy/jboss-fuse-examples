@@ -26,8 +26,14 @@
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 
     <reference id="mbeanServer" interface="javax.management.MBeanServer">
-        <reference-listener ref="mbeanRegistrer" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer"/>
+        <!--<reference-listener ref="mbeanRegistrer" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer"/>-->
     </reference>
+
+    <service ref="poolCounter" interface="com.garethahealy.mbeans.expose.management.PoolCounterMBean">
+        <service-properties>
+            <entry key="jmx.objectname" value="com.garethahealy:beans=whiteboard-mbeans-expose-context,type=beans,name=PoolCounter"/>
+        </service-properties>
+    </service>
 
     <bean id="poolCounter" class="com.garethahealy.mbeans.expose.PoolCounter"/>
 
