@@ -25,9 +25,7 @@
        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 
-    <reference id="mbeanServer" interface="javax.management.MBeanServer">
-        <!--<reference-listener ref="mbeanRegistrer" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer"/>-->
-    </reference>
+    <reference id="mbeanServer" interface="javax.management.MBeanServer" availability="mandatory"/>
 
     <!-- Aries whiteboard example -->
     <service ref="poolCounter" interface="com.garethahealy.mbeans.expose.management.PoolCounterMBean">
@@ -38,8 +36,9 @@
 
     <bean id="poolCounter" class="com.garethahealy.mbeans.expose.PoolCounter"/>
 
-    <!-- Karaf MBeanRegistrer example-->
-    <bean id="mbeanRegistrer" class="org.apache.karaf.management.MBeanRegistrer">
+    <!-- Karaf MBeanRegistrer example -->
+    <bean id="mbeanRegistrer" class="org.apache.karaf.management.MBeanRegistrer" init-method="init">
+        <property name="bundleContext" ref="blueprintBundleContext"/>
         <property name="mbeans">
             <map>
                 <entry value="com.garethahealy:beans=blueprint-mbeans-expose-context,type=beans,name=PoolCounter" key-ref="poolCounterStandardMBean"/>
