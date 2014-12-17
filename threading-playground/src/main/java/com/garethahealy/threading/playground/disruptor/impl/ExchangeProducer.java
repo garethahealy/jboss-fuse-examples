@@ -20,6 +20,7 @@
 package com.garethahealy.threading.playground.disruptor.impl;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.garethahealy.threading.playground.disruptor.ExchangeEventProducer;
 import com.lmax.disruptor.EventTranslatorOneArg;
@@ -35,7 +36,7 @@ public class ExchangeProducer implements ExchangeEventProducer<ByteBuffer> {
         }
     };
 
-    private boolean isStopping;
+    private AtomicBoolean isStopping = new AtomicBoolean();
     private RingBuffer<Exchange> ringBuffer;
 
     public void setRingBuffer(final RingBuffer<Exchange> ringBuffer) {
@@ -43,7 +44,7 @@ public class ExchangeProducer implements ExchangeEventProducer<ByteBuffer> {
     }
 
     public void onData(ByteBuffer body) throws IllegalStateException {
-        if (isStopping) {
+        if (isStopping.get()) {
             throw new IllegalStateException("isStopping == true");
         }
 
@@ -56,6 +57,6 @@ public class ExchangeProducer implements ExchangeEventProducer<ByteBuffer> {
 
     @Override
     public void stop() {
-        this.isStopping = true;
+        isStopping.set(true);
     }
 }
