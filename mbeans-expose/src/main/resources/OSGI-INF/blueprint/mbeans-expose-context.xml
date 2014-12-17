@@ -29,6 +29,7 @@
         <!--<reference-listener ref="mbeanRegistrer" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer"/>-->
     </reference>
 
+    <!-- Aries whiteboard example -->
     <service ref="poolCounter" interface="com.garethahealy.mbeans.expose.management.PoolCounterMBean">
         <service-properties>
             <entry key="jmx.objectname" value="com.garethahealy:beans=whiteboard-mbeans-expose-context,type=beans,name=PoolCounter"/>
@@ -37,6 +38,7 @@
 
     <bean id="poolCounter" class="com.garethahealy.mbeans.expose.PoolCounter"/>
 
+    <!-- Karaf MBeanRegistrer example-->
     <bean id="mbeanRegistrer" class="org.apache.karaf.management.MBeanRegistrer">
         <property name="mbeans">
             <map>
@@ -50,6 +52,7 @@
         <argument value="com.garethahealy.mbeans.expose.management.PoolCounterMBean"/>
     </bean>
 
+    <!-- Java impl example -->
     <bean id="poolCounterMBeanImpl" class="com.garethahealy.mbeans.expose.management.PoolCounterMBeanImpl" init-method="registerMBean" destroy-method="unregisterMBean">
         <argument ref="mbeans-expose-context"/>
         <argument ref="mbeanServer"/>
