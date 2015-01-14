@@ -24,7 +24,11 @@ import com.garethahealy.helloworld.HelloWorldRequest;
 import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
 import com.garethahealy.wssecurity.https.cxf.client.services.WsHelloWorldService;
 
-public class Client {
+public final class Client {
+
+    private Client() {
+
+    }
 
     public static void main(String[] args) {
         HelloWorldRequest request = new HelloWorldRequest();

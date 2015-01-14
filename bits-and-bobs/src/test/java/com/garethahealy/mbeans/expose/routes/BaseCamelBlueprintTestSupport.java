@@ -32,7 +32,7 @@ public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 
     @Override
     protected String getBlueprintDescriptor() {
-        return "OSGI-INF/blueprint/mbeans-expose-context.xml";
+        return "OSGI-INF/blueprint/bits-and-bobs-context.xml";
     }
 
     @SuppressWarnings("rawtypes")

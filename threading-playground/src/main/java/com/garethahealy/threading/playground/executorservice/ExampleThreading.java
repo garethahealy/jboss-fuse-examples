@@ -41,11 +41,7 @@ public class ExampleThreading {
 
         ExecutorServiceManager manager = exchange.getContext().getExecutorServiceManager();
         ExecutorService executorService = manager.newSingleThreadExecutor(this, "ExampleSingleThreadPool");
-        executorService.execute(new Runnable() {
-            public void run() {
-                LOG.info("Running....");
-            }
-        });
+        executorService.execute(new ExampleRunnable());
 
         manager.shutdownGraceful(executorService);
     }
@@ -71,5 +67,12 @@ public class ExampleThreading {
 
     public void logMessageHistory(Exchange exchange) {
         LOG.info(MessageHelper.dumpMessageHistoryStacktrace(exchange, new DefaultExchangeFormatter(), false));
+    }
+
+    private static class ExampleRunnable implements Runnable {
+        @Override
+        public void run() {
+            LOG.info("Running....");
+        }
     }
 }

@@ -23,7 +23,6 @@ import com.garethahealy.activemq.client.poc.config.BrokerConfiguration;
 import com.garethahealy.activemq.client.poc.producers.BaseBroker;
 import com.garethahealy.activemq.client.poc.producers.Producer;
 import com.garethahealy.activemq.client.poc.producers.StringAmqProducer;
-import com.garethahealy.activemq.client.poc.resolvers.ConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.resolvers.PooledAmqConnectionFactoryResolver;
 import com.garethahealy.activemq.client.poc.services.MessageService;
 

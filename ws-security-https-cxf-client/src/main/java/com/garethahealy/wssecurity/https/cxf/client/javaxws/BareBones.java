@@ -37,80 +37,90 @@ import com.garethahealy.helloworld.HelloWorldEndpointService;
 import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
 import com.garethahealy.wssecurity.https.cxf.client.decorators.HTTPSWsSignatureEndpointDecorator;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
 import org.apache.cxf.frontend.ClientProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BareBones {
 
-	/*
+    private static final Logger LOG = LoggerFactory.getLogger(BareBones.class);
+
+    /*
      * NOTE: This class is a barebones interaction with javax.xml.ws.Service.
-	 * 		 Its much better to use the JaxWsProxyFactoryBean examples!
-	 * 		 Please dont go down this route!
-	 */
+     *       Its much better to use the JaxWsProxyFactoryBean examples!
+     *       Please dont go down this route!
+     */
+
+    private String wsdl = "file:/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl";
 
     @SuppressWarnings("rawtypes")
     public <T> T getEndpoint(WsEndpointConfiguration<?> config) {
         T port = null;
-        try {
-            Class classImpl = Class.forName(HelloWorldEndpointService.class.getCanonicalName());
-            Service service = createService(classImpl,
-                                            "file:/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl");
 
-            addExtraHandler(service);
+        Class classImpl = getClassForName(HelloWorldEndpointService.class.getCanonicalName());
+        Service service = createService(classImpl, wsdl);
 
-            port = createEndpoint(classImpl, service);
+        addExtraHandler(service);
 
-            //Update URL to be what comes from config
-            BindingProvider bp = (BindingProvider)port;
-            bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, config.getWsAddress());
+        port = createEndpoint(classImpl, service);
 
-            //NOTE: We are just cheating here, as we've already done the code for HTTPS and WS-Security
-            //		am just gonna re-use these methods
-            HTTPSWsSignatureEndpointDecorator decorator = new HTTPSWsSignatureEndpointDecorator(config);
+        //Update URL to be what comes from config
+        BindingProvider bp = (BindingProvider)port;
+        bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, config.getWsAddress());
 
-            Client client = ClientProxy.getClient(port);
-            Endpoint endpoint = client.getEndpoint();
-            endpoint.getInInterceptors().addAll(decorator.getLogInInterceptors());
-            endpoint.getOutInterceptors().addAll(decorator.getLogOutInterceptors());
-            endpoint.getOutInterceptors().add(decorator.getWSS4JOutInterceptor());
+        //NOTE: We are just cheating here, as we've already done the code for HTTPS and WS-Security
+        //      am just gonna re-use these methods
+        HTTPSWsSignatureEndpointDecorator decorator = new HTTPSWsSignatureEndpointDecorator(config);
 
-            decorator.configureSSLOnTheClient(client);
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        Client client = ClientProxy.getClient(port);
+        Endpoint endpoint = client.getEndpoint();
+        endpoint.getInInterceptors().addAll(decorator.getLogInInterceptors());
+        endpoint.getOutInterceptors().addAll(decorator.getLogOutInterceptors());
+        endpoint.getOutInterceptors().add(decorator.getWSS4JOutInterceptor());
+
+        decorator.configureSSLOnTheClient(client);
 
         return port;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private Service createService(Class classImpl, String url) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, MalformedURLException, NoSuchMethodException,
-        SecurityException {
-        Constructor constr = classImpl.getConstructor(URL.class);
+    private Class getClassForName(String canonicalName) {
+        Class answer = null;
+        try {
+            answer = Class.forName(canonicalName);
+        } catch (ClassNotFoundException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        }
 
-        return (Service)constr.newInstance(new URL(url));
+        return answer;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private Service createService(Class classImpl, String url) {
+        Service answer = null;
+
+        try {
+            Constructor constr = classImpl.getConstructor(URL.class);
+            answer = (Service)constr.newInstance(new URL(url));
+        } catch (NoSuchMethodException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (SecurityException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (MalformedURLException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (InstantiationException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (IllegalAccessException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (IllegalArgumentException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (InvocationTargetException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        }
+
+        return answer;
     }
 
     private void addExtraHandler(Service service) {
@@ -126,7 +136,7 @@ public class BareBones {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private <T> T createEndpoint(Class classImpl, Service service) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private <T> T createEndpoint(Class classImpl, Service service) {
         Method found = null;
         for (Method meth : classImpl.getMethods()) {
             if (meth.getName().equalsIgnoreCase("getHelloWorldEndpoint") && meth.getParameterTypes().length == 0) {
@@ -139,6 +149,17 @@ public class BareBones {
             throw new NullPointerException("Port method not found on endpoint");
         }
 
-        return (T)found.invoke(service);
+        T endpoint = null;
+        try {
+            endpoint = (T)found.invoke(service);
+        } catch (IllegalAccessException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (IllegalArgumentException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (InvocationTargetException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        }
+
+        return endpoint;
     }
 }

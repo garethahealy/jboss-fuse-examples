@@ -34,6 +34,7 @@
         <module>ws-security-https-cxf</module>
         <module>database-playground</module>
         <module>mbeans-expose</module>
+        <module>bits-and-bobs</module>
     </modules>
 
     <properties>

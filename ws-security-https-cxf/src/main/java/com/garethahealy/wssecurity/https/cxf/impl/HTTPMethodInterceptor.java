@@ -34,6 +34,7 @@ import org.apache.cxf.transport.http.AbstractHTTPDestination;
 public class HTTPMethodInterceptor extends AbstractSoapInterceptor {
 
     private static final Map<String, Boolean> HTTP_METHODS;
+
     static {
         Map<String, Boolean> httpMap = new HashMap<String, Boolean>();
         httpMap.put("PUT", false);

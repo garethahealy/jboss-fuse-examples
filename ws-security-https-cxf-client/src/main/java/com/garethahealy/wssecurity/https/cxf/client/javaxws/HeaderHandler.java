@@ -34,15 +34,21 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 
-	/*
+    private static final Logger LOG = LoggerFactory.getLogger(HeaderHandler.class);
+
+    /*
      * NOTE: This class is a barebones interaction with javax.xml.soap.
-	 * 		 Its much better to use CXF to attach headers - see link belo!
-	 * 		 Please dont go down this route!
-	 * 
-	 * 		 http://cxf.apache.org/faq.html#FAQ-HowcanIaddsoapheaderstotherequest/response?
-	 */
+     *       Its much better to use CXF to attach headers - see link belo!
+     *       Please dont go down this route!
+     *
+     *       http://cxf.apache.org/faq.html#FAQ-HowcanIaddsoapheaderstotherequest/response?
+     */
 
     @Override
     public boolean handleMessage(SOAPMessageContext context) {
@@ -64,8 +70,10 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
             message.saveChanges();
 
             message.writeTo(System.out);
-        } catch (SOAPException | IOException e) {
-            e.printStackTrace();
+        } catch (SOAPException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (IOException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
         }
 
         return true;

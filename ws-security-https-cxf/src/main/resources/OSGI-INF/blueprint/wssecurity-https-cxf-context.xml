@@ -44,10 +44,7 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
-    <!-- CXF Bus (applies to all endpoints), important sections (http://cxf.apache.org/docs/ws-security.html):
-       #inInterceptors
-       #properties
-    -->
+    <!-- CXF Bus (applies to all endpoints) -->
     <cxfcore:bus>
         <cxfcore:inInterceptors>
             <ref component-id="wss4jInInterceptor"/>
