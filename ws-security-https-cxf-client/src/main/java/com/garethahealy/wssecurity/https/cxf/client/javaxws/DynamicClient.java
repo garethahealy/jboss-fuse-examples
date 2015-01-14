@@ -32,6 +32,8 @@ import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 
 public class DynamicClient extends JaxWsDynamicClientFactory {
 
+    //http://cxf.apache.org/docs/dynamic-clients.html
+
     protected DynamicClient(Bus bus) {
         super(bus);
     }
