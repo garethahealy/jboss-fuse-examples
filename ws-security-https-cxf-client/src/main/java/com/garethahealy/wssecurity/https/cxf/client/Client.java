@@ -19,6 +19,8 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client;
 
+import java.io.InvalidObjectException;
+
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
 import com.garethahealy.wssecurity.https.cxf.client.config.WsEndpointConfiguration;
@@ -30,7 +32,7 @@ public final class Client {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 

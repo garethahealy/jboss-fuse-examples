@@ -19,6 +19,8 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.services;
 
+import java.io.InvalidObjectException;
+
 import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
 import com.garethahealy.helloworld.HelloWorldResponse;
@@ -43,12 +45,12 @@ public class WsHelloWorldService {
         return resolver.createEndpoint();
     }
 
-    private HelloWorldEndpoint resolveByBareBones() {
+    private HelloWorldEndpoint resolveByBareBones() throws InvalidObjectException {
         BareBones bareBones = new BareBones();
         return bareBones.getEndpoint(config);
     }
 
-    public HelloWorldResponse sayHello(HelloWorldRequest request) {
+    public HelloWorldResponse sayHello(HelloWorldRequest request) throws InvalidObjectException {
         HelloWorldEndpoint endpoint = isCxfBeanFactory ? resolveEndpoint() : resolveByBareBones();
         return endpoint.sayHello(request);
     }

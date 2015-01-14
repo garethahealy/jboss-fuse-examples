@@ -36,6 +36,7 @@
 package com.garethahealy.wssecurity.https.cxf.client.config;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,10 +44,16 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Callback handler to handle passwords
  */
 public class UTPasswordCallback implements CallbackHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UTPasswordCallback.class);
 
     private Map<String, String> passwords = new HashMap<String, String>();
 
@@ -78,17 +85,27 @@ public class UTPasswordCallback implements CallbackHandler {
     private void setPassword(Callback callback, String pass) {
         try {
             callback.getClass().getMethod("setPassword", String.class).invoke(callback, pass);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (NoSuchMethodException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (SecurityException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (IllegalAccessException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (IllegalArgumentException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
+        } catch (InvocationTargetException ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
         }
     }
 
     private String getIdentifier(Callback cb) {
         try {
             return (String)cb.getClass().getMethod("getIdentifier").invoke(cb);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception ex) {
+            LOG.error(ExceptionUtils.getStackTrace(ex));
         }
+
+        return null;
     }
 
     /**

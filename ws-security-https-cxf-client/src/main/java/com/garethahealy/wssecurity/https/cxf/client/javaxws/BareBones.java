@@ -19,6 +19,7 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.javaxws;
 
+import java.io.InvalidObjectException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -57,7 +58,7 @@ public class BareBones {
     private String wsdl = "file:/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl";
 
     @SuppressWarnings("rawtypes")
-    public <T> T getEndpoint(WsEndpointConfiguration<?> config) {
+    public <T> T getEndpoint(WsEndpointConfiguration<?> config) throws InvalidObjectException {
         T port = null;
 
         Class classImpl = getClassForName(HelloWorldEndpointService.class.getCanonicalName());
@@ -124,19 +125,20 @@ public class BareBones {
     }
 
     private void addExtraHandler(Service service) {
-        service.setHandlerResolver(new HandlerResolver() {
+        service.setHandlerResolver(new CustomHandlerResolver());
+    }
 
-            @Override
-            public List<Handler> getHandlerChain(PortInfo portInfo) {
-                List<Handler> handlers = new ArrayList<Handler>();
-                handlers.add(new HeaderHandler());
-                return handlers;
-            }
-        });
+    private static class CustomHandlerResolver implements HandlerResolver {
+        @Override
+        public List<Handler> getHandlerChain(PortInfo portInfo) {
+            List<Handler> handlers = new ArrayList<Handler>();
+            handlers.add(new HeaderHandler());
+            return handlers;
+        }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private <T> T createEndpoint(Class classImpl, Service service) {
+    private <T> T createEndpoint(Class classImpl, Service service) throws InvalidObjectException {
         Method found = null;
         for (Method meth : classImpl.getMethods()) {
             if (meth.getName().equalsIgnoreCase("getHelloWorldEndpoint") && meth.getParameterTypes().length == 0) {
@@ -146,7 +148,7 @@ public class BareBones {
         }
 
         if (found == null) {
-            throw new NullPointerException("Port method not found on endpoint");
+            throw new InvalidObjectException("Port method not found on endpoint");
         }
 
         T endpoint = null;

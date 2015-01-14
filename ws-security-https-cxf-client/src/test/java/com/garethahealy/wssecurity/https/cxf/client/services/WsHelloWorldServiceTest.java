@@ -19,6 +19,8 @@
  */
 package com.garethahealy.wssecurity.https.cxf.client.services;
 
+import java.io.InvalidObjectException;
+
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 
@@ -57,7 +59,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test
-    public void canGetResponseDefaultSignatureCert() {
+    public void canGetResponseDefaultSignatureCert() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -71,7 +73,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test
-    public void canGetResponseAnotherSignatureCert() {
+    public void canGetResponseAnotherSignatureCert() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -91,7 +93,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void callFailsOverHttp() {
+    public void callFailsOverHttp() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -108,7 +110,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = SOAPFaultException.class)
-    public void throwsExceptionDueToMissingClientAlias() {
+    public void throwsExceptionDueToMissingClientAlias() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -120,7 +122,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throwsExceptionDueToMissingKeystorePassword() {
+    public void throwsExceptionDueToMissingKeystorePassword() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -132,7 +134,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throwsExceptionDueToMissingTruststorePassword() {
+    public void throwsExceptionDueToMissingTruststorePassword() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -144,7 +146,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throwsExceptionDueToMissingTruststoreFile() {
+    public void throwsExceptionDueToMissingTruststoreFile() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -156,7 +158,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throwsExceptionDueToMissingKeystoreFile() {
+    public void throwsExceptionDueToMissingKeystoreFile() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -168,7 +170,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = SOAPFaultException.class)
-    public void throwsExceptionDueToMissingSignatureProps() {
+    public void throwsExceptionDueToMissingSignatureProps() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -181,7 +183,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = SOAPFaultException.class)
-    public void throwsExceptionDueToWrongSignatureCert() {
+    public void throwsExceptionDueToWrongSignatureCert() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
@@ -196,7 +198,7 @@ public class WsHelloWorldServiceTest {
     }
 
     @Test(expected = WebServiceException.class)
-    public void throwsExceptionDueToWrongHttpsCert() {
+    public void throwsExceptionDueToWrongHttpsCert() throws InvalidObjectException {
         HelloWorldRequest request = new HelloWorldRequest();
         request.setHello("bob");
 
