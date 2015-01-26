@@ -23,6 +23,8 @@ import java.util.Map;
 
 public class WsMapper {
 
+    //TODO: create a tree object which can mimic the structure of an object
+
     private String operationName;
     private String className;
     private Map<String, Object> methodNameToValue;
