@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.garethahealy</groupId>
+            <groupId>com.garethahealy.fuse</groupId>
             <artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
             <version>${project.version}</version>
         </dependency>
