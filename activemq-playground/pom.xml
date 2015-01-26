@@ -4,10 +4,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.garethahealy</groupId>
-        <artifactId>examples-parent</artifactId>
+        <groupId>com.garethahealy.fuse</groupId>
+        <artifactId>jboss-fuse-examples-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../examples-parent</relativePath>
+        <relativePath>../</relativePath>
     </parent>
     <artifactId>activemq-playground</artifactId>
     <packaging>pom</packaging>
@@ -19,5 +19,25 @@
         <module>activemq-service</module>
         <module>camel-activemq-transacted</module>
     </modules>
+
+    <dependencies>
+        <!-- Camel AMQ -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-camel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-pool</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

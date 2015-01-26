@@ -4,10 +4,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.garethahealy</groupId>
-        <artifactId>examples-parent</artifactId>
+        <groupId>com.garethahealy.fuse</groupId>
+        <artifactId>jboss-fuse-examples-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../examples-parent</relativePath>
+        <relativePath>../</relativePath>
     </parent>
     <artifactId>database-playground</artifactId>
     <packaging>pom</packaging>
@@ -20,5 +20,53 @@
         <module>database-openjpa</module>
         <module>database-repositories</module>
     </modules>
+
+    <dependencies>
+        <!-- Database -->
+        <dependency>
+            <groupId>org.apache.openjpa</groupId>
+            <artifactId>openjpa</artifactId>
+            <version>${openjpa-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jpa_2.0_spec</artifactId>
+            <version>${geronimo-jpa-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.aries.jpa</groupId>
+            <artifactId>org.apache.aries.jpa.blueprint.aries</artifactId>
+            <version>${aries-jpa-blueprint-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.aries.transaction</groupId>
+            <artifactId>org.apache.aries.transaction.blueprint</artifactId>
+            <version>${aries-transaction-blueprint-version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${commons-dbcp2-version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>
