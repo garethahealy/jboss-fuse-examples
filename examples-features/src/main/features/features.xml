@@ -36,7 +36,7 @@
     <feature name="${project.groupId}-activemq-dependencies" version="${project.version}" resolver="(obr)">
         <feature version="${activemq-version}">activemq-camel</feature>
         <feature version="${fabric8-version}">mq-fabric</feature>
-        <bundle>wrap:mvn:org.apache.activemq/activemq-pool/${activemq-version}$Bundle-SymbolicName=activemq-pool&amp;Bundle-Version=${activemq-version};</bundle>
+        <bundle>wrap:mvn:org.apache.activemq/activemq-pool/${activemq-version}</bundle>
     </feature>
 
     <feature name="${project.groupId}-cxf-dependencies" version="${project.version}" resolver="(obr)">
