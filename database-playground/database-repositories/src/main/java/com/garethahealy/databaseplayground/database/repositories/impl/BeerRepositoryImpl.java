@@ -32,16 +32,13 @@ public class BeerRepositoryImpl implements BeerRepository {
 
     private EntityManager entityManager;
 
-    //public void setEntityManager(EntityManager entityManager) {
-    //        this.entityManager = entityManager;
-    /// }
-
+    @Override
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         this.entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
-    public List<Beer> getBeers() throws IllegalStateException {
+    public List<Beer> getBeers() {
         if (entityManager == null) {
             throw new IllegalStateException("entityManager == null");
         }
