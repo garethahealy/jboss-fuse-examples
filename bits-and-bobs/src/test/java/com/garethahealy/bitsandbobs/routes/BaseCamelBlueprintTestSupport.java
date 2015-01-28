@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package com.garethahealy.mbeans.expose.routes;
+package com.garethahealy.bitsandbobs.routes;
 
 import java.util.Dictionary;
 import java.util.Map;

@@ -27,9 +27,6 @@
 
     <camelContext id="bits-and-bobs-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
-        <route id="dumpFileFromDynamicURL">
-        </route>
-
     </camelContext>
 
 </blueprint>
