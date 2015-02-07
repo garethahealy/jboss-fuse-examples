@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  ws-security-jaas
+  %%
+  Copyright (C) 2013 - 2014 Gareth Healy
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+    <bean id="payloadBuilder" class="com.garethahealy.camelboon.PayloadBuilder"/>
+
+    <bean id="boonDataFormat" class="org.apache.camel.component.boon.BoonDataFormat">
+        <argument value="com.garethahealy.camelboon.PersonEntity"/>
+    </bean>
+
+    <camelContext id="camelboon-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+        <route id="marshallJson">
+            <from uri="timer://generate?delay=1s&amp;repeatCount=1"/>
+            <bean ref="payloadBuilder" method="getBody"/>
+            <marshal ref="boonDataFormat"/>
+            <to uri="direct-vm:unmarshallJson"/>
+        </route>
+
+        <route id="unmarshallJson">
+            <from uri="direct-vm:unmarshallJson"/>
+            <log message="UNMARSHALLED RAW JSON: ${body}"/>
+            <unmarshal ref="boonDataFormat"/>
+            <log message="MARSHALLED OBJECT: ${body}"/>
+        </route>
+    </camelContext>
+
+</blueprint>
