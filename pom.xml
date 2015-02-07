@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.garethahealy</groupId>
-        <artifactId>osgi-parent</artifactId>
+        <artifactId>camel-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../poms/osgi-parent</relativePath>
+        <relativePath>../poms/camel-parent</relativePath>
     </parent>
     <groupId>com.garethahealy.fuse</groupId>
     <artifactId>jboss-fuse-examples-parent</artifactId>
@@ -26,6 +26,7 @@
         <module>database-playground</module>
         <module>mbeans-expose</module>
         <module>bits-and-bobs</module>
+        <module>camel-boon-example</module>
         <module>examples-features</module>
     </modules>
 
