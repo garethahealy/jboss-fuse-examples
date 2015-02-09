@@ -15,6 +15,12 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
 
+    <scm>
+        <connection>scm:git:https://github.com/garethahealy/jboss-fuse-examples/tree/master</connection>
+        <developerConnection>scm:git:https://github.com/garethahealy/jboss-fuse-examples/tree/master</developerConnection>
+        <url>scm:git:https://github.com/garethahealy/jboss-fuse-examples/tree/master</url>
+    </scm>
+
     <modules>
         <module>fabric8-profiles</module>
         <module>activemq-playground</module>
