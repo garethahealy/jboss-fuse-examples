@@ -123,10 +123,6 @@
     </feature>
 
     <feature name="${project.groupId}-camel-boon" version="${project.version}" resolver="(obr)">
-        <details>The boon bundle can only run on a SUN JVM.
-            You need to add the packages 'sun.misc' / 'com.sun.management' in the
-            etc/jre.properties file, for the container
-        </details>
         <feature version="${project.version}">${project.groupId}-commons-dependencies</feature>
         <bundle>mvn:io.fastjson/boon/0.32-SNAPSHOT</bundle>
         <bundle>mvn:org.apache.camel/camel-boon/${camel-version}</bundle>
