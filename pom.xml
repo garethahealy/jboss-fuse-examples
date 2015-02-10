@@ -18,7 +18,7 @@
     <scm>
         <connection>scm:git:https://github.com/garethahealy/jboss-fuse-examples/tree/master</connection>
         <developerConnection>scm:git:https://github.com/garethahealy/jboss-fuse-examples/tree/master</developerConnection>
-        <url>scm:git:https://github.com/garethahealy/jboss-fuse-examples/tree/master</url>
+        <url>https://github.com/garethahealy/jboss-fuse-examples/tree/master</url>
     </scm>
 
     <modules>
