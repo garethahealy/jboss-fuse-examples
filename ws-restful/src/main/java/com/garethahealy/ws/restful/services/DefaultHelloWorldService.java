@@ -19,34 +19,38 @@
  */
 package com.garethahealy.ws.restful.services;
 
-import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.garethahealy.helloworld.HelloWorldEndpoint;
 import com.garethahealy.helloworld.HelloWorldRequest;
 import com.garethahealy.helloworld.HelloWorldResponse;
 import com.garethahealy.ws.restful.builders.HelloWorldResponseBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Path("/default/")
-public class DefaultHelloWorldService implements HelloWorldEndpoint {
+public class DefaultHelloWorldService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultHelloWorldService.class);
 
     private HelloWorldResponseBuilder builder;
 
     public DefaultHelloWorldService() {
-
-    }
-
-    public DefaultHelloWorldService(HelloWorldResponseBuilder builder) {
-        this.builder = builder;
+        this.builder = new HelloWorldResponseBuilder();
     }
 
     @GET
-    @Path("/sayHello/")
+    @Path("/sayHello/{name}")
     @Produces("application/xml")
-    @Override
-    public HelloWorldResponse sayHello(HelloWorldRequest in) {
+    public HelloWorldResponse sayHello(@PathParam("name") String name) {
+        LOG.debug("sayHello to '{}'", name);
+
+        HelloWorldRequest in = new HelloWorldRequest();
+        in.setHello(name);
+
         return builder.getResponse(in);
     }
 }

@@ -23,7 +23,6 @@
            xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
            xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
-           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
            xsi:schemaLocation="
        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
@@ -35,20 +34,6 @@
             <cm:property name="cxf.logging" value="true"/>
         </cm:default-properties>
     </cm:property-placeholder>
-
-    <bean id="helloWorldResponseBuilder" class="com.garethahealy.ws.restful.builders.HelloWorldResponseBuilder"/>
-
-    <bean id="defaultHelloWorldService" class="com.garethahealy.ws.restful.services.DefaultHelloWorldService">
-        <argument ref="helloWorldResponseBuilder"/>
-    </bean>
-
-    <!-- Defined the real JAXRS back end service
-    <jaxrs:server id="restService"
-                  address="http://localhost:${cxf.port}/rest/helloworld">
-        <jaxrs:serviceBeans>
-            <ref component-id="defaultHelloWorldService"/>
-        </jaxrs:serviceBeans>
-    </jaxrs:server>-->
 
     <!-- Defined the server endpoint to create the cxf-rs consumer -->
     <cxf:rsServer id="rsServer"
@@ -64,7 +49,7 @@
         </route>
 
         <route id="restHelloWorld">
-            <from uri="cxfrs://bean://rsServer"/>
+            <from uri="cxfrs:bean:rsServer?bindingStyle=SimpleConsumer"/>
             <log message="Receieved ${body}"/>
         </route>
     </camelContext>

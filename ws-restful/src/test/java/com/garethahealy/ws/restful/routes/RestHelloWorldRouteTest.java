@@ -19,52 +19,56 @@
  */
 package com.garethahealy.ws.restful.routes;
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
-import com.garethahealy.helloworld.HelloWorldRequest;
-
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RestHelloWorldRouteTest extends BaseCamelBlueprintTestSupport {
 
+    //https://github.com/apache/servicemix/blob/master/examples/camel/camel-cxf-rest/camel-cxf-rest-client/src/main/java/org/apache/servicemix/examples/camel/rest/client/Client.java
+
+    private static final Logger LOG = LoggerFactory.getLogger(RestHelloWorldRouteTest.class);
+
     private static final String SERVICE_URL = "http://localhost:9001/rest/helloworld";
-
-    @Test
-    public void postPerson() throws Exception {
-        HelloWorldRequest request = new HelloWorldRequest();
-        request.setHello("bob");
-
-        System.out.println("\n### POST PERSON -> ");
-
-        HttpURLConnection connection = connect(SERVICE_URL + "/default/sayHello");
-        connection.setDoOutput(true);
-        connection.setRequestProperty("Content-Type", "application/xml");
-
-        System.out.println(connection.getURL().toString());
-
-        JAXBContext jaxbContext = JAXBContext.newInstance(HelloWorldRequest.class);
-        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-        // pretty xml output
-        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        jaxbMarshaller.marshal(request, System.out);
-        jaxbMarshaller.marshal(request, connection.getOutputStream());
-
-        System.out.println("\n### POST PERSON RESPONSE");
-        System.out.println("Status: " + connection.getResponseCode() + " " + connection.getResponseMessage());
-        System.out.println("Location: " + connection.getHeaderField("Location"));
-
-        Assert.assertEquals("200", connection.getResponseCode());
-    }
 
     private HttpURLConnection connect(String url) throws Exception {
         HttpURLConnection connection = (HttpURLConnection)new URL(url).openConnection();
         return connection;
+    }
+
+    @Test
+    public void sayHelloReturns() throws Exception {
+        HttpURLConnection connection = null;
+
+        try {
+            connection = connect(SERVICE_URL + "/default/sayHello/" + "bob");
+            connection.setDoInput(true);
+
+            System.out.println("URL: " + connection.getURL().toString());
+
+            InputStream stream = connection.getResponseCode() / 100 == 2
+                ? connection.getInputStream()
+                : connection.getErrorStream();
+
+            String response = IOUtils.toString(stream);
+
+            System.out.println("Status: " + connection.getResponseCode() + " " + connection.getResponseMessage());
+            System.out.println("Response: " + response);
+
+            Assert.assertEquals(new Integer(200), new Integer(connection.getResponseCode()));
+            Assert.assertNotNull(response);
+            Assert.assertTrue(response.length() > 0);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
     }
 }
 
