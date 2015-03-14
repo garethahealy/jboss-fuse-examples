@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.garethahealy</groupId>
         <artifactId>camel-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>../poms/camel-parent</relativePath>
     </parent>
     <groupId>com.garethahealy.fuse</groupId>
@@ -33,6 +33,9 @@
         <module>mbeans-expose</module>
         <module>bits-and-bobs</module>
         <module>camel-boon-example</module>
+        <module>ws-restful</module>
+
+        <!-- Features are always last-->
         <module>examples-features</module>
     </modules>
 

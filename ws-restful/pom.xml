@@ -9,16 +9,14 @@
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
-    <artifactId>ws-security-https-cxf</artifactId>
+    <artifactId>ws-restful</artifactId>
     <packaging>bundle</packaging>
     <name>${project.artifactId}</name>
 
     <properties>
         <build.osgi.import.before.defaults>
-            org.jasypt.encryption.pbe;version=${jasypt-version},
-            org.apache.ws.security.components.crypto;version=${wss4j-version}
         </build.osgi.import.before.defaults>
-        <build.osgi.export.pkg>com.garethahealy.wssecurity.https.cxf.*</build.osgi.export.pkg>
+        <build.osgi.export.pkg>com.garethahealy.ws.restful.*</build.osgi.export.pkg>
         <build.osgi.export.service/>
         <build.osgi.activator/>
     </properties>
@@ -30,12 +28,6 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Camel CXF -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-cxf</artifactId>
-        </dependency>
-        <!-- Core CXF -->
         <!-- NOTE: The order of when ASM is loaded is important. Do NOT change! -->
         <dependency>
             <!-- https://access.redhat.com/solutions/1128593
@@ -47,13 +39,19 @@
             <artifactId>asm-all</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Camel CXF -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-cxf</artifactId>
+        </dependency>
+        <!-- Core CXF -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
             <!-- feature: cxf-jaxws -->
         </dependency>
         <dependency>
@@ -66,15 +64,11 @@
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
             <!-- feature: cxf-http-jetty -->
         </dependency>
+
         <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-bindings-soap</artifactId>
-            <!-- feature: cxf-bindings-soap -->
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-ws-security</artifactId>
-            <!-- feature: cxf-ws-security -->
+            <groupId>org.apache.servicemix.specs</groupId>
+            <artifactId>org.apache.servicemix.specs.jsr339-api-m10</artifactId>
+            <version>2.1.0</version>
         </dependency>
     </dependencies>
 
