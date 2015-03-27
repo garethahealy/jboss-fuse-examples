@@ -28,33 +28,7 @@
           http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <ctx:property-placeholder properties-ref="props"/>
-
-    <import resource="spring-props.xml"/>
-    <import resource="routecontext.xml"/>
-
-    <camelContext id="camel5" xmlns="http://camel.apache.org/schema/spring">
-
-        <propertyPlaceholder id="properties" location="ref:props"/>
-
-        <errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:deadletter">
-            <redeliveryPolicy maximumRedeliveries="1"
-                              logRetryAttempted="true" logRetryStackTrace="true"
-                              retryAttemptedLogLevel="INFO"/>
-        </errorHandler>
-
-        <routeContextRef ref="myCoolRoutes"/>
-
-        <dataFormats>
-            <json id="digitalHubbResponse" library="Jackson"
-                  unmarshalTypeName="com.assurantsolutions.hboshubb.dataobjects.digitalHubb.DigitalHubbGenericResponse" />
-        </dataFormats>
-
-        <route id="myRouteWithin">
-            <from uri="direct:test"/>
-            <log message="do nothing"/>
-        </route>
-
-
-    </camelContext>
+    <osgix:cm-properties id="props" persistent-id="my.props">
+        <prop key="property.name">default value</prop>
+    </osgix:cm-properties>
 </beans>
