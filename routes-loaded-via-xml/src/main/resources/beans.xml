@@ -28,10 +28,15 @@
           http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <import resource="spring-props.xml"/>
+
     <ctx:property-placeholder properties-ref="props"/>
 
-    <import resource="spring-props.xml"/>
     <import resource="routecontext.xml"/>
+
+    <bean id="fakeEntity" class="com.garethahealy.camelcontext.xml.FakeEntity">
+        <property name="delay" value="${timer.delay}"/>
+    </bean>
 
     <camelContext id="camel5" xmlns="http://camel.apache.org/schema/spring">
 
@@ -51,8 +56,12 @@
         </dataFormats>
 
         <route id="myRouteWithin">
-            <from uri="direct:test"/>
-            <log message="do nothing"/>
+            <from uri="timer:test?delay={{timer.delay}}"/>
+            <log message="do nothing ${body}"/>
+            <setBody>
+                <constant>test</constant>
+            </setBody>
+            <to uri="direct:test"/>
         </route>
 
 

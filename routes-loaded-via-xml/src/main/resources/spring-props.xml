@@ -29,6 +29,6 @@
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <osgix:cm-properties id="props" persistent-id="my.props">
-        <prop key="property.name">default value</prop>
+        <prop key="timer.delay">10s</prop>
     </osgix:cm-properties>
 </beans>

@@ -19,7 +19,6 @@
  */
 package com.garethahealy.camelcontext.xml.routes;
 
-
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Assert;
 import org.junit.Test;
