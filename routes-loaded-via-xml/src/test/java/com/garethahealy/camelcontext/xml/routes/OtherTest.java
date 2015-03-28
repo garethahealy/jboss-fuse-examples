@@ -53,11 +53,11 @@ public class OtherTest {
     protected ProducerTemplate template;
 
     @Autowired
-    protected CamelContext camel5;
+    protected CamelContext camelContext;
 
     @Before
     public void before() throws Exception {
-        ModelCamelContext context = (ModelCamelContext)camel5;
+        ModelCamelContext context = (ModelCamelContext)camelContext;
         context.getRouteDefinition("myRouteWithin").adviceWith(context, new AdviceWithRouteBuilder() {
             @Override
             public void configure() throws Exception {
@@ -65,14 +65,14 @@ public class OtherTest {
                 weaveByType(ToDefinition.class).selectIndex(0).replace().to("mock:result");
             }
         });
+
+        context.start();
     }
 
     @Test
     public void camelContextIsNotNull() throws Exception {
         final Map<String, Objects> headers = new HashMap<String, Objects>();
         final Object body = "hello";
-
-        ModelCamelContext context = (ModelCamelContext)camel5;
 
         Processor processor = new Processor() {
             @Override
@@ -85,20 +85,9 @@ public class OtherTest {
             }
         };
 
-        MockEndpoint resultEndpoint = context.getEndpoint("mock:result", MockEndpoint.class);
-
-        Assert.assertNotNull(resultEndpoint);
-
-       // ProducerTemplate template = context.createProducerTemplate();
-        //template.start();
-
         Exchange sent = template.send(processor);
-
-        TimeUnit.SECONDS.sleep(1);
 
         Assert.assertNotNull(sent.getIn().getBody(String.class));
         Assert.assertEquals("test", sent.getIn().getBody(String.class));
-
-        //template.stop();
     }
 }
