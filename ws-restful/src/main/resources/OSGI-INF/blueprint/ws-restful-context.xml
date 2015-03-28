@@ -35,6 +35,8 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
+    <bean id="defaultHelloWorldService" class="com.garethahealy.ws.restful.services.DefaultHelloWorldService"/>
+
     <!-- Defined the server endpoint to create the cxf-rs consumer -->
     <cxf:rsServer id="rsServer"
                   address="http://localhost:${cxf.port}/rest/helloworld/"
@@ -51,6 +53,8 @@
         <route id="restHelloWorld">
             <from uri="cxfrs:bean:rsServer?bindingStyle=SimpleConsumer"/>
             <log message="Receieved ${body}"/>
+            <bean ref="defaultHelloWorldService" method="sayHello"/>
+            <log message="after sayhello ${body}"/>
         </route>
     </camelContext>
 
