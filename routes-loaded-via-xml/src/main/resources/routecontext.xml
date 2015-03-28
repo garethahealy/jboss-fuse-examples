@@ -27,9 +27,10 @@
     <routeContext id="myCoolRoutes" xmlns="http://camel.apache.org/schema/spring">
         <!-- we can have a route -->
         <route id="cool">
-            <from uri="direct:start"/>
+            <from uri="direct:startMe"/>
             <to uri="mock:result"/>
         </route>
+
         <!-- and another route, you can have as many your like -->
         <route id="bar">
             <from uri="direct:bar"/>

@@ -52,7 +52,7 @@
 
         <dataFormats>
             <json id="digitalHubbResponse" library="Jackson"
-                  unmarshalTypeName="com.assurantsolutions.hboshubb.dataobjects.digitalHubb.DigitalHubbGenericResponse" />
+                  unmarshalTypeName="com.garethahealy.camelcontext.xml.FakeEntity" />
         </dataFormats>
 
         <route id="myRouteWithin">
