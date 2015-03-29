@@ -62,7 +62,7 @@ public class OtherTest {
             @Override
             public void configure() throws Exception {
                 replaceFromWith("direct:start");
-                weaveByType(ToDefinition.class).selectIndex(0).replace().to("mock:result");
+                weaveByToString("To[direct:test]").replace().to("mock:result");
             }
         });
 
