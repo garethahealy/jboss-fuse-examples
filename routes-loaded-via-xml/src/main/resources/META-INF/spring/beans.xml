@@ -22,11 +22,14 @@
        xmlns:camel="http://camel.apache.org/schema/spring"
        xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
        xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
        xsi:schemaLocation="
           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
           http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
-          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+          http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.7.0.xsd">
+
 
     <import resource="spring-props.xml"/>
 
@@ -38,9 +41,27 @@
         <property name="delay" value="${timer.delay}"/>
     </bean>
 
+    <cxf:cxfEndpoint
+            id="myBusinessServiceProxy"
+            address="http://0.0.0.0:9500/myBusiness"
+            serviceName="tns:HelloWorldEndpointService"
+            endpointName="HelloWorldEndpoint"
+            serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
+            wsdlURL="file:///Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl"
+            xmlns:tns="http://helloworld.garethahealy.com"/>
+
+    <cxf:cxfEndpoint
+            id="myBusinessServiceReal"
+            address="http://localhost:9600/myBusiness"
+            serviceName="tns:HelloWorldEndpointService"
+            endpointName="HelloWorldEndpoint"
+            serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
+            wsdlURL="file:///Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl"
+            xmlns:tns="http://helloworld.garethahealy.com"/>
+
     <camelContext id="camel5" xmlns="http://camel.apache.org/schema/spring">
 
-        <propertyPlaceholder id="properties" location="ref:props"/>
+       <!-- <propertyPlaceholder id="properties" location="ref:props"/>-->
 
         <errorHandler id="errorHandler" type="DeadLetterChannel" deadLetterUri="direct:deadletter">
             <redeliveryPolicy maximumRedeliveries="1"
@@ -56,12 +77,19 @@
         </dataFormats>
 
         <route id="myRouteWithin">
-            <from uri="timer:test?delay={{timer.delay}}"/>
+            <from uri="timer:test?delay=1s"/>
             <log message="do nothing ${body}"/>
             <setBody>
                 <constant>test</constant>
             </setBody>
             <to uri="direct:test"/>
+        </route>
+
+        <route id="myBusinessProxyRoute">
+            <from uri="cxf:bean:myBusinessServiceProxy?dataFormat=PAYLOAD"/>
+            <log message="${body}"/>
+            <to uri="cxf:bean:myBusinessServiceReal?dataFormat=PAYLOAD"/>
+            <log  message="from real - ${body}"/>
         </route>
 
     </camelContext>

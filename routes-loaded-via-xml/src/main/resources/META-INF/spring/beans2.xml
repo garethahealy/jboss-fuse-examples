@@ -1,0 +1,48 @@
+<!--
+  #%L
+  routes-loaded-via-xml
+  %%
+  Copyright (C) 2013 - 2015 Gareth Healy
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+          http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.7.0.xsd">
+
+    <bean id="cxfResponse" class="com.garethahealy.camelcontext.xml.CXFResponse"/>
+
+    <cxf:cxfEndpoint
+            id="myBusinessServiceReal"
+            address="http://localhost:9600/myBusiness"
+            serviceName="tns:HelloWorldEndpointService"
+            endpointName="HelloWorldEndpoint"
+            serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
+            wsdlURL="file:///Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl"
+            xmlns:tns="http://helloworld.garethahealy.com"/>
+
+    <camelContext id="camel-cxf-real" xmlns="http://camel.apache.org/schema/spring">
+
+        <route id="myBusinessRealRoute">
+            <from uri="cxf:bean:myBusinessServiceReal?dataFormat=PAYLOAD"/>
+            <log message="${body}"/>
+            <bean ref="cxfResponse" method="getResponse"/>
+        </route>
+
+    </camelContext>
+</beans>
