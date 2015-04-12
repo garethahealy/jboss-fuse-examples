@@ -19,19 +19,9 @@
 
     <build>
         <plugins>
-            <!-- used to generate the MANIFEST-FILE of a bundle -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java-runtime}</source>
-                    <target>${java-runtime}</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
-                <version>${cxf-number-version}</version>
                 <executions>
                     <execution>
                         <id>generate-sources</id>
@@ -52,7 +42,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 
