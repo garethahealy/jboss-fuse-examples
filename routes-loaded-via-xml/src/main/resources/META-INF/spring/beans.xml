@@ -72,7 +72,7 @@
         <routeContextRef ref="myCoolRoutes"/>
 
         <dataFormats>
-            <json id="digitalHubbResponse" library="Jackson"
+            <json id="jsonFakeEntity" library="Jackson"
                   unmarshalTypeName="com.garethahealy.camelcontext.xml.FakeEntity" />
         </dataFormats>
 

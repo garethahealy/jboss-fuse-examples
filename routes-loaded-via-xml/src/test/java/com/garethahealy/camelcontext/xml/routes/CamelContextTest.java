@@ -29,7 +29,7 @@ public class CamelContextTest extends CamelSpringTestSupport {
 
     @Override
     protected AbstractApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("beans.xml");
+        return new ClassPathXmlApplicationContext("META-INF/spring/beans.xml");
     }
 
     @Test

@@ -22,7 +22,6 @@ package com.garethahealy.camelcontext.xml.routes;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -31,9 +30,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.AdviceWithRouteBuilder;
-import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.model.ModelCamelContext;
-import org.apache.camel.model.ToDefinition;
 import org.apache.camel.test.spring.CamelSpringDelegatingTestContextLoader;
 import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner;
 import org.apache.camel.test.spring.UseAdviceWith;
@@ -45,7 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(CamelSpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = CamelSpringDelegatingTestContextLoader.class, locations = {"classpath:/beans.xml"})
+@ContextConfiguration(loader = CamelSpringDelegatingTestContextLoader.class, locations = {"classpath:/META-INF/spring/beans.xml"})
 @UseAdviceWith
 public class OtherTest {
 
