@@ -26,6 +26,7 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-boon</artifactId>
             <version>${camel-version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

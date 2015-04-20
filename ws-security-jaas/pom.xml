@@ -29,6 +29,7 @@
         <dependency>
             <groupId>org.apache.karaf.jaas</groupId>
             <artifactId>org.apache.karaf.jaas.jasypt</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
