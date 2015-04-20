@@ -21,11 +21,28 @@
 
 <blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
            xsi:schemaLocation="
        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+    <cm:property-placeholder persistent-id="com.garethahealy.bitsandbobs" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="proxy.url" value="http://0.0.0.0:9001"/>
+            <cm:property name="remote.url" value="http://somewhere:9001"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
 
     <camelContext id="bits-and-bobs-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+
+        <route id="jettyProxy">
+            <from uri="jetty://{{proxy.url}}?matchOnUriPrefix=true"/>
+            <convertBodyTo type="java.lang.String" charset="UTF-8"/>
+            <log message="jettyProxy: ${body}" loggingLevel="DEBUG"/>
+            <to uri="jetty://{{remote.url}}?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
+            <log message="jettyProxy Returned: ${body}" loggingLevel="DEBUG"/>
+        </route>
 
     </camelContext>
 
