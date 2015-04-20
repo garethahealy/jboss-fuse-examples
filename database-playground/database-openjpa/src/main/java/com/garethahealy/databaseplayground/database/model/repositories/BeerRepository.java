@@ -21,13 +21,13 @@ package com.garethahealy.databaseplayground.database.model.repositories;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
 
 import com.garethahealy.databaseplayground.database.model.entities.Beer;
 
 public interface BeerRepository {
 
-    void setEntityManagerFactory(EntityManagerFactory entityManagerFactory);
+    void setEntityManager(EntityManager entityManager);
 
     List<Beer> getBeers();
 }

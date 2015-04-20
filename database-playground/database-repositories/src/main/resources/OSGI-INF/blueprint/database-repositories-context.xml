@@ -36,7 +36,7 @@
 	<service ref="beerRepository" interface="com.garethahealy.databaseplayground.database.model.repositories.BeerRepository"/>
 
 	<bean id="beerRepository" class="com.garethahealy.databaseplayground.database.repositories.impl.BeerRepositoryImpl">
-		<jpa:unit unitname="playground-persistence" property="entityManagerFactory"/>
+		<jpa:context property="entityManager" unitname="playground-persistence" />
     	<tx:transaction method="*" value="Required"/>
   	</bean>
 
@@ -44,7 +44,7 @@
 
 		<route id="consumeBeerViaBeans">
 			<from uri="timer://tickEveryMinute?period=1minute"/>
-			<!--<bean ref="beerRepository" method="getBeers"/>-->
+			<bean ref="beerRepository" method="getBeers"/>
 			<log message="Number of items returned: ${body.size}"/>
 			<split parallelProcessing="true">
 				<simple>${body}</simple>

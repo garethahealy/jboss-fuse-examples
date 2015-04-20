@@ -32,6 +32,11 @@
         <cm:default-properties>
             <cm:property name="cxf.port" value="9001"/>
             <cm:property name="cxf.logging" value="true"/>
+            <cm:property name="http.certs.location"
+                         value="/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/keystore"/>
+            <cm:property name="http.keyManagers.password" value="storepassword"/>
+            <cm:property name="http.trustManagers.password" value="storepassword"/>
+            <cm:property name="http.clientAuthentication.required" value="false"/>
         </cm:default-properties>
     </cm:property-placeholder>
 
@@ -39,23 +44,75 @@
 
     <!-- Defined the server endpoint to create the cxf-rs consumer -->
     <cxf:rsServer id="rsServer"
-                  address="http://localhost:${cxf.port}/rest/helloworld/"
-                  serviceClass="com.garethahealy.ws.restful.services.DefaultHelloWorldService"
-                  loggingFeatureEnabled="true"/>
+                  address="http://localhost:${cxf.port}/fuse/rest/helloworld/"
+                  serviceClass="com.garethahealy.ws.restful.services.DefaultHelloWorldService">
+        <cxf:properties>
+            <entry key="loggingFeatureEnabled" value="${cxf.logging}"/>
+        </cxf:properties>
+    </cxf:rsServer>
+
+    <bean id="keyStoreParameters" class="org.apache.camel.util.jsse.KeyStoreParameters">
+        <property name="resource" value="${http.certs.location}/server-keystore.jks"/>
+        <property name="password" value="${http.keyManagers.password}"/>
+    </bean>
+
+    <bean id="truststoreParameters" class="org.apache.camel.util.jsse.KeyStoreParameters">
+        <property name="resource" value="${http.certs.location}/server-truststore.jks"/>
+        <property name="password" value="${http.trustManagers.password}"/>
+    </bean>
+
+    <bean id="trustManagersParameters" class="org.apache.camel.util.jsse.TrustManagersParameters">
+        <property name="keyStore" ref="truststoreParameters"/>
+    </bean>
+
+    <bean id="keyManagersParameters" class="org.apache.camel.util.jsse.KeyManagersParameters">
+        <property name="keyStore" ref="keyStoreParameters"/>
+        <property name="keyPassword" value="${http.keyManagers.password}"/>
+    </bean>
+
+    <bean id="sslContextParameters" class="org.apache.camel.util.jsse.SSLContextParameters">
+        <property name="keyManagers" ref="keyManagersParameters"/>
+        <property name="trustManagers" ref="trustManagersParameters"/>
+    </bean>
+
+    <bean id="allowAllHostnameVerifier" class="org.apache.http.conn.ssl.AllowAllHostnameVerifier"/>
+
+    <!--
+        NOTE: Using HTTP4 instead of jetty/cxf client due to below:
+        http://camel.465427.n5.nabble.com/Jetty-HTTPS-2way-td5765296.html
+    -->
+    <bean id="http4" class="org.apache.camel.component.http4.HttpComponent">
+        <property name="sslContextParameters" ref="sslContextParameters"/>
+        <property name="x509HostnameVerifier" ref="allowAllHostnameVerifier"/>
+    </bean>
 
     <camelContext id="ws-restful-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
-        <route id="timerForJson">
+        <route id="restClientHelloWorld">
             <from uri="timer://timerForJson?period=10s&amp;delay=1s"/>
-            <log message="todo"/>
+            <!-- TODO: Create entity-->
+            <setHeader headerName="Content-Type">
+                <constant>application/json; charset=utf-8</constant>
+            </setHeader>
+            <setHeader headerName="CamelHttpMethod">
+                <constant>POST</constant>
+            </setHeader>
+            <setHeader headerName="CamelHttpPath">
+                <constant>helloworld</constant>
+            </setHeader>
+            <marshal ref="TODO-JSON"/>
+            <convertBodyTo type="java.lang.String" charset="UTF-8"/>
+            <log message="Sending: ${body}"/>
+            <to uri="http4://localhost:{{cxf.port}}/fuse/rest"/>
         </route>
 
-        <route id="restHelloWorld">
+        <route id="restServerHelloWorld">
             <from uri="cxfrs:bean:rsServer?bindingStyle=SimpleConsumer"/>
-            <log message="Receieved ${body}"/>
+            <log message="Receieved: ${body}"/>
             <bean ref="defaultHelloWorldService" method="sayHello"/>
-            <log message="after sayhello ${body}"/>
+            <log message="Returning: ${body}"/>
         </route>
+
     </camelContext>
 
 </blueprint>

@@ -33,8 +33,8 @@ public class BeerRepositoryImpl implements BeerRepository {
     private EntityManager entityManager;
 
     @Override
-    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
-        this.entityManager = entityManagerFactory.createEntityManager();
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override

@@ -30,9 +30,16 @@
 
 
     <cm:property-placeholder persistent-id="com.garethahealy.databaseplayground.database.cameljpa"
-                             update-strategy="reload"/>
+                             update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="jetty.jdbc.url" value="http://0.0.0.0:9001"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
 
     <reference id="transactionManager" interface="org.springframework.transaction.PlatformTransactionManager"/>
+
+    <reference id="mysqlBasicManagedDataSource" interface="javax.sql.DataSource"
+               filter="(osgi.jndi.service.name=jdbc/mysqlBasicManagedDataSource)"/>
 
     <bean id="jpa" class="org.apache.camel.component.jpa.JpaComponent">
         <jpa:unit unitname="playground-persistence" property="entityManagerFactory"/>
@@ -41,12 +48,26 @@
 
     <camelContext id="database-cameljpa-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
+        <dataFormats>
+            <json id="jackson" library="Jackson"/>
+        </dataFormats>
+
         <route id="consumeBeerViaCamelJpa">
             <from uri="jpa://com.garethahealy.databaseplayground.database.model.entities.Beer?consumer.initialDelay=10seconds&amp;consumer.useFixedDelay=true&amp;consumer.delay=1minute&amp;consumer.namedQuery=Beer.SelectAll"/>
-			<split parallelProcessing="true">
-				<simple>${body}</simple>
-				<log message="${body}"/>
-			</split>
+            <split parallelProcessing="true">
+                <simple>${body}</simple>
+                <log message="${body}"/>
+            </split>
+        </route>
+
+        <route id="consumeBeerViaCamelJDBC">
+            <from uri="jetty://{{jetty.jdbc.url}}/fuse/rest/consumebeer"/>
+            <log message="consumeBeerViaCamelJDBC: ${body}"/>
+            <to uri="jdbc:mysqlBasicManagedDataSource"/>
+            <marshal ref="jackson"/>
+            <setHeader headerName="Content-Type">
+                <constant>application/json; charset=utf-8</constant>
+            </setHeader>
         </route>
 
     </camelContext>
