@@ -42,10 +42,13 @@
     <feature name="${project.groupId}-cxf-dependencies" version="${project.version}" resolver="(obr)">
         <feature version="${camel-version}">camel-cxf</feature>
         <feature version="${cxf-version}">cxf-jaxws</feature>
+        <feature version="${cxf-version}">cxf-jaxrs</feature>
         <feature version="${cxf-version}">cxf-http</feature>
         <feature version="${cxf-version}">cxf-http-jetty</feature>
         <feature version="${cxf-version}">cxf-bindings-soap</feature>
         <feature version="${cxf-version}">cxf-ws-security</feature>
+        <feature version="${cxf-version}">cxf-rs-security-sso-saml</feature> <!-- Requires dynamic-imports -->
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/2.5.1_1</bundle>
     </feature>
 
     <feature name="${project.groupId}-database-dependencies" version="${project.version}" resolver="(obr)">
@@ -94,6 +97,12 @@
         <bundle>mvn:${project.groupId}/ws-security-jaas/${project.version}</bundle>
         <bundle>mvn:${project.groupId}/ws-security-https-cxf-wsdl-helloworld/${project.version}</bundle>
         <bundle>mvn:${project.groupId}/ws-security-https-cxf/${project.version}</bundle>
+    </feature>
+
+    <feature name="${project.groupId}-ws-saml-cxf" version="${project.version}" resolver="(obr)">
+        <feature version="${project.version}">${project.groupId}-cxf-dependencies</feature>
+        <bundle>mvn:${project.groupId}/ws-security-https-cxf-wsdl-helloworld/${project.version}</bundle>
+        <bundle>mvn:${project.groupId}/ws-saml-cxf/${project.version}</bundle>
     </feature>
 
     <feature name="${project.groupId}-database-playground-cameljpa" version="${project.version}" resolver="(obr)">

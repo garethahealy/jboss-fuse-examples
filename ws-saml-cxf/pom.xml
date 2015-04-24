@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.garethahealy.fuse</groupId>
+        <artifactId>jboss-fuse-examples-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+    </parent>
+    <artifactId>ws-saml-cxf</artifactId>
+    <packaging>bundle</packaging>
+    <name>${project.artifactId}</name>
+
+    <properties>
+        <build.osgi.import.before.defaults>
+            org.apache.cxf.rs.security.saml.sso.*
+        </build.osgi.import.before.defaults>
+        <build.osgi.export.pkg>com.garethahealy.wssaml.cxf.*</build.osgi.export.pkg>
+        <build.osgi.export.service/>
+        <build.osgi.activator/>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.garethahealy.fuse</groupId>
+            <artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- NOTE: The order of when ASM is loaded is important. Do NOT change! -->
+        <dependency>
+            <!-- https://access.redhat.com/solutions/1128593
+                IncompatibleClassChangeError:
+                class org.apache.aries.proxy.impl.interfaces.InterfaceProxyGenerator
+                has interface org.objectweb.asm.ClassVisitor as super class
+            -->
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Camel CXF -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-cxf</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Core CXF -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <!-- feature: cxf-jaxws -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <!-- feature: cxf-http -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <!-- feature: cxf-http-jetty -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-security</artifactId>
+            <!-- feature: cxf-ws-security -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-security-sso-saml</artifactId>
+            <!-- feature: cxf-ws-security -->
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>
