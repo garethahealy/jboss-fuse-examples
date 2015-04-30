@@ -27,3 +27,6 @@ JmsProducer_*.xml
 
 # Testing #
 .ekstazi/
+
+# Camel File Component #
+.camelLock
