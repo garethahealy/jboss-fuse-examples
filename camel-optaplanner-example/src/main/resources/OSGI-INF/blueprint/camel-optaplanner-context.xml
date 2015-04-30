@@ -29,12 +29,29 @@
 
     <cm:property-placeholder persistent-id="com.garethahealy.bitsandbobs" update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="proxy.url" value="http://0.0.0.0:9001"/>
-            <cm:property name="remote.url" value="http://somewhere:9001"/>
+            <cm:property name="watchSolutions.initialDelay" value="5s"/>
+            <cm:property name="watchSolutions.delay" value="60s"/>
+            <cm:property name="solutions.path" value="/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/camel-optaplanner-example/src/main/resources/META-INF/data"/>
         </cm:default-properties>
     </cm:property-placeholder>
 
     <camelContext id="camel-optaplanner-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+
+        <dataFormats>
+            <xstream id="xstream-utf8" encoding="UTF-8">
+                <aliases>
+                    <alias class="org.optaplanner.examples.cloudbalancing.domain.CloudBalance" name="CloudBalance"/>
+                </aliases>
+            </xstream>
+        </dataFormats>
+
+        <route id="watchSolutions">
+            <from uri="file://{{solutions.path}}?initialDelay={{watchSolutions.initialDelay}}&amp;delay={{watchSolutions.delay}}&amp;useFixedDelay=true&amp;readLock=markerFile&amp;charset=utf-8&amp;runLoggingLevel=INFO&amp;noop=true"/>
+            <log message="About to solve: ${headers.CamelFileName}"/>
+            <unmarshal ref="xstream-utf8"/>
+            <to uri="optaplanner:META-INF/com/garethahealy/optaplaner/solvers/configs/cloudBalancingSolverConfig.xml"/>
+            <log message="DONE: ${body}"/>
+        </route>
 
     </camelContext>
 

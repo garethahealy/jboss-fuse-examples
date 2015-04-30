@@ -15,17 +15,40 @@
 
     <properties>
         <build.osgi.import.before.defaults>
+            org.optaplanner.examples
         </build.osgi.import.before.defaults>
         <build.osgi.export.pkg>com.garethahealy.cameloptaplanner.*</build.osgi.export.pkg>
         <build.osgi.export.service/>
         <build.osgi.activator/>
+
+        <!-- Versions for OptaPlanner-->
+        <optaplanner-version>6.2.0.Final</optaplanner-version>
+        <mvel2-version>2.2.4.Final</mvel2-version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.camel</groupId>
+            <artifactId>camel-xstream</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
             <artifactId>camel-optaplanner</artifactId>
             <version>2.16-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-examples</artifactId>
+            <version>${optaplanner-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mvel</groupId>
+            <artifactId>mvel2</artifactId>
+            <version>${mvel2-version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
