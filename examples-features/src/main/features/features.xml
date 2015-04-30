@@ -48,6 +48,7 @@
         <feature version="${cxf-version}">cxf-bindings-soap</feature>
         <feature version="${cxf-version}">cxf-ws-security</feature>
         <feature version="${cxf-version}">cxf-rs-security-sso-saml</feature> <!-- Requires dynamic-imports -->
+        <feature version="${cxf-version}">cxf-rs-security-oauth2</feature>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/2.5.1_1</bundle>
     </feature>
 

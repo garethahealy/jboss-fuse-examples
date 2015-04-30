@@ -79,7 +79,13 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-security-sso-saml</artifactId>
-            <!-- feature: cxf-ws-security -->
+            <!-- feature: cxf-rs-security-sso-saml -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-security-oauth2</artifactId>
+            <!-- feature: cxf-rs-security-oauth2 -->
             <scope>provided</scope>
         </dependency>
     </dependencies>
