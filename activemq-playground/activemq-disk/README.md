@@ -1,6 +1,19 @@
-ActiveMQ Performance
-===================
-POM that includes the AMQ performance plugin so we can quickly produce / consumer messages against a broker
+ActiveMQ Disk Performance
+==========================
+Tool to see how much writes/reads the disk supports.
 
--- mvn activemq-perf:consumer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin
--- mvn activemq-perf:producer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin -Dproducer.msgFileName=message.xml
+How to
+==========================
+Copy the run.sh script to the base installation of ActiveMQ
+
+chmod +x run.sh
+./run.sh
+
+Options
+==========================
+--verbose
+--bs
+--size 
+--sampleInterval
+
+https://github.com/apache/activemq/blob/master/activemq-kahadb-store/src/main/java/org/apache/activemq/store/kahadb/disk/util/DiskBenchmark.java
