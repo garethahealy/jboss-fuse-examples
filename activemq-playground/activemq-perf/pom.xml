@@ -14,8 +14,6 @@
     <name>${project.artifactId}</name>
 
     <build>
-        <!-- mvn activemq-perf:consumer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin -->
-        <!-- mvn activemq-perf:producer -Dfactory.brokerURL=tcp://localhost:61616 -Dfactory.userName=admin -Dfactory.password=admin -->
         <plugins>
             <plugin>
                 <groupId>org.apache.activemq.tooling</groupId>
