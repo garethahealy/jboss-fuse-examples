@@ -1,0 +1,72 @@
+<beans
+  xmlns="http://www.springframework.org/schema/beans"
+  xmlns:amq="http://activemq.apache.org/schema/core"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <!-- Allows us to use system properties and fabric as variables in this configuration file -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <bean class="org.fusesource.mq.fabric.ConfigurationProperties"/>
+        </property>
+    </bean>
+
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="${broker-name}" dataDirectory="${data}" start="false" restartAllowed="false">
+
+        <destinationPolicy>
+            <policyMap>
+              <policyEntries>
+                <policyEntry topic=">" producerFlowControl="false">
+                  <pendingMessageLimitStrategy>
+                    <constantPendingMessageLimitStrategy limit="1000"/>
+                  </pendingMessageLimitStrategy>
+                </policyEntry>
+                <policyEntry queue=">" producerFlowControl="true" memoryLimit="64mb">
+                </policyEntry>
+              </policyEntries>
+            </policyMap>
+        </destinationPolicy>
+
+        <managementContext>
+            <managementContext createConnector="false"/>
+        </managementContext>
+
+        <persistenceAdapter>
+            <kahaDB directory="${data}/kahadb" 
+            		ignoreMissingJournalfiles="true" 
+                    checkForCorruptJournalFiles="true" 
+                    checksumJournalFiles="true"
+                    cleanupInterval="60000"
+                    enableJournalDiskSyncs="true" 
+                    preallocationStrategy="zeros"/> <!-- preallocationStrategy >= AMQ v5.12 -->
+        </persistenceAdapter>
+
+        <plugins>
+            <jaasAuthenticationPlugin configuration="karaf" />
+        </plugins>
+
+        <systemUsage>
+            <systemUsage sendFailIfNoSpace="true">
+                <memoryUsage>
+                    <memoryUsage percentOfJvmHeap="70"/> 
+                </memoryUsage>
+                <storeUsage>
+                    <storeUsage limit="66 gb"/>
+                    <!-- DISK_SIZE / 1.5 = tempUsage -->
+                    <!-- 100gb / 1.5 = 66gb -->
+                </storeUsage>
+                <tempUsage>
+                    <tempUsage limit="33 gb"/> 
+                    <!-- storeUsage / 2 = tempUsage -->
+                    <!-- 66gb / 2 = 33gb -->
+                </tempUsage>
+            </systemUsage>
+        </systemUsage>
+
+        <transportConnectors>
+            <transportConnector name="nio" uri="nio://0.0.0.0:61616"/>
+        </transportConnectors>
+    </broker>
+
+</beans>
