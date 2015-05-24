@@ -61,7 +61,10 @@
         <route id="jmsBridgeTest">
             <from uri="activemq:inbound?disableReplyTo=true"/>
             <log message="Body == ${body}"/>
-            <to uri="activemq:outbound?useMessageIDAsCorrelationID=true"/>
+            <setOutHeader headerName="JMSCorrelationID">
+                <simple>${headers.JMSMessageID}</simple>
+            </setOutHeader>
+            <to uri="activemq:outbound"/>
         </route>
 
     </camelContext>
