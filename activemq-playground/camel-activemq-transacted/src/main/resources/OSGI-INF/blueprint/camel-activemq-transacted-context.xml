@@ -53,9 +53,15 @@
 
     <camelContext id="camel-activemq-transacted-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
-        <route id="jmsReplyToTest">
+        <route id="jmsReplyToTest" autoStartup="false">
             <from uri="activemq:inbound"/>
             <log message="Body == ${body}"/>
+        </route>
+
+        <route id="jmsBridgeTest">
+            <from uri="activemq:inbound?disableReplyTo=true"/>
+            <log message="Body == ${body}"/>
+            <to uri="activemq:outbound?useMessageIDAsCorrelationID=true"/>
         </route>
 
     </camelContext>
