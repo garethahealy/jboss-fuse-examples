@@ -53,12 +53,10 @@
 
     <camelContext id="camel-activemq-transacted-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
-        <route id="test">
-            <from uri="direct:somet"/>
-            <to uri="activemq:somet"/>
+        <route id="jmsReplyToTest">
+            <from uri="activemq:inbound"/>
+            <log message="Body == ${body}"/>
         </route>
-
-        <!-- mq-create for broker, and then assign to container  -->
 
     </camelContext>
 </blueprint>
