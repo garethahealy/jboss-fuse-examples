@@ -37,6 +37,7 @@
         <module>ws-restful</module>
         <module>routes-loaded-via-xml</module>
         <module>camel-optaplanner-example</module>
+        <module>camel-tika-example</module>
 
         <!-- Features are always last-->
         <module>examples-features</module>

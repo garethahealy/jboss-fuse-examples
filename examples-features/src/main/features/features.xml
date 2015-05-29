@@ -138,4 +138,9 @@
         <bundle>mvn:org.apache.camel/camel-boon/${camel-version}</bundle>
         <bundle>mvn:${project.groupId}/camel-boon-example/${project.version}</bundle>
     </feature>
+
+    <feature name="${project.groupId}-camel-tika" version="${project.version}" resolver="(obr)">
+        <bundle>mvn:${project.groupId}/camel-tika-example/${project.version}</bundle>
+    </feature>
+
 </features>
