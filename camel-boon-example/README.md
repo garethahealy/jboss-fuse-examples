@@ -1,3 +1,3 @@
-bits-and-bobs
+camel-boon
 =========================
-Examples which dont fall into a single category
+Examples of how to use camel-boon

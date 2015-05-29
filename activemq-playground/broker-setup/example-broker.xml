@@ -37,6 +37,7 @@
             		ignoreMissingJournalfiles="true" 
                     checkForCorruptJournalFiles="true" 
                     checksumJournalFiles="true"
+                    journalMaxFileLength="32mb" <!-- Less messages then half. More messages then double -->
                     cleanupInterval="60000"
                     enableJournalDiskSyncs="true" 
                     preallocationStrategy="zeros"/> <!-- preallocationStrategy >= AMQ v5.12 -->
@@ -47,7 +48,7 @@
         </plugins>
 
         <systemUsage>
-            <systemUsage sendFailIfNoSpace="true">
+            <systemUsage>
                 <memoryUsage>
                     <memoryUsage percentOfJvmHeap="70"/> 
                 </memoryUsage>
