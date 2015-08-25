@@ -54,7 +54,7 @@
                 </memoryUsage>
                 <storeUsage>
                     <storeUsage limit="66 gb"/>
-                    <!-- DISK_SIZE / 1.5 = tempUsage -->
+                    <!-- DISK_SIZE / 1.5 = storeUsage -->
                     <!-- 100gb / 1.5 = 66gb -->
                 </storeUsage>
                 <tempUsage>
