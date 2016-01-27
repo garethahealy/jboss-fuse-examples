@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.garethahealy.fuse</groupId>
+        <groupId>com.garethahealy.jboss-fuse-examples</groupId>
         <artifactId>jboss-fuse-examples-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jetty</artifactId>
+            <artifactId>camel-jetty9</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

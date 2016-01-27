@@ -1,6 +1,6 @@
 /*
  * #%L
- * ws-security-https-cxf
+ * ws-restful
  * %%
  * Copyright (C) 2013 - 2014 Gareth Healy
  * %%

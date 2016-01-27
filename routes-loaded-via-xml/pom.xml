@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.garethahealy.fuse</groupId>
+        <groupId>com.garethahealy.jboss-fuse-examples</groupId>
         <artifactId>jboss-fuse-examples-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
@@ -25,6 +25,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.garethahealy.fuse</groupId>
+            <artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring</artifactId>
             <scope>provided</scope>
@@ -39,51 +44,9 @@
             <artifactId>spring-test</artifactId>
             <version>${spring-version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.garethahealy.fuse</groupId>
-            <artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-cxf</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <!-- feature: cxf-jaxws -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <!-- feature: cxf-http -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <!-- feature: cxf-http-jetty -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-bindings-soap</artifactId>
-            <!-- feature: cxf-bindings-soap -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-ws-security</artifactId>
-            <!-- feature: cxf-ws-security -->
             <scope>provided</scope>
         </dependency>
     </dependencies>

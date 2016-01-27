@@ -1,6 +1,6 @@
 /*
  * #%L
- * ws-security-jaas
+ * mbeans-expose
  * %%
  * Copyright (C) 2013 - 2014 Gareth Healy
  * %%

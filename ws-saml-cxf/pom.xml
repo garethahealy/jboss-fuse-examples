@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.garethahealy.fuse</groupId>
+        <groupId>com.garethahealy.jboss-fuse-examples</groupId>
         <artifactId>jboss-fuse-examples-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
@@ -46,36 +46,8 @@
             <artifactId>camel-cxf</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!-- Core CXF -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-            <!-- feature: cxf-jaxws -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <!-- feature: cxf-http -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <!-- feature: cxf-http-jetty -->
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-ws-security</artifactId>
-            <!-- feature: cxf-ws-security -->
-            <scope>provided</scope>
-        </dependency>
+
+        <!-- SAML / OAuth -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-security-sso-saml</artifactId>

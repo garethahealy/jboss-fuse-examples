@@ -1,6 +1,6 @@
 /*
  * #%L
- * ws-security-jaas
+ * routes-loaded-via-xml
  * %%
  * Copyright (C) 2013 - 2014 Gareth Healy
  * %%

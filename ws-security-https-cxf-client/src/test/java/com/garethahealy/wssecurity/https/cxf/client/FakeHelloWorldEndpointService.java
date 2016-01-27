@@ -1,6 +1,6 @@
 /*
  * #%L
- * ws-security-https-cxf
+ * ws-security-https-cxf-client
  * %%
  * Copyright (C) 2013 - 2014 Gareth Healy
  * %%

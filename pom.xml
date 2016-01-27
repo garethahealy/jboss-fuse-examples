@@ -4,16 +4,34 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.garethahealy</groupId>
-        <artifactId>camel-parent</artifactId>
-        <version>1.0.6</version>
-        <relativePath>../poms/camel-parent</relativePath>
+        <groupId>com.garethahealy.poms</groupId>
+        <artifactId>jboss-fuse-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath/>
     </parent>
-    <groupId>com.garethahealy.fuse</groupId>
+    <groupId>com.garethahealy.jboss-fuse-examples</groupId>
     <artifactId>jboss-fuse-examples-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples</name>
+
+    <properties>
+        <!-- TODO: Not checked the below version correctly -->
+        <jasypt-version>2.4.1</jasypt-version>
+        <wss4j-version>1.6.18</wss4j-version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- JAAS -->
+            <dependency>
+                <groupId>org.apache.karaf.jaas</groupId>
+                <artifactId>org.apache.karaf.jaas.jasypt</artifactId>
+                <version>${jasypt-version}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <scm>
         <connection>scm:git:https://github.com/garethahealy/jboss-fuse-examples/tree/master</connection>
@@ -22,22 +40,26 @@
     </scm>
 
     <modules>
-        <module>fabric8-profiles</module>
         <module>activemq-playground</module>
-        <module>threading-playground</module>
+
         <module>ws-security-jaas</module>
         <module>ws-security-https-cxf-wsdl-helloworld</module>
         <module>ws-security-https-cxf-client</module>
         <module>ws-security-https-cxf</module>
         <module>ws-saml-cxf</module>
+        <module>ws-restful</module>
+
+        <module>threading-playground</module>
         <module>database-playground</module>
         <module>mbeans-expose</module>
         <module>bits-and-bobs</module>
-        <module>camel-boon-example</module>
-        <module>ws-restful</module>
         <module>routes-loaded-via-xml</module>
+
+        <module>camel-boon-example</module>
         <module>camel-optaplanner-example</module>
         <module>camel-tika-example</module>
+
+        <module>fabric8-profiles</module>
 
         <!-- Features are always last-->
         <module>examples-features</module>
