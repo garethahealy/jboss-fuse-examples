@@ -25,7 +25,7 @@
     <dependencies>
         <!-- Has dependancy on below, due to the model -->
         <dependency>
-            <groupId>com.garethahealy.fuse</groupId>
+            <groupId>com.garethahealy.jboss-fuse-examples</groupId>
             <artifactId>database-openjpa</artifactId>
             <version>${project.version}</version>
         </dependency>

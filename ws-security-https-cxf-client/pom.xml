@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.garethahealy.fuse</groupId>
+            <groupId>com.garethahealy.jboss-fuse-examples</groupId>
             <artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
             <version>${project.version}</version>
         </dependency>
