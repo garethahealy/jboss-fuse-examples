@@ -1,9 +1,14 @@
+dist: trusty
 language: java
-install: mvn clean install -Dgpg.skip=true
 jdk:
-  - openjdk7
-  - oraclejdk7
   - oraclejdk8
+install:
+  - java -version && javac -version && mvn -version
+before_script:
+  - mvn dependency:resolve-plugins dependency:resolve
+script:
+  - mvn clean install -Dgpg.skip=true
 cache:
   directories:
   - $HOME/.m2
+  - $HOME/.victims
