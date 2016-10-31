@@ -21,8 +21,8 @@ package com.garethahealy.databaseplayground.database.datasource.routes;
 
 import java.util.Dictionary;
 import java.util.Map;
-
 import javax.transaction.TransactionManager;
+
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -50,7 +50,6 @@ public class CamelContextTest extends CamelBlueprintTestSupport {
         return new DefaultCamelContext(createRegistry());
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     protected void addServicesOnStartup(Map<String, KeyValueHolder<Object, Dictionary>> services) {
         TransactionManager transactionManager = Mockito.mock(TransactionManager.class);

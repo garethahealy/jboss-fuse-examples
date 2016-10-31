@@ -17,16 +17,11 @@
         <module>database-datasource</module>
         <module>database-cameljpa</module>
         <module>database-hibernate</module>
-        <module>database-openjpa</module>
         <module>database-repositories</module>
     </modules>
 
     <dependencies>
         <!-- Database -->
-        <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -36,24 +31,25 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jpa_2.0_spec</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+             <groupId>org.apache.geronimo.specs</groupId>
+             <artifactId>geronimo-jpa_2.0_spec</artifactId>
+             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.aries.jpa</groupId>
-            <artifactId>org.apache.aries.jpa.blueprint.aries</artifactId>
-            <scope>test</scope>
+             <groupId>org.apache.aries.jpa</groupId>
+             <artifactId>org.apache.aries.jpa.blueprint.aries</artifactId>
+             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.aries.transaction</groupId>
             <artifactId>org.apache.aries.transaction.blueprint</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Commons -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
         </dependency>
     </dependencies>
 

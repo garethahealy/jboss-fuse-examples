@@ -26,11 +26,4 @@
         <build.osgi.meta.persistence>META-INF/persistence.xml</build.osgi.meta.persistence>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
-    </dependencies>
-
 </project>
