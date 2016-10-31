@@ -23,7 +23,7 @@
        xsi:schemaLocation="
           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
-          http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.7.0.xsd">
+          http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-spring.xsd">
 
     <bean id="cxfResponse" class="com.garethahealy.camelcontext.xml.CXFResponse"/>
 
@@ -33,7 +33,7 @@
             serviceName="tns:HelloWorldEndpointService"
             endpointName="HelloWorldEndpoint"
             serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
-            wsdlURL="file:///Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl"
+            wsdlURL="wsdl/helloworld.wsdl"
             xmlns:tns="http://helloworld.garethahealy.com"/>
 
     <camelContext id="camel-cxf-real" xmlns="http://camel.apache.org/schema/spring">
