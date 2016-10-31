@@ -1,8 +1,0 @@
-# The format of the configuration is the same than for the PropertiesLoginModule 
-# with properties prefixed with user..
-
-# For instance, in the Karaf etc folder, we create a file org.apache.karaf.authentication.cfg containing:
-# user.karaf=karaf,admin
-
-#healy == A86MSXkQPTNxUWsShvDgzJfeBx7Be8Gy8gQvAg==
-user.gareth=A86MSXkQPTNxUWsShvDgzJfeBx7Be8Gy8gQvAg==,admin

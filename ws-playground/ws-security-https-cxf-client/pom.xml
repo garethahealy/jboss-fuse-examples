@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.garethahealy.jboss-fuse-examples</groupId>
+        <artifactId>ws-playground</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+    </parent>
+    <artifactId>ws-security-https-cxf-client</artifactId>
+    <packaging>bundle</packaging>
+    <name>GarethHealy :: JBoss Fuse Examples :: WS Playground :: WS Security HTTPS CXF Client</name>
+
+    <properties>
+        <build.osgi.export.pkg>com.garethahealy.helloworld.*</build.osgi.export.pkg>
+        <wsdl-location>src/main/resources/wsdl/helloworld.wsdl</wsdl-location>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.garethahealy.jboss-fuse-examples</groupId>
+            <artifactId>ws-security-https-cxf-wsdl-helloworld</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <!-- feature: cxf-jaxws -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <!-- feature: cxf-http -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <!-- feature: cxf-http-jetty -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-bindings-soap</artifactId>
+            <!-- feature: cxf-bindings-soap -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-security</artifactId>
+            <!-- feature: cxf-ws-security -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.garethahealy.wssecurity.https.cxf.client.Client</mainClass>
+                    <includePluginDependencies>false</includePluginDependencies>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

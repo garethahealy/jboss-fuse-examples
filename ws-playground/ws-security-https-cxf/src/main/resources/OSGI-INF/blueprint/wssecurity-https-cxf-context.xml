@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  GarethHealy :: JBoss Fuse Examples :: WS Playground :: WS Security HTTPS CXF
+  %%
+  Copyright (C) 2013 - 2016 Gareth Healy
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xmlns:cxfcore="http://cxf.apache.org/blueprint/core"
+           xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+           xmlns:sec="http://cxf.apache.org/configuration/security"
+           xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+    <cm:property-placeholder persistent-id="com.garethahealy.wssecurity.https.cxf" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="logging.isCxfDebug" value="true"/>
+            <cm:property name="schema.validation.enabled" value="false"/>
+            <cm:property name="cxf.helloworld.port" value="9001"/>
+            <cm:property name="cxf.helloworld.transport" value="https"/>
+            <cm:property name="http.certs.location"
+                         value="/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/keystore"/>
+            <cm:property name="http.keyManagers.password" value="storepassword"/>
+            <cm:property name="http.trustManagers.password" value="storepassword"/>
+            <cm:property name="http.clientAuthentication.required" value="true"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+    <!-- CXF Bus (applies to all endpoints) -->
+    <cxfcore:bus>
+        <cxfcore:inInterceptors>
+            <ref component-id="wss4jInInterceptor"/>
+        </cxfcore:inInterceptors>
+        <cxfcore:properties>
+            <entry key="schema-validation-enabled" value="${schema.validation.enabled}"/>
+            <entry key="loggingFeatureEnabled" value="${logging.isCxfDebug}"/>
+        </cxfcore:properties>
+    </cxfcore:bus>
+
+    <!-- CXF Jetty config to setup HTTPs -->
+    <httpj:engine-factory bus="cxf">
+        <httpj:engine port="${cxf.helloworld.port}">
+            <httpj:tlsServerParameters>
+                <sec:keyManagers keyPassword="${http.keyManagers.password}">
+                    <sec:keyStore type="JKS" password="${http.keyManagers.password}"
+                                  file="${http.certs.location}/server-keystore.jks"/>
+                </sec:keyManagers>
+                <sec:trustManagers>
+                    <sec:keyStore type="JKS" password="${http.trustManagers.password}"
+                                  file="${http.certs.location}/server-truststore.jks"/>
+                </sec:trustManagers>
+                <sec:cipherSuitesFilter>
+                    <sec:include>.*_WITH_3DES_.*</sec:include>
+                    <sec:include>.*_WITH_DES_.*</sec:include>
+                    <sec:exclude>.*_WITH_NULL_.*</sec:exclude>
+                    <sec:exclude>.*_DH_anon_.*</sec:exclude>
+                </sec:cipherSuitesFilter>
+                <sec:clientAuthentication want="true" required="${http.clientAuthentication.required}"/>
+            </httpj:tlsServerParameters>
+        </httpj:engine>
+    </httpj:engine-factory>
+
+    <!-- Properties used by wss4jInInterceptor for Signature action -->
+    <bean id="wsCryptoProperties" class="com.garethahealy.wssecurity.https.cxf.impl.WSCryptoProperties">
+        <argument>
+            <map>
+                <entry key="org.apache.ws.security.crypto.provider"
+                       value="org.apache.ws.security.components.crypto.Merlin"/>
+                <entry key="org.apache.ws.security.crypto.merlin.keystore.type" value="jks"/>
+                <entry key="org.apache.ws.security.crypto.merlin.keystore.password"
+                       value="${http.trustManagers.password}"/>
+                <entry key="org.apache.ws.security.crypto.merlin.keystore.file"
+                       value="${http.certs.location}/server-truststore.jks"/>
+            </map>
+        </argument>
+    </bean>
+
+    <!-- CXF Interceptor which parses the WS-Security headers -->
+    <bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <argument>
+            <map>
+                <entry key="action" value="Timestamp Signature"/>
+                <entry key="signaturePropRefId" value="wsCryptoProperties"/>
+                <entry key="wsCryptoProperties" value-ref="wsCryptoProperties"/>
+            </map>
+        </argument>
+    </bean>
+
+    <!-- CXF Endpoint which is used like a proxy within the route 
+    <cxf:cxfEndpoint id="helloWorldCxf" 
+    	address="${cxf.helloworld.transport}://0.0.0.0:${cxf.helloworld.port}/cxf/helloWorldService" 
+    	serviceClass="com.garethahealy.helloworld.HelloWorldEndpoint"
+    	endpointName="HelloWorldEndpoint"
+	    serviceName="HelloWorldEndpointService"/>
+	-->
+
+    <!-- JAXWS endpoint which goes to an implemtation class -->
+    <jaxws:endpoint id="helloWorldCxf"
+                    address="${cxf.helloworld.transport}://0.0.0.0:${cxf.helloworld.port}/cxf/helloWorldService"
+                    implementor="#helloWorldEndpointService"
+                    endpointName="HelloWorldEndpoint"
+                    serviceName="HelloWorldEndpointService"/>
+
+    <bean id="helloWorldResponseBuilder" class="com.garethahealy.wssecurity.https.cxf.impl.HelloWorldResponseBuilder"/>
+
+    <bean id="helloWorldEndpointService"
+          class="com.garethahealy.wssecurity.https.cxf.services.HelloWorldEndpointService">
+        <argument ref="helloWorldResponseBuilder"/>
+    </bean>
+
+    <camelContext id="wssecurity-https-cxf-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+
+        <!-- Simple route which returns a Response so that the CXF flow can work
+       <route id="helloWorldCxfRoute">
+           <from uri="cxf:bean:helloWorldCxf" />
+           <log message="Received..." />
+           <bean ref="helloWorldResponseBuilder" method="getResponse"/>
+       </route> -->
+
+    </camelContext>
+</blueprint>
