@@ -62,13 +62,6 @@
         <bundle>mvn:mysql/mysql-connector-java/${mysql-connector-version}</bundle>
     </feature>
 
-    <feature name="${project.groupId}-openjpa-dependencies" version="${project.version}" resolver="(obr)">
-        <feature version="${project.version}">${project.groupId}-database-dependencies</feature>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.serp/${serp-version}</bundle>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/${geronimo-jpa-version}</bundle>
-        <bundle>mvn:org.apache.openjpa/openjpa/${openjpa-version}</bundle>
-    </feature>
-
     <feature name="${project.groupId}-hibernate-dependencies" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-database-dependencies</feature>
         <feature version="${karaf-version}">jpa-hibernate</feature>
@@ -112,13 +105,6 @@
         <bundle>mvn:${project.groupId}/database-cameljpa/${project.version}</bundle>
     </feature>
 
-    <feature name="${project.groupId}-database-playground-openjpa" version="${project.version}" resolver="(obr)">
-        <feature version="${project.version}">${project.groupId}-openjpa-dependencies</feature>
-        <bundle>mvn:${project.groupId}/database-datasource/${project.version}</bundle>
-        <bundle>mvn:${project.groupId}/database-repositories/${project.version}</bundle>
-        <bundle>mvn:${project.groupId}/database-openjpa/${project.version}</bundle>
-    </feature>
-
     <feature name="${project.groupId}-database-playground-hibernate" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-hibernate-dependencies</feature>
         <bundle>mvn:${project.groupId}/database-datasource/${project.version}</bundle>
@@ -134,13 +120,21 @@
 
     <feature name="${project.groupId}-camel-boon" version="${project.version}" resolver="(obr)">
         <feature version="${project.version}">${project.groupId}-commons-dependencies</feature>
-        <bundle>mvn:io.fastjson/boon/0.32-SNAPSHOT</bundle>
+        <bundle>mvn:io.fastjson/boon/0.32</bundle>
         <bundle>mvn:org.apache.camel/camel-boon/${camel-version}</bundle>
         <bundle>mvn:${project.groupId}/camel-boon-example/${project.version}</bundle>
     </feature>
 
     <feature name="${project.groupId}-camel-tika" version="${project.version}" resolver="(obr)">
         <bundle>mvn:${project.groupId}/camel-tika-example/${project.version}</bundle>
+    </feature>
+
+    <feature name="${project.groupId}-camel-optaplanner" version="${project.version}" resolver="(obr)">
+        <bundle>mvn:${project.groupId}/camel-optaplanner-example/${project.version}</bundle>
+    </feature>
+
+    <feature name="${project.groupId}-bits-and-bobs" version="${project.version}" resolver="(obr)">
+        <bundle>mvn:${project.groupId}/bits-and-bobs/${project.version}</bundle>
     </feature>
 
 </features>
