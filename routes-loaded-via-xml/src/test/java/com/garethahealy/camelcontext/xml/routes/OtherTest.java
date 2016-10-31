@@ -1,8 +1,8 @@
 /*
  * #%L
- * routes-loaded-via-xml
+ * GarethHealy :: JBoss Fuse Examples :: Routes Loaded via XML
  * %%
- * Copyright (C) 2013 - 2014 Gareth Healy
+ * Copyright (C) 2013 - 2016 Gareth Healy
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

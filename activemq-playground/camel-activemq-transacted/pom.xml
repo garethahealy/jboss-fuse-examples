@@ -11,7 +11,7 @@
     </parent>
     <artifactId>camel-activemq-transacted</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: ActiveMQ Playground :: Camel Transacted</name>
 
     <properties>
         <build.osgi.import.before.defaults>

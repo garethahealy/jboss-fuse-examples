@@ -11,7 +11,7 @@
     </parent>
     <artifactId>database-playground</artifactId>
     <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Database Playground</name>
 
     <modules>
         <module>database-datasource</module>

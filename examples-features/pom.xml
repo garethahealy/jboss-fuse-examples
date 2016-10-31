@@ -11,7 +11,7 @@
     </parent>
     <artifactId>examples-features</artifactId>
     <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Example Feaures</name>
 
     <build>
         <defaultGoal>install</defaultGoal>

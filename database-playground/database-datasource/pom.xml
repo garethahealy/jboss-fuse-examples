@@ -11,7 +11,7 @@
     </parent>
     <artifactId>database-datasource</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Database Playground :: DataSource</name>
 
     <properties>
         <build.osgi.import.before.defaults>

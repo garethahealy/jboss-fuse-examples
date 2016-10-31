@@ -11,7 +11,7 @@
     </parent>
     <artifactId>mbeans-expose</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: MBeans Expose</name>
 
     <properties>
         <build.osgi.import.before.defaults>

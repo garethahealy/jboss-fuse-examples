@@ -11,7 +11,7 @@
     </parent>
     <artifactId>routes-loaded-via-xml</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Routes Loaded via XML</name>
 
     <properties>
         <build.osgi.import.before.defaults>

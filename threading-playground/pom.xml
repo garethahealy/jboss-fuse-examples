@@ -11,7 +11,7 @@
     </parent>
     <artifactId>threading-playground</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Threading Playground</name>
 
     <properties>
         <build.osgi.import.before.defaults>

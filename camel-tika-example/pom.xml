@@ -11,7 +11,7 @@
     </parent>
     <artifactId>camel-tika-example</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Caml Tika Example</name>
 
     <properties>
         <build.osgi.import.before.defaults>

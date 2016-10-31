@@ -11,7 +11,7 @@
     </parent>
     <artifactId>database-cameljpa</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Database Playground :: Camel JPA</name>
 
     <properties>
         <build.osgi.import.before.defaults>

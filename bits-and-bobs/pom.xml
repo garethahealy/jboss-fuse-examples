@@ -11,7 +11,7 @@
     </parent>
     <artifactId>bits-and-bobs</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: Bits and Bobs</name>
 
     <properties>
         <build.osgi.import.before.defaults>

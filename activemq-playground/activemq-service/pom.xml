@@ -11,7 +11,7 @@
     </parent>
     <artifactId>activemq-service</artifactId>
     <packaging>bundle</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: ActiveMQ Playground :: Service</name>
 
     <properties>
         <build.osgi.import.before.defaults/>

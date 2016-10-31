@@ -11,7 +11,7 @@
     </parent>
     <artifactId>activemq-perf</artifactId>
     <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
+    <name>GarethHealy :: JBoss Fuse Examples :: ActiveMQ Playground :: Perf</name>
 
     <build>
         <plugins>
