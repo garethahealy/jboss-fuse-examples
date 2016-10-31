@@ -41,16 +41,10 @@
 
     <modules>
         <module>activemq-playground</module>
-
-        <module>ws-security-jaas</module>
-        <module>ws-security-https-cxf-wsdl-helloworld</module>
-        <module>ws-security-https-cxf-client</module>
-        <module>ws-security-https-cxf</module>
-        <module>ws-saml-cxf</module>
-        <module>ws-restful</module>
-
+        <module>ws-playground</module>
         <module>threading-playground</module>
         <module>database-playground</module>
+        
         <module>mbeans-expose</module>
         <module>bits-and-bobs</module>
         <module>routes-loaded-via-xml</module>
@@ -59,7 +53,7 @@
         <module>camel-optaplanner-example</module>
         <module>camel-tika-example</module>
 
-        <module>fabric8-profiles</module>
+        <module>fabric8-v1-profiles</module>
 
         <!-- Features are always last-->
         <module>examples-features</module>
