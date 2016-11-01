@@ -53,7 +53,7 @@ public class BodyToFileErrorStrategyGetBackedupTest {
         FileUtils.deleteDirectory(FileUtils.toFile(new URL("file:" + rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithNoDirectoryExists")));
 
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithNoDirectoryExists";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
         List<String[]> answer = strategy.getBackedupLines("NoFile");
 
         Assert.assertNotNull(answer);
@@ -70,7 +70,7 @@ public class BodyToFileErrorStrategyGetBackedupTest {
         }
 
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithNoFiles";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
         List<String[]> answer = strategy.getBackedupLines("NoFile");
 
         Assert.assertNotNull(answer);
@@ -80,7 +80,7 @@ public class BodyToFileErrorStrategyGetBackedupTest {
     @Test
     public void getBackedupLinesWith1FileAnd1Line() {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWith1FileAnd1Line";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy"});
         List<String[]> answer = strategy.getBackedupLines("Test");
@@ -93,7 +93,7 @@ public class BodyToFileErrorStrategyGetBackedupTest {
     @Test
     public void getBackedupLinesWithMultpleFilesAnd1Line() {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithMultpleFilesAnd1Line";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy"});
         strategy.handle(new JMSException("Because"), "TestAnother", new Object[] {"healy", "gareth"});
@@ -113,7 +113,7 @@ public class BodyToFileErrorStrategyGetBackedupTest {
     @Test
     public void getBackedupLinesWithMultpleFilesAndMultipleLines() {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithMultpleFilesAndMultipleLines";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         for (int i = 0; i < 10; i++) {
             strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy" + i});
@@ -138,7 +138,7 @@ public class BodyToFileErrorStrategyGetBackedupTest {
     @Test
     public void getBackedupLinesMultpleHandlesAndGets() throws MalformedURLException {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesMultpleHandlesAndGets";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         for (int i = 0; i < 10; i++) {
             strategy.handle(new JMSException("Because"), "Test", new Object[] {"gareth", "healy" + i});
@@ -163,17 +163,17 @@ public class BodyToFileErrorStrategyGetBackedupTest {
         // i.e.: we write 1000, so we should over time read 1000
 
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/getBackedupLinesWithThreadsReadingAndWritting";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
-        List<GetBackedupLinesCallable<List<String[]>>> callables = new ArrayList<GetBackedupLinesCallable<List<String[]>>>();
+        List<GetBackedupLinesCallable<String[]>> callables = new ArrayList<GetBackedupLinesCallable<String[]>>();
         for (int i = 0; i < 10; i++) {
-            callables.add(new GetBackedupLinesCallable<List<String[]>>(strategy, "Test", i));
+            callables.add(new GetBackedupLinesCallable<String[]>(strategy, "Test", i));
         }
 
         ExecutorService executor = Executors.newCachedThreadPool();
 
         //Create a handler, which will write 1000 lines
-        Future handleResult = executor.submit(new HandleRunnable(strategy, "Test", "gareth", "healy"));
+        Future handleResult = executor.submit(new HandleRunnable<String[]>(strategy, "Test", "gareth", "healy"));
 
         //Create multiple readers
         List<Future<List<String[]>>> getResults = executor.invokeAll(callables);

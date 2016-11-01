@@ -27,7 +27,7 @@ import javax.jms.JMSException;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class RetryLoopCallback {
+public class RetryLoopCallback<T> {
 
     private String runMethodName;
 
@@ -35,7 +35,7 @@ public class RetryLoopCallback {
         this.runMethodName = runMethodName;
     }
 
-    public <T> T runAndGetResult() throws JMSException {
+    public T runAndGetResult() throws JMSException {
         //NOOP
         return null;
     }

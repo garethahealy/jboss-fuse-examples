@@ -21,9 +21,9 @@ package com.garethahealy.activemq.client.poc.errorstrategys;
 
 import java.util.List;
 
-public interface AmqErrorStrategy {
+public interface AmqErrorStrategy<T> {
 
-    <T> List<T> getBackedupLines(String queueName);
+    List<T> getBackedupLines(String queueName);
 
     void handle(Throwable ex, String queueName, Object[] body);
 }

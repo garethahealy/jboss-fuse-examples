@@ -120,11 +120,11 @@ public class BodyToFileErrorStrategyCanHandleTest {
     @Test
     public void canHandleMultipleThreadsOnSameQueue() throws IOException {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandleMultipleThreadsOnSameQueue";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         ExecutorService executor = Executors.newCachedThreadPool();
-        Future one = executor.submit(new HandleRunnable(strategy, "Test", "gareth", "healy"));
-        Future two = executor.submit(new HandleRunnable(strategy, "Test", "healy", "gareth"));
+        Future one = executor.submit(new HandleRunnable<String[]>(strategy, "Test", "gareth", "healy"));
+        Future two = executor.submit(new HandleRunnable<String[]>(strategy, "Test", "healy", "gareth"));
 
         try {
             one.get(5, TimeUnit.SECONDS);
@@ -189,11 +189,11 @@ public class BodyToFileErrorStrategyCanHandleTest {
     @Test
     public void canHandleMultipleThreadsOnDifferenceQueue() throws IOException {
         String pathToPersistenceStore = rootDirectory + "/BodyToFileErrorStrategy/canHandleMultipleThreadsOnDifferenceQueue";
-        AmqErrorStrategy strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
+        AmqErrorStrategy<String[]> strategy = new BodyToFileErrorStrategy(pathToPersistenceStore);
 
         ExecutorService executor = Executors.newCachedThreadPool();
-        Future one = executor.submit(new HandleRunnable(strategy, "Test", "gareth", "healy"));
-        Future two = executor.submit(new HandleRunnable(strategy, "TestAnother", "healy", "gareth"));
+        Future one = executor.submit(new HandleRunnable<String[]>(strategy, "Test", "gareth", "healy"));
+        Future two = executor.submit(new HandleRunnable<String[]>(strategy, "TestAnother", "healy", "gareth"));
 
         try {
             one.get(5, TimeUnit.SECONDS);

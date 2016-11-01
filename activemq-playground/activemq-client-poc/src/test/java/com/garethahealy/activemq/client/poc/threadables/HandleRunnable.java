@@ -23,14 +23,14 @@ import javax.jms.JMSException;
 
 import com.garethahealy.activemq.client.poc.errorstrategys.AmqErrorStrategy;
 
-public class HandleRunnable implements Runnable {
+public class HandleRunnable<T> implements Runnable {
 
-    private AmqErrorStrategy strategy;
+    private AmqErrorStrategy<T> strategy;
     private String queueName;
     private String firstname;
     private String surname;
 
-    public HandleRunnable(AmqErrorStrategy strategy, String queueName, String firstname, String surname) {
+    public HandleRunnable(AmqErrorStrategy<T> strategy, String queueName, String firstname, String surname) {
         this.strategy = strategy;
         this.queueName = queueName;
         this.firstname = firstname;

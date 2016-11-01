@@ -42,7 +42,7 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BodyToFileErrorStrategy implements AmqErrorStrategy {
+public class BodyToFileErrorStrategy implements AmqErrorStrategy<String[]> {
 
     //NOTE: Cases not covered:
     //      1. If file cannot be written, message is lost.

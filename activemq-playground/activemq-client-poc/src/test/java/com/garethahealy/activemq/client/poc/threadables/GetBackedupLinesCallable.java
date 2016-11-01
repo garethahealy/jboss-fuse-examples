@@ -19,30 +19,31 @@
  */
 package com.garethahealy.activemq.client.poc.threadables;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import com.garethahealy.activemq.client.poc.errorstrategys.AmqErrorStrategy;
 
-public class GetBackedupLinesCallable<T> implements Callable<T> {
+public class GetBackedupLinesCallable<T> implements Callable<List<T>> {
 
-    private AmqErrorStrategy strategy;
+    private AmqErrorStrategy<T> strategy;
     private String queueName;
     private int i;
 
-    public GetBackedupLinesCallable(AmqErrorStrategy strategy, String queueName, int i) {
+    public GetBackedupLinesCallable(AmqErrorStrategy<T> strategy, String queueName, int i) {
         this.strategy = strategy;
         this.queueName = queueName;
         this.i = i;
     }
 
-    public T call() {
+    public List<T> call() {
         try {
             TimeUnit.MILLISECONDS.sleep(100 * i);
         } catch (InterruptedException ex) {
             //ignore
         }
 
-        return (T)strategy.getBackedupLines(queueName);
+        return strategy.getBackedupLines(queueName);
     }
 }
