@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.garethahealy.poms</groupId>
         <artifactId>jboss-fuse-parent</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.4</version>
         <relativePath/>
     </parent>
     <groupId>com.garethahealy.jboss-fuse-examples</groupId>
@@ -41,7 +41,7 @@
 
     <modules>
         <module>activemq-playground</module>
-        <module>ws-playground</module>
+        <!--<module>ws-playground</module>-->
         <module>threading-playground</module>
         <module>database-playground</module>
         
@@ -51,7 +51,7 @@
 
         <module>camel-boon-example</module>
         <module>camel-optaplanner-example</module>
-        <module>camel-tika-example</module>
+        <!--<module>camel-tika-example</module>-->
 
         <module>fabric8-v1-profiles</module>
 
