@@ -21,9 +21,7 @@
         <build.osgi.export.service/>
         <build.osgi.activator/>
 
-        <!-- Versions for OptaPlanner-->
-        <optaplanner-version>6.2.0.Final</optaplanner-version>
-        <mvel2-version>2.2.4.Final</mvel2-version>
+        <optaplanner-version>6.3.0.Final</optaplanner-version>
     </properties>
 
     <dependencies>
@@ -31,24 +29,15 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-xstream</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-optaplanner</artifactId>
-            <version>2.16-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-examples</artifactId>
             <version>${optaplanner-version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mvel</groupId>
-            <artifactId>mvel2</artifactId>
-            <version>${mvel2-version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
