@@ -15,7 +15,7 @@
 
     <modules>
         <module>activemq-perf</module>
-        <module>activemq-client-poc</module>
+        <!--<module>activemq-client-poc</module>-->
         <module>activemq-service</module>
         <module>camel-activemq-transacted</module>
     </modules>

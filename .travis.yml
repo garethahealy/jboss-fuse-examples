@@ -10,7 +10,7 @@ install:
 before_script:
   - mvn dependency:resolve-plugins -B
 script:
-  - mvn clean install -B -Dgpg.skip=true
+  - mvn clean install -B -Dgpg.skip=true -Dlog4j.configuration=
 cache:
   directories:
   - $HOME/.m2

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.garethahealy.poms</groupId>
         <artifactId>jboss-fuse-parent</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
         <relativePath/>
     </parent>
     <groupId>com.garethahealy.jboss-fuse-examples</groupId>
@@ -47,7 +47,7 @@
         
         <module>mbeans-expose</module>
         <module>bits-and-bobs</module>
-        <module>routes-loaded-via-xml</module>
+        <!--<module>routes-loaded-via-xml</module>-->
 
         <module>camel-boon-example</module>
         <module>camel-optaplanner-example</module>
