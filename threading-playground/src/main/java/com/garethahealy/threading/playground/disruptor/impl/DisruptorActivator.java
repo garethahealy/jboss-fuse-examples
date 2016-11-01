@@ -31,7 +31,7 @@ public class DisruptorActivator implements BundleActivator {
     public void start(BundleContext context) throws Exception {
         DisruptorService<ByteBuffer> service = new DisruptorService<ByteBuffer>();
         service.setBufferSize(1024);
-        service.setExecutorService(Executors.newCachedThreadPool());
+        service.setThreadFactory(Executors.defaultThreadFactory());
         //service.setFactory(new LongEventFactory());
         service.registerConsumer(new ExchangeConsumer());
         service.init();

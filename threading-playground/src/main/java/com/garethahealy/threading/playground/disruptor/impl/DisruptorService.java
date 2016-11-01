@@ -22,6 +22,7 @@ package com.garethahealy.threading.playground.disruptor.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import com.garethahealy.threading.playground.disruptor.ExchangeEventConsumer;
@@ -45,7 +46,7 @@ public class DisruptorService<T> {
     private Disruptor<Exchange> disruptor;
     private int bufferSize;
     private EventFactory<Exchange> factory;
-    private ExecutorService executorService;
+    private ThreadFactory threadFactory;
     private List<ExchangeEventProducer<T>> producers;
 
     public int getBufferSize() {
@@ -64,12 +65,12 @@ public class DisruptorService<T> {
         this.factory = factory;
     }
 
-    public ExecutorService getExecutorService() {
-        return executorService;
+    public ThreadFactory getThreadFactory() {
+        return threadFactory;
     }
 
-    public void setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
+    public void setThreadFactory(ThreadFactory threadFactory) {
+        this.threadFactory = threadFactory;
     }
 
     public Disruptor<Exchange> getDisruptor() {
@@ -85,12 +86,12 @@ public class DisruptorService<T> {
             throw new NullPointerException("bufferSize <= 0");
         }
 
-        if (executorService == null) {
-            throw new NullPointerException("executorService == null");
+        if (threadFactory == null) {
+            throw new NullPointerException("threadFactory == null");
         }
 
         producers = new ArrayList<ExchangeEventProducer<T>>();
-        disruptor = new Disruptor<Exchange>(factory, bufferSize, executorService, ProducerType.SINGLE, new YieldingWaitStrategy());
+        disruptor = new Disruptor<Exchange>(factory, bufferSize, threadFactory, ProducerType.SINGLE, new YieldingWaitStrategy());
     }
 
     @SuppressWarnings("unchecked")
