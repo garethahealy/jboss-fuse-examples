@@ -45,7 +45,7 @@ public class WsHelloWorldService {
     private WsEndpointConfiguration<HelloWorldEndpoint> config;
     private boolean isCxfBeanFactory;
 
-    private String wsdl = "file:/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl";
+    private String wsdl = "file:../ws-security-https-cxf-wsdl-helloworld/src/main/resources/wsdl/helloworld.wsdl";
 
     public WsHelloWorldService(WsEndpointConfiguration<HelloWorldEndpoint> config, boolean isCxfBeanFactory) {
         this.config = config;

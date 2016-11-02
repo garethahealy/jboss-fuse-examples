@@ -16,7 +16,7 @@
     <modules>
         <module>ws-security-jaas</module>
         <module>ws-security-https-cxf-wsdl-helloworld</module>
-        <!--<module>ws-security-https-cxf-client</module>-->
+        <module>ws-security-https-cxf-client</module>
         <module>ws-security-https-cxf</module>
         <module>ws-saml-cxf</module>
         <module>ws-restful</module>
