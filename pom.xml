@@ -41,7 +41,7 @@
 
     <modules>
         <module>activemq-playground</module>
-        <!--<module>ws-playground</module>-->
+        <module>ws-playground</module>
         <module>threading-playground</module>
         <module>database-playground</module>
         
