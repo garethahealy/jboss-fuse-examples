@@ -31,7 +31,6 @@ import com.garethahealy.ws.restful.builders.HelloWorldResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Path("/default/")
 public class DefaultHelloWorldService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultHelloWorldService.class);
@@ -43,7 +42,7 @@ public class DefaultHelloWorldService {
     }
 
     @GET
-    @Path("/sayHello/{name}")
+    @Path("{name}")
     @Produces("application/xml")
     public HelloWorldResponse sayHello(@PathParam("name") String name) {
         LOG.debug("sayHello to '{}'", name);

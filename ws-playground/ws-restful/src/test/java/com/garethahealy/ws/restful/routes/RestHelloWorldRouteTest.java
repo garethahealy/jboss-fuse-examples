@@ -22,6 +22,7 @@ package com.garethahealy.ws.restful.routes;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -35,7 +36,7 @@ public class RestHelloWorldRouteTest extends BaseCamelBlueprintTestSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestHelloWorldRouteTest.class);
 
-    private static final String SERVICE_URL = "http://localhost:9001/rest/helloworld";
+    private static final String SERVICE_URL = "http://localhost:9001";
 
     private HttpURLConnection connect(String url) throws Exception {
         HttpURLConnection connection = (HttpURLConnection)new URL(url).openConnection();
@@ -47,19 +48,20 @@ public class RestHelloWorldRouteTest extends BaseCamelBlueprintTestSupport {
         HttpURLConnection connection = null;
 
         try {
-            connection = connect(SERVICE_URL + "/default/sayHello/" + "bob");
+            connection = connect(SERVICE_URL + "/fuse/rest/helloworld/" + "bob");
             connection.setDoInput(true);
 
-            System.out.println("URL: " + connection.getURL().toString());
+            LOG.info("URL: {}", connection.getURL().toString());
 
             InputStream stream = connection.getResponseCode() / 100 == 2
                 ? connection.getInputStream()
                 : connection.getErrorStream();
 
-            String response = IOUtils.toString(stream);
+            LOG.info("Status: " + connection.getResponseCode() + " " + connection.getResponseMessage());
 
-            System.out.println("Status: " + connection.getResponseCode() + " " + connection.getResponseMessage());
-            System.out.println("Response: " + response);
+            String response = IOUtils.toString(stream, Charset.forName("UTF-8"));
+            LOG.info("Response: " + response);
+
 
             Assert.assertEquals(new Integer(200), new Integer(connection.getResponseCode()));
             Assert.assertNotNull(response);
