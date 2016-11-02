@@ -1,5 +1,4 @@
-Example CXF Client to be used with project 'ws-security-https-cxf'
-=========================
+# Example CXF Client to be used with project 'ws-security-https-cxf'
 Simple project which acts as the CXF client.
 
 To run the Java Client:
