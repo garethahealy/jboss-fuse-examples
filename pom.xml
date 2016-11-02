@@ -51,7 +51,7 @@
 
         <module>camel-boon-example</module>
         <module>camel-optaplanner-example</module>
-        <!--<module>camel-tika-example</module>-->
+        <module>camel-tika-example</module>
 
         <module>fabric8-v1-profiles</module>
 
