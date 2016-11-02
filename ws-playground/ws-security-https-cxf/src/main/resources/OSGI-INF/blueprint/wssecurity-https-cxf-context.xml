@@ -36,8 +36,7 @@
             <cm:property name="schema.validation.enabled" value="false"/>
             <cm:property name="cxf.helloworld.port" value="9001"/>
             <cm:property name="cxf.helloworld.transport" value="https"/>
-            <cm:property name="http.certs.location"
-                         value="/Users/garethah/Documents/github/garethahealy/jboss-fuse-examples/ws-security-https-cxf/src/main/resources/keystore"/>
+            <cm:property name="http.certs.location" value="src/main/resources/keystore"/>
             <cm:property name="http.keyManagers.password" value="storepassword"/>
             <cm:property name="http.trustManagers.password" value="storepassword"/>
             <cm:property name="http.clientAuthentication.required" value="true"/>
