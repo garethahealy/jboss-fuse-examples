@@ -10,7 +10,7 @@ install:
 before_script:
   - mvn dependency:resolve-plugins -B
 script:
-  - mvn clean install -B -Dgpg.skip=true -Dlog4j.configuration=
+  - mvn clean install -B -Dgpg.skip=true -Dlog4j.configuration=file:${TRAVIS_BUILD_DIR}/.travis/log4j.properties
 cache:
   directories:
   - $HOME/.m2
