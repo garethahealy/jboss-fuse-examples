@@ -40,19 +40,23 @@
     </scm>
 
     <modules>
+        <!-- Core -->
         <module>activemq-playground</module>
         <module>ws-playground</module>
         <module>threading-playground</module>
         <module>database-playground</module>
-        
+
+        <!-- Randoms -->
         <module>mbeans-expose</module>
         <module>bits-and-bobs</module>
-        <!--<module>routes-loaded-via-xml</module>-->
+        <module>routes-loaded-via-xml</module>
 
+        <!-- Camel Examples -->
         <module>camel-boon-example</module>
         <module>camel-optaplanner-example</module>
         <module>camel-tika-example</module>
 
+        <!-- Fabric8 -->
         <module>fabric8-v1-profiles</module>
 
         <!-- Features are always last-->
