@@ -1,20 +1,32 @@
 sudo: required
 dist: trusty
+env:
+  global:
+  - secure: CobCyjFRBt0C2C46Wt2M+UY8jerSoMNiV2luK84WiVPF4uXy6gq61F8vuh+diS0jJfutIpmbL+YCw58DgEVVsM0P8rGjsFSXgOZBLpxt5ZGyUT4E6Wxf9VyRQIeR9GrNLcvVZxKIDL7zisDFomN36chn3I5IZTjMeSGpYrw6Yo4=
+  - secure: bDr5PQer5lAc9OUjSlbUEcc3Edosht1ZEP4UQwmj4lDfwVrdRmm2o/afp2cz7hvAAy8F+ZS6xgVm0QdTwP7xLveUkERYQDNVGUZdAUd+vuyCbziM5FBFdAYqVsINbDX73PA6X6ctttQbO/WohKC/Rv5MtQC6wytFRBmiD6vw6Zs=
+  - secure: a2Irva4WctNd7PBg1QeVw5/eFgKq3TDQumX+xWQJJh/mPVEGfHTBxAlE/IJ9f+3d6F1PlZ1Xs4RP4yksM7orG18aBxP8RZdYr241wWn/l8ZboNGFgoKLlxU7UXglW48+RIT5NAf50FeA7RqiiQ4UAQRh5haoFpNEVCjY+JjLg8o=
+  - secure: P7P2sXVk5o5fE818jtU8r7nR4v8IhJcjStoIxWtm26qmF1JhpRmHjRuFgGyxH+llCOSJ+wrAzgzRC11LRFbbmkAXC7A3140xChky2RedY4Sr9L/fJzHnY/2Mgqmw4KpXSBJL1O7JizC3urkESXAbVMUJvEA61EES1kBX+BIXkCE=
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
+before_install:
+- bash .travis/deploy-codesigning.sh
 install:
-  - bash .travis/update.sh
-  - export M2_HOME=/usr/share/maven3 && export PATH=${M2_HOME}/bin:${PATH} && export MAVEN_OPTS="-Xms2048m -Xmx2048m"
-  - java -version && javac -version && mvn -version -B
-  - git clone --depth=1 https://github.com/garethahealy/camel-tika.git
-  - cd camel-tika && mvn clean install -DskipTests
-  - cd .. && rm -rf camel-tika
+- bash .travis/update.sh
+- export M2_HOME=/usr/share/maven3 && export PATH=${M2_HOME}/bin:${PATH} && export MAVEN_OPTS="-Xms2048m -Xmx2048m"
+- java -version && javac -version && mvn -version -B
+- git clone --depth=1 https://github.com/garethahealy/camel-tika.git
+- cd camel-tika && mvn clean install -DskipTests && cd .. && rm -rf camel-tika
 before_script:
-  - mvn dependency:resolve-plugins -B
+- mvn dependency:resolve-plugins -B
 script:
-  - mvn clean install -B -Dgpg.skip=true -Dlog4j.configuration=file:${TRAVIS_BUILD_DIR}/.travis/log4j.properties
+- mvn clean install -B -Dgpg.skip=true -Dlog4j.configuration=file:${TRAVIS_BUILD_DIR}/.travis/log4j.properties
+deploy:
+  provider: script
+  script: bash .travis/deploy.sh
+  skip_cleanup: true
 cache:
   directories:
   - $HOME/.m2
   - $HOME/.victims
+
