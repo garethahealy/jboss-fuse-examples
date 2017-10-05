@@ -22,11 +22,17 @@ package com.garethahealy.mbeans.expose.routes;
 import java.util.Dictionary;
 import java.util.Map;
 
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.apache.camel.util.KeyValueHolder;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
 
 public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 
@@ -39,6 +45,14 @@ public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
     @Override
     protected void addServicesOnStartup(Map<String, KeyValueHolder<Object, Dictionary>> services) {
         MBeanServer mBeanServer = Mockito.mock(MBeanServer.class);
+        try {
+            Mockito.when(mBeanServer.registerMBean(Mockito.anyObject(), Mockito.any(ObjectName.class)));
+            Mockito.when(mBeanServer.unregisterMBean(Mockito.any(ObjectName.class)));
+
+        } catch (InstanceAlreadyExistsException | MBeanRegistrationException
+            | NotCompliantMBeanException | InstanceNotFoundException e) {
+            e.printStackTrace();
+        }
 
         services.put(MBeanServer.class.getCanonicalName(), asService(mBeanServer, null));
     }
