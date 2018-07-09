@@ -2,7 +2,7 @@
  * #%L
  * GarethHealy :: JBoss Fuse Examples :: MBeans Expose
  * %%
- * Copyright (C) 2013 - 2017 Gareth Healy
+ * Copyright (C) 2013 - 2018 Gareth Healy
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import java.util.Dictionary;
 import java.util.Map;
 
 import javax.management.InstanceAlreadyExistsException;
-import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.NotCompliantMBeanException;
@@ -32,7 +31,6 @@ import javax.management.ObjectName;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.apache.camel.util.KeyValueHolder;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 
 public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
 
@@ -47,10 +45,11 @@ public class BaseCamelBlueprintTestSupport extends CamelBlueprintTestSupport {
         MBeanServer mBeanServer = Mockito.mock(MBeanServer.class);
         try {
             Mockito.when(mBeanServer.registerMBean(Mockito.anyObject(), Mockito.any(ObjectName.class)));
-            Mockito.when(mBeanServer.unregisterMBean(Mockito.any(ObjectName.class)));
-
-        } catch (InstanceAlreadyExistsException | MBeanRegistrationException
-            | NotCompliantMBeanException | InstanceNotFoundException e) {
+            //Mockito.when(mBeanServer.unregisterMBean(Mockito.any(ObjectName.class)));
+        } catch (InstanceAlreadyExistsException
+                | MBeanRegistrationException
+                | NotCompliantMBeanException e) {
+                //InstanceNotFoundException e) {
             e.printStackTrace();
         }
 
