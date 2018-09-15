@@ -14,8 +14,6 @@ before_install:
 install:
 - mvn -N io.takari:maven:wrapper -Dmaven=3.5.0
 - java -version && javac -version && ./mvnw -version -B
-- git clone --depth=1 https://github.com/garethahealy/camel-tika.git
-- cd camel-tika && mvn clean install -DskipTests && cd .. && rm -rf camel-tika
 before_script:
 - ./mvnw dependency:go-offline -B
 script:
